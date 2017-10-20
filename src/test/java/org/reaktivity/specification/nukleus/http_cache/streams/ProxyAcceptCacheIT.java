@@ -467,5 +467,42 @@ public class ProxyAcceptCacheIT
         k3po.finish();
     }
 
+    @Test
+    @Specification({
+        "${streams}/cache.incomplete.response.with.range/accept/client",
+        "${streams}/cache.incomplete.response.with.range/accept/server",
+    })
+    public void shouldCacheIncompleteResponseWithRange() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_PROXY");
+        k3po.finish();
+    }
+
+
+    @Test
+    @Specification({
+        "${streams}/not.cache.incomplete.response.with.bigger.range/accept/client",
+        "${streams}/not.cache.incomplete.response.with.bigger.range/accept/server",
+    })
+    public void shouldNotCacheIfRequestedRangeIsAboveIncompleteResponseRange() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_PROXY");
+        k3po.finish();
+    }
+
+    @Test
+    @Specification({
+        "${streams}/complete.incomplete.response.and.return.cache/accept/client",
+        "${streams}/complete.incomplete.response.and.return.cache/accept/server",
+    })
+    public void shouldRequestSubsequentMissingResponseAndReturnFromCache() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_PROXY");
+        k3po.finish();
+    }
+
     // TODO 304 on etags or last-modified
 }
