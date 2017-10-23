@@ -428,4 +428,40 @@ public class ProxyConnectCacheIT
         k3po.notifyBarrier("ROUTED_PROXY");
         k3po.finish();
     }
+
+    @Test
+    @Specification({
+        "${streams}/cache.incomplete.response.with.range/connect/client",
+        "${streams}/cache.incomplete.response.with.range/connect/server",
+    })
+    public void shouldCacheIncompleteResponseWithRange() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_PROXY");
+        k3po.finish();
+    }
+
+    @Test
+    @Specification({
+        "${streams}/not.cache.incomplete.response.with.bigger.range/connect/client",
+        "${streams}/not.cache.incomplete.response.with.bigger.range/connect/server",
+    })
+    public void shouldNotCacheIfRequestedRangeIsAboveIncompleteResponseRange() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_PROXY");
+        k3po.finish();
+    }
+
+    @Test
+    @Specification({
+            "${streams}/complete.incomplete.response.and.return.cache/connect/client",
+            "${streams}/complete.incomplete.response.and.return.cache/connect/server",
+    })
+    public void shouldRequestSubsequentMissingResponseAndReturnFromCache() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_PROXY");
+        k3po.finish();
+    }
 }
