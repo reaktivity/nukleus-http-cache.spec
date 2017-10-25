@@ -82,7 +82,6 @@ write nukleus:data.ext ${http:header(":scheme", "http")}
                        ${http:header(":method", "GET")}
                        ${http:header(":path", "/path")}
                        ${http:header(":authority", "localhost:8080")}
-                       ${http:header("x-retry-after", "2")}
                        ${http:header("cache-control", "no-cache")}
                        ${http:header("prefer", "only-when-modified, wait=2")}
                        ${http:header("if-none-match", etag2)}
