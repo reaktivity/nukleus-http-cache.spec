@@ -49,8 +49,8 @@ read nukleus:data.ext ${http:header(":scheme", "http")}
                       ${http:header(":path", "/path")}
                       ${http:header(":authority", "localhost:8080")}
                       ${http:header("authorization", "some-authorization-value")}
-                      ${http:header("prefer", "x-on-update, wait=1")}
                       ${http:header("cache-control", "no-cache")}
+                      ${http:header("prefer", "x-on-update, wait=1")}
 
 read "response #1"
 
@@ -73,8 +73,6 @@ connected
 
 write close
 
-write notify REQUEST_2_MADE
-
 read nukleus:begin.ext ${http:header(":status", "200")}
                        ${http:header("content-length", "11")}
                        ${http:header("date", date)}
@@ -86,8 +84,8 @@ read nukleus:data.ext ${http:header(":scheme", "http")}
                       ${http:header(":path", "/path")}
                       ${http:header(":authority", "localhost:8080")}
                       ${http:header("authorization", "some-authorization-value2")}
-                      ${http:header("prefer", "x-on-update, wait=1")}
                       ${http:header("cache-control", "no-cache")}
+                      ${http:header("prefer", "x-on-update, wait=1")}
 
 read "response #2"
 

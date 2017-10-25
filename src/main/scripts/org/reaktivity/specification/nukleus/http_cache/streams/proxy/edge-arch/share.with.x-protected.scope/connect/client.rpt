@@ -42,30 +42,3 @@ read nukleus:begin.ext ${http:header(":status", "200")}
 read "response #1"
 
 read closed
-
-connect await ROUTED_PROXY
-        "nukleus://target/streams/http-cache"
-        option nukleus:route ${newProxyConnectRef}
-        option nukleus:window 8192
-        option nukleus:transmission "half-duplex"
-
-write nukleus:begin.ext ${http:header(":scheme", "http")}
-                        ${http:header(":method", "GET")}
-                        ${http:header(":path", "/path")}
-                        ${http:header(":authority", "localhost:8080")}
-                        ${http:header("authorization", "some-authorization-value2")}
-
-connected
-
-write close
-
-write notify REQUEST_2_MADE # assumed
-
-read nukleus:begin.ext ${http:header(":status", "200")}
-                       ${http:header("content-length", "11")}
-                       ${http:header("date", date)}
-                       ${http:header("surrogate-control", "max-age=1+10, x-protected")}
-
-read "response #2"
-
-read closed

@@ -66,10 +66,10 @@ public class EdgeArchProxyConnectIT
 
     @Test
     @Specification({
-        "${streams}/serve.from.cache.when.freshness.extension.is.valid.and.x-protected/connect/client",
-        "${streams}/serve.from.cache.when.freshness.extension.is.valid.and.x-protected/connect/server",
+        "${streams}/serve.from.cache.when.freshness.extension.is.valid/connect/client",
+        "${streams}/serve.from.cache.when.freshness.extension.is.valid/connect/server",
     })
-    public void serveFromCacheWhenFreshnessExtensionIsValidAndXProtected() throws Exception
+    public void serveFromCacheWhenFreshnessExtensionIsValid() throws Exception
     {
         k3po.start();
         k3po.notifyBarrier("ROUTED_PROXY");
@@ -107,6 +107,18 @@ public class EdgeArchProxyConnectIT
     })
 
     public void shouldNotShareDebounceWhenVaries() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_PROXY");
+        k3po.finish();
+    }
+
+    @Test
+    @Specification({
+        "${streams}/share.with.x-protected.scope/connect/client",
+        "${streams}/share.with.x-protected.scope/connect/server",
+    })
+    public void shareWithXProtectedScope() throws Exception
     {
         k3po.start();
         k3po.notifyBarrier("ROUTED_PROXY");

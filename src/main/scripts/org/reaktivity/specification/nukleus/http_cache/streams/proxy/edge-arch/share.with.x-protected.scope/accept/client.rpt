@@ -14,15 +14,17 @@
 # under the License.
 #
 
-property newProxyConnectRef ${nuklei:newReferenceId()} # external scope
-
+property newProxyAcceptRef ${nukleus:newRouteRef()} # external scope
 property date ${http_cache:date()}
 
+# Populate Cache
+
 connect await ROUTED_PROXY
-        "nukleus://target/streams/http-cache"
-        option nukleus:route ${newProxyConnectRef}
+        "nukleus://http-cache/streams/source"
+        option nukleus:route ${newProxyAcceptRef}
         option nukleus:window 8192
         option nukleus:transmission "half-duplex"
+        option nukleus:authorization 0x0001_000000_000000L
 
 write nukleus:begin.ext ${http:header(":scheme", "http")}
                         ${http:header(":method", "GET")}
@@ -34,20 +36,34 @@ connected
 
 write close
 
+write notify REQUEST_1_MADE
+
 read nukleus:begin.ext ${http:header(":status", "200")}
                        ${http:header("content-length", "11")}
                        ${http:header("date", date)}
                        ${http:header("surrogate-control", "max-age=1+10, x-protected")}
+                       ${http:header("cache-control", "stale-while-revalidate=10")}
+
+read nukleus:data.ext ${http:header(":scheme", "http")}
+                      ${http:header(":method", "GET")}
+                      ${http:header(":path", "/path")}
+                      ${http:header(":authority", "localhost:8080")}
+                      ${http:header("authorization", "some-authorization-value")}
+                      ${http:header("cache-control", "no-cache")}
+                      ${http:header("prefer", "x-on-update, wait=1")}
 
 read "response #1"
 
 read closed
 
-connect await ROUTED_PROXY
-        "nukleus://target/streams/http-cache"
-        option nukleus:route ${newProxyConnectRef}
+read notify RESPONSE_CACHED
+
+connect await RESPONSE_CACHED
+        "nukleus://http-cache/streams/source"
+        option nukleus:route ${newProxyAcceptRef}
         option nukleus:window 8192
         option nukleus:transmission "half-duplex"
+        option nukleus:authorization 0x0001_000000_000000L
 
 write nukleus:begin.ext ${http:header(":scheme", "http")}
                         ${http:header(":method", "GET")}
@@ -59,13 +75,20 @@ connected
 
 write close
 
-write notify REQUEST_2_MADE # assumed
-
 read nukleus:begin.ext ${http:header(":status", "200")}
                        ${http:header("content-length", "11")}
                        ${http:header("date", date)}
                        ${http:header("surrogate-control", "max-age=1+10, x-protected")}
+                       ${http:header("cache-control", "stale-while-revalidate=10")}
 
-read "response #2"
+read nukleus:data.ext ${http:header(":scheme", "http")}
+                      ${http:header(":method", "GET")}
+                      ${http:header(":path", "/path")}
+                      ${http:header(":authority", "localhost:8080")}
+                      ${http:header("authorization", "some-authorization-value2")}
+                      ${http:header("cache-control", "no-cache")}
+                      ${http:header("prefer", "x-on-update, wait=1")}
+
+read "response #1"
 
 read closed

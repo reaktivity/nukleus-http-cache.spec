@@ -61,7 +61,7 @@ accept await ROUTED_PROXY
         option nukleus:route ${newProxyAcceptRef}
         option nukleus:window 8192
         option nukleus:transmission "half-duplex"
-        option nukleus:authorization 0x0002_000000_000000L
+        option nukleus:authorization 0x0001_000000_000000L
 
 accepted
 
@@ -89,6 +89,6 @@ write nukleus:data.ext ${http:header(":scheme", "http")}
                        ${http:header("cache-control", "no-cache")}
                        ${http:header("prefer", "x-on-update, wait=1")}
 
-write "response #2"
+write "response #1"
 
 write close
