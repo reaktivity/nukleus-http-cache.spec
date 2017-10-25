@@ -48,8 +48,8 @@ write nukleus:data.ext ${http:header(":scheme", "http")}
                        ${http:header(":path", "/path")}
                        ${http:header(":authority", "localhost:8080")}
                        ${http:header("user-agent", "client 1")}
-                       ${http:header("prefer", "x-on-update, wait=1")}
                        ${http:header("cache-control", "no-cache")}
+                       ${http:header("prefer", "x-on-update, wait=1")}
 
 write "hello world"
 
@@ -62,8 +62,8 @@ read nukleus:begin.ext ${http:header(":scheme", "http")}
                        ${http:header(":path", "/path")}
                        ${http:header(":authority", "localhost:8080")}
                        ${http:header("user-agent", "client 1")}
-                       ${http:header("prefer", "x-on-update, wait=1")}
                        ${http:header("cache-control", "no-cache")}
+                       ${http:header("prefer", "x-on-update, wait=1")}
 
 connected
 
@@ -95,8 +95,8 @@ write nukleus:data.ext ${http:header(":scheme", "http")}
                        ${http:header(":path", "/path")}
                        ${http:header(":authority", "localhost:8080")}
                        ${http:header("user-agent", "client 2")}
-                       ${http:header("prefer", "x-on-update, wait=1")}
                        ${http:header("cache-control", "no-cache")}
+                       ${http:header("prefer", "x-on-update, wait=1")}
 
 write "hello world"
 
