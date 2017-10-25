@@ -36,7 +36,7 @@ write close
 read nukleus:begin.ext ${http:header(":status", "200")}
                        ${http:header("content-length", "11")}
                        ${http:header("date", date)}
-                       ${http:header("surrogate-control", "max-age=1+10, protected")}
+                       ${http:header("surrogate-control", "max-age=1+10, x-protected")}
 
 read "hello world"
 

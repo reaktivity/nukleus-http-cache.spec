@@ -49,7 +49,7 @@ write nukleus:data.ext ${http:header(":scheme", "http")}
                        ${http:header(":path", "/path")}
                        ${http:header(":authority", "localhost:8080")}
                        ${http:header("user-agent", "user-agent 1")}
-                       ${http:header("prefer", "only-when-modified, wait=1")}
+                       ${http:header("prefer", "x-on-update, wait=1")}
                        ${http:header("cache-control", "no-cache")}
 
 write "response #1"
@@ -80,7 +80,7 @@ write nukleus:data.ext ${http:header(":scheme", "http")}
                        ${http:header(":path", "/path")}
                        ${http:header(":authority", "localhost:8080")}
                        ${http:header("user-agent", "user-agent 2")}
-                       ${http:header("prefer", "only-when-modified, wait=1")}
+                       ${http:header("prefer", "x-on-update, wait=1")}
                        ${http:header("cache-control", "no-cache")}
 
 write "response #2"

@@ -29,7 +29,7 @@ write nukleus:begin.ext ${http:header(":scheme", "http")}
                         ${http:header(":path", "/path")}
                         ${http:header(":authority", "localhost:8080")}
                         ${http:header("cache-control", "no-cache")}
-                        ${http:header("prefer", "only-when-modified, wait=2")}
+                        ${http:header("prefer", "x-on-update, wait=2")}
                         ${http:header("if-none-match", etag)}
 
 connected
@@ -55,7 +55,7 @@ write nukleus:begin.ext ${http:header(":scheme", "http")}
                         ${http:header(":path", "/path")}
                         ${http:header(":authority", "localhost:8080")}
                         ${http:header("cache-control", "no-cache")}
-                        ${http:header("prefer", "only-when-modified, wait=2")}
+                        ${http:header("prefer", "x-on-update, wait=2")}
                         ${http:header("if-none-match", etag)}
 
 connected
