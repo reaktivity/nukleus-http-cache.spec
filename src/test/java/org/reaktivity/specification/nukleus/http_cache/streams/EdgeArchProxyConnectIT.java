@@ -78,43 +78,6 @@ public class EdgeArchProxyConnectIT
 
     @Test
     @Specification({
-        "${streams}/does.not.share.debounce.when.explicitly.private.cache/connect/client",
-        "${streams}/does.not.share.debounce.when.explicitly.private.cache/connect/server",
-    })
-    public void doesNotShareDebounceWhenExplicitlyPrivate() throws Exception
-    {
-        k3po.start();
-        k3po.notifyBarrier("ROUTED_PROXY");
-        k3po.finish();
-    }
-
-    @Test
-    @Specification({
-        "${streams}/does.not.share.debounce.when.implied.private.cache/connect/client",
-        "${streams}/does.not.share.debounce.when.implied.private.cache/connect/server",
-    })
-    public void shouldNotShareDebounceWhenImpliedPrivate() throws Exception
-    {
-        k3po.start();
-        k3po.notifyBarrier("ROUTED_PROXY");
-        k3po.finish();
-    }
-
-    @Test
-    @Specification({
-        "${streams}/does.not.share.debounce.when.varies/connect/client",
-        "${streams}/does.not.share.debounce.when.varies/connect/server",
-    })
-
-    public void shouldNotShareDebounceWhenVaries() throws Exception
-    {
-        k3po.start();
-        k3po.notifyBarrier("ROUTED_PROXY");
-        k3po.finish();
-    }
-
-    @Test
-    @Specification({
         "${streams}/share.with.x-protected.scope/connect/client",
         "${streams}/share.with.x-protected.scope/connect/server",
     })
@@ -156,19 +119,6 @@ public class EdgeArchProxyConnectIT
         "${streams}/inject.stale-while-revalidate.push-promise.no-cache/connect/server",
     })
     public void shouldInjectValuesOnFreshnessExtension() throws Exception
-    {
-        k3po.start();
-        k3po.notifyBarrier("ROUTED_PROXY");
-        k3po.finish();
-    }
-
-    @Test
-    @Specification({
-        "${streams}/share.debounce.when.explicitly.public/connect/client",
-        "${streams}/share.debounce.when.explicitly.public/connect/server",
-    })
-
-    public void shouldShareDebounceWhenExplicitlyPublic() throws Exception
     {
         k3po.start();
         k3po.notifyBarrier("ROUTED_PROXY");

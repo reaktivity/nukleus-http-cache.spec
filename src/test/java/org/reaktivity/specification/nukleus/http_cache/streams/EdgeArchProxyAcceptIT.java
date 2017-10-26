@@ -78,43 +78,6 @@ public class EdgeArchProxyAcceptIT
 
     @Test
     @Specification({
-        "${streams}/does.not.share.debounce.when.explicitly.private.cache/accept/client",
-        "${streams}/does.not.share.debounce.when.explicitly.private.cache/accept/server",
-    })
-    public void doesNotShareDebounceWhenExplicitlyPrivate() throws Exception
-    {
-        k3po.start();
-        k3po.notifyBarrier("ROUTED_PROXY");
-        k3po.finish();
-    }
-
-    @Test
-    @Specification({
-        "${streams}/does.not.share.debounce.when.implied.private.cache/accept/client",
-        "${streams}/does.not.share.debounce.when.implied.private.cache/accept/server",
-    })
-    public void shouldNotShareDebounceWhenImpliedPrivate() throws Exception
-    {
-        k3po.start();
-        k3po.notifyBarrier("ROUTED_PROXY");
-        k3po.finish();
-    }
-
-    @Test
-    @Specification({
-        "${streams}/does.not.share.debounce.when.varies/accept/client",
-        "${streams}/does.not.share.debounce.when.varies/accept/server",
-    })
-
-    public void shouldNotShareDebounceWhenVaries() throws Exception
-    {
-        k3po.start();
-        k3po.notifyBarrier("ROUTED_PROXY");
-        k3po.finish();
-    }
-
-    @Test
-    @Specification({
         "${streams}/share.with.x-protected.scope/accept/client",
         "${streams}/share.with.x-protected.scope/accept/server",
     })
@@ -156,31 +119,6 @@ public class EdgeArchProxyAcceptIT
         "${streams}/inject.stale-while-revalidate.push-promise.no-cache/accept/server",
     })
     public void shouldInjectValuesOnFreshnessExtension() throws Exception
-    {
-        k3po.start();
-        k3po.notifyBarrier("ROUTED_PROXY");
-        k3po.finish();
-    }
-
-    @Test
-    @Specification({
-        "${streams}/share.debounce.when.explicitly.public/accept/client",
-        "${streams}/share.debounce.when.explicitly.public/accept/server",
-    })
-
-    public void shouldShareDebounceWhenExplicitlyPublic() throws Exception
-    {
-        k3po.start();
-        k3po.notifyBarrier("ROUTED_PROXY");
-        k3po.finish();
-    }
-
-    @Test
-    @Specification({
-        "${streams}/share.debounce.when.x-protected.and.same.scope/accept/client",
-        "${streams}/share.debounce.when.x-protected.and.same.scope/accept/server",
-    })
-    public void shouldShareDebounceWhenXProtectedAndSameScope() throws Exception
     {
         k3po.start();
         k3po.notifyBarrier("ROUTED_PROXY");
