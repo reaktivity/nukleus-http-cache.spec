@@ -211,4 +211,16 @@ public class EdgeArchProxyAcceptIT
         k3po.finish();
     }
 
+    @Test
+    @Specification({
+        "${streams}/polling.updates.on-update/accept/client",
+        "${streams}/polling.updates.on-update/accept/server",
+    })
+    public void shouldUpdateOnUpdateRequestsWhenPollCompletes() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_PROXY");
+        k3po.finish();
+    }
+
 }
