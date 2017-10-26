@@ -199,4 +199,16 @@ public class EdgeArchProxyConnectIT
         k3po.finish();
     }
 
+    @Test
+    @Specification({
+        "${streams}/polling.updates.cache/connect/client",
+        "${streams}/polling.updates.cache/connect/server",
+    })
+    public void shouldUpdateCacheOnPoll() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_PROXY");
+        k3po.finish();
+    }
+
 }
