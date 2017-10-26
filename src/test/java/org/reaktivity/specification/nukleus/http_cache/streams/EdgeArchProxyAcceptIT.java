@@ -187,4 +187,16 @@ public class EdgeArchProxyAcceptIT
         k3po.finish();
     }
 
+    @Test
+    @Specification({
+        "${streams}/cache.and.poll.on.surrogate.max-age.when.fresh.ext/accept/client",
+        "${streams}/cache.and.poll.on.surrogate.max-age.when.fresh.ext/accept/server",
+    })
+    public void shouldCacheAndPollOnSurrogateMaxAgeWhenFreshExt() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_PROXY");
+        k3po.finish();
+    }
+
 }
