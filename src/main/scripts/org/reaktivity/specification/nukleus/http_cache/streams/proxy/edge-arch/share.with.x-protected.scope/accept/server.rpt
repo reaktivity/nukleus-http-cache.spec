@@ -56,19 +56,13 @@ write "response #1"
 
 write close
 
-accept await ROUTED_PROXY
-        "nukleus://http-cache/streams/source"
-        option nukleus:route ${newProxyAcceptRef}
-        option nukleus:window 8192
-        option nukleus:transmission "half-duplex"
-        option nukleus:authorization 0x0001_000000_000000L
-
 accepted
 
 read nukleus:begin.ext ${http:header(":scheme", "http")}
                        ${http:header(":method", "GET")}
                        ${http:header(":path", "/path")}
                        ${http:header(":authority", "localhost:8080")}
+                       ${http:header("authorization", "some-authorization-value2")}
 
 connected
 

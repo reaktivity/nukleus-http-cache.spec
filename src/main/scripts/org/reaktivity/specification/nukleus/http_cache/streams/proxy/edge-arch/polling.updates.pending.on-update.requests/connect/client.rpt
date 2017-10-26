@@ -47,6 +47,7 @@ read "response #1"
 read closed
 
 read notify INITIAL_REQUEST_COMPLETE
+read notify REQUEST_TWO_PENDING #assumed
 
 connect await INITIAL_REQUEST_COMPLETE
         "nukleus://target/streams/http-cache"

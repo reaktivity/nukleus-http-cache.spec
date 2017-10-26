@@ -213,8 +213,8 @@ public class EdgeArchProxyConnectIT
 
     @Test
     @Specification({
-        "${streams}/polling.updates.on-update/connect/client",
-        "${streams}/polling.updates.on-update/connect/server",
+        "${streams}/polling.updates.pending.on-update.requests/connect/client",
+        "${streams}/polling.updates.pending.on-update.requests/connect/server",
     })
     public void shouldUpdateOnUpdateRequestsWhenPollCompletes() throws Exception
     {
