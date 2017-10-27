@@ -467,5 +467,29 @@ public class ProxyAcceptCacheIT
         k3po.finish();
     }
 
+    @Test
+    @Specification({
+            "${streams}/invalidate.multiple.max-age/accept/client",
+            "${streams}/invalidate.multiple.max-age/accept/server",
+    })
+    public void shouldNotCacheWithMultipleMaxAge() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_PROXY");
+        k3po.finish();
+    }
+
+    @Test
+    @Specification({
+            "${streams}/not.use.cache.that.varys.with.asterisk.value/accept/client",
+            "${streams}/not.use.cache.that.varys.with.asterisk.value/accept/server",
+    })
+    public void shouldNotUseCacheForRequestThatHasAsteriskSymbolValueInVary() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_PROXY");
+        k3po.finish();
+    }
+
     // TODO 304 on etags or last-modified
 }
