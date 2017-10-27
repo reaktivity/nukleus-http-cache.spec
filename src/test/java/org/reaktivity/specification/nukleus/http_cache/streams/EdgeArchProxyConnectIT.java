@@ -173,4 +173,16 @@ public class EdgeArchProxyConnectIT
         k3po.finish();
     }
 
+    @Test
+    @Specification({
+        "${streams}/polling.updates.pending.on-update.requests.only.when.modified/connect/client",
+        "${streams}/polling.updates.pending.on-update.requests.only.when.modified/connect/server",
+    })
+    public void shouldUpdateOnUpdateRequestsOnlyWhenModified() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_PROXY");
+        k3po.finish();
+    }
+
 }
