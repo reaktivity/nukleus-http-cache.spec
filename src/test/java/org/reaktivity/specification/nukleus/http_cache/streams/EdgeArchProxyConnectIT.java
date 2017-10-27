@@ -127,18 +127,6 @@ public class EdgeArchProxyConnectIT
 
     @Test
     @Specification({
-        "${streams}/share.debounce.when.x-protected.and.same.scope/connect/client",
-        "${streams}/share.debounce.when.x-protected.and.same.scope/connect/server",
-    })
-    public void shouldShareDebounceWhenXProtectedAndSameScope() throws Exception
-    {
-        k3po.start();
-        k3po.notifyBarrier("ROUTED_PROXY");
-        k3po.finish();
-    }
-
-    @Test
-    @Specification({
         "${streams}/cache.and.poll.on.surrogate.max-age.when.fresh.ext/connect/client",
         "${streams}/cache.and.poll.on.surrogate.max-age.when.fresh.ext/connect/server",
     })
@@ -185,4 +173,15 @@ public class EdgeArchProxyConnectIT
         k3po.finish();
     }
 
+    @Test
+    @Specification({
+        "${streams}/failed.polling.aborts.pending.on-update.requests/connect/client",
+        "${streams}/failed.polling.aborts.pending.on-update.requests/connect/server",
+    })
+    public void failedPollingUpdatesAbortPendingOnUpdateRequests() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_PROXY");
+        k3po.finish();
+    }
 }
