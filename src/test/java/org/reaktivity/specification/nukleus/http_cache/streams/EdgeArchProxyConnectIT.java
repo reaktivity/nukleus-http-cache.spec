@@ -175,6 +175,18 @@ public class EdgeArchProxyConnectIT
 
     @Test
     @Specification({
+        "${streams}/polling.update.attachs.to.next.cache.if.push.promise.arrives.before.response.completes/connect/client",
+        "${streams}/polling.update.attachs.to.next.cache.if.push.promise.arrives.before.response.completes/connect/server",
+    })
+    public void shouldAttachToNextCacheEntryIfPushPromiseArrivesBeforeResponseCompletes() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_PROXY");
+        k3po.finish();
+    }
+
+    @Test
+    @Specification({
         "${streams}/polling.updates.pending.on-update.requests.only.when.modified/connect/client",
         "${streams}/polling.updates.pending.on-update.requests.only.when.modified/connect/server",
     })
