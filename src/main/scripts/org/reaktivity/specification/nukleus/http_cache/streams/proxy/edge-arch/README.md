@@ -25,7 +25,7 @@ The push promise will have a prefer header saying when it prefers the response, 
 
 example:  response from origin with `surrogate-control: max-age=5+100` will result in 
           1) response from cache with `cache-control: stale-while-revalidate=100`
-          2) push promise with `prefer: x-on-update, wait=5` and `cache-control: no-cache`
+          2) push promise with `prefer: wait=100` and `cache-control: no-cache`
 
 Note: this is only implemented for cache-able requests ("GET" with no body) and cache-able responses
 # x-protected

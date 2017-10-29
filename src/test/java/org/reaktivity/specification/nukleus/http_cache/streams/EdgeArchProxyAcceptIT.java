@@ -54,10 +54,10 @@ public class EdgeArchProxyAcceptIT
 
     @Test
     @Specification({
-        "${streams}/does.not.inject.on.uncacheable.response/accept/client",
-        "${streams}/does.not.inject.on.uncacheable.response/accept/server",
+        "${streams}/does.not.inject.on.non-cacheable.response/accept/client",
+        "${streams}/does.not.inject.on.non-cacheable.response/accept/server",
     })
-    public void shouldNotInjectOnUncacheableResponse() throws Exception
+    public void shouldNotInjectOnNonCacheableResponse() throws Exception
     {
         k3po.start();
         k3po.notifyBarrier("ROUTED_PROXY");
