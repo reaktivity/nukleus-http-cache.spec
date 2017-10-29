@@ -16,7 +16,8 @@
 
 property newProxyConnectRef ${nuklei:newReferenceId()} # external scope
 
-property etag ${http_cache:strongEtag()}
+property etag ${http_cache:strongEtag()} #shared
+property etag2 ${http_cache:strongEtag()} #shared
 
 property date ${http_cache:date()}
 
@@ -41,6 +42,7 @@ write nukleus:begin.ext ${http:header(":status", "200")}
                         ${http:header("content-length", "11")}
                         ${http:header("date", date)}
                         ${http:header("surrogate-control", "max-age=1+10, x-protected")}
+                        ${http:header("etag", etag)}
 write "response #1"
 
 write close
@@ -61,6 +63,7 @@ write nukleus:begin.ext ${http:header(":status", "200")}
                         ${http:header("content-length", "11")}
                         ${http:header("date", date)}
                         ${http:header("surrogate-control", "max-age=1+10, x-protected")}
+                        ${http:header("etag", etag2)}
 write "response #2"
 
 write close

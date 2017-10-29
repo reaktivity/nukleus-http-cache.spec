@@ -27,7 +27,7 @@ import org.kaazing.k3po.junit.annotation.Specification;
 import org.kaazing.k3po.junit.rules.K3poRule;
 import org.reaktivity.specification.nukleus.NukleusRule;
 
-public class RFC7234ProxyAcceptIT
+public class Rfc7234ProxyConnectIT
 {
     private final K3poRule k3po = new K3poRule()
             .addScriptRoot("streams", "org/reaktivity/specification/nukleus/http_cache/streams/proxy/rfc7234");
@@ -42,8 +42,8 @@ public class RFC7234ProxyAcceptIT
 
     @Test
     @Specification({
-        "${streams}/proxy.get.request/accept/client",
-        "${streams}/proxy.get.request/accept/server",
+        "${streams}/proxy.get.request/connect/client",
+        "${streams}/proxy.get.request/connect/server",
         })
     public void shouldProxyGetRequest() throws Exception
     {
@@ -54,8 +54,8 @@ public class RFC7234ProxyAcceptIT
 
     @Test
     @Specification({
-        "${streams}/proxy.get.request.with.body/accept/client",
-        "${streams}/proxy.get.request.with.body/accept/server",
+        "${streams}/proxy.get.request.with.body/connect/client",
+        "${streams}/proxy.get.request.with.body/connect/server",
         })
     public void shouldProxyGetRequestWithBody() throws Exception
     {
@@ -66,8 +66,8 @@ public class RFC7234ProxyAcceptIT
 
     @Test
     @Specification({
-        "${streams}/proxy.get.request.with.transfer.encoding/accept/client",
-        "${streams}/proxy.get.request.with.transfer.encoding/accept/server",
+        "${streams}/proxy.get.request.with.transfer.encoding/connect/client",
+        "${streams}/proxy.get.request.with.transfer.encoding/connect/server",
     })
     public void shouldProxyGetRequestWithTransferEncoding() throws Exception
     {
@@ -78,8 +78,8 @@ public class RFC7234ProxyAcceptIT
 
     @Test
     @Specification({
-        "${streams}/proxy.post.request/accept/client",
-        "${streams}/proxy.post.request/accept/server",
+        "${streams}/proxy.post.request/connect/client",
+        "${streams}/proxy.post.request/connect/server",
     })
     public void shouldProxyPostRequest() throws Exception
     {
@@ -90,8 +90,8 @@ public class RFC7234ProxyAcceptIT
 
     @Test
     @Specification({
-        "${streams}/proxy.request.and.304/accept/client",
-        "${streams}/proxy.request.and.304/accept/server",
+        "${streams}/proxy.request.and.304/connect/client",
+        "${streams}/proxy.request.and.304/connect/server",
     })
     public void shouldProxyRequestWith304() throws Exception
     {
@@ -102,59 +102,20 @@ public class RFC7234ProxyAcceptIT
 
     @Test
     @Specification({
-        "${streams}/cache.max-age/accept/client",
-        "${streams}/cache.max-age/accept/server",
-    })
-    public void shouldCacheMaxAge() throws Exception
-    {
-        k3po.start();
-        k3po.notifyBarrier("ROUTED_PROXY");
-        k3po.finish();
-    }
-
-    @Test
-    @Specification({
-            "${streams}/request.greater.max-age/accept/client",
-            "${streams}/request.greater.max-age/accept/server",
-    })
-    public void shouldNotCacheWhenResponseAgeIsGreaterThanMaxAge() throws Exception
-    {
-        k3po.start();
-        k3po.notifyBarrier("ROUTED_PROXY");
-        k3po.finish();
-    }
-
-    @Test
-    @Specification({
-            "${streams}/request.lesser.max-age/accept/client",
-            "${streams}/request.lesser.max-age/accept/server",
-    })
-    public void shouldCacheRequestMaxAge() throws Exception
-    {
-        k3po.start();
-        k3po.notifyBarrier("ROUTED_PROXY");
-        k3po.finish();
-    }
-
-    @Test
-    @Specification({
-            "${streams}/cache.min-fresh/accept/client",
-            "${streams}/cache.min-fresh/accept/server",
+            "${streams}/cache.min-fresh/connect/client",
+            "${streams}/cache.min-fresh/connect/server",
     })
     public void shouldCacheMinFresh() throws Exception
     {
         k3po.start();
         k3po.notifyBarrier("ROUTED_PROXY");
-        k3po.awaitBarrier("REQUEST_CACHED");
-//      sleep(1000);
-        k3po.notifyBarrier("CACHE_WAIT_1_SEC");
         k3po.finish();
     }
 
     @Test
     @Specification({
-            "${streams}/expire.min-fresh/accept/client",
-            "${streams}/expire.min-fresh/accept/server",
+            "${streams}/expire.min-fresh/connect/client",
+            "${streams}/expire.min-fresh/connect/server",
     })
     public void shouldExpireMinFresh() throws Exception
     {
@@ -165,8 +126,20 @@ public class RFC7234ProxyAcceptIT
 
     @Test
     @Specification({
-        "${streams}/expire.max-age/accept/client",
-        "${streams}/expire.max-age/accept/server",
+        "${streams}/cache.max-age/connect/client",
+        "${streams}/cache.max-age/connect/server",
+    })
+    public void shouldCacheMaxAge() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_PROXY");
+        k3po.finish();
+    }
+
+    @Test
+    @Specification({
+        "${streams}/expire.max-age/connect/client",
+        "${streams}/expire.max-age/connect/server",
     })
     public void shouldExpireMaxAge() throws Exception
     {
@@ -177,8 +150,8 @@ public class RFC7234ProxyAcceptIT
 
     @Test
     @Specification({
-            "${streams}/cache.max-stale.with.value/accept/client",
-            "${streams}/cache.max-stale.with.value/accept/server",
+            "${streams}/cache.max-stale.with.value/connect/client",
+            "${streams}/cache.max-stale.with.value/connect/server",
     })
     public void shouldCacheMaxStaleWithValue() throws Exception
     {
@@ -189,8 +162,8 @@ public class RFC7234ProxyAcceptIT
 
     @Test
     @Specification({
-            "${streams}/cache.max-stale.no.value/accept/client",
-            "${streams}/cache.max-stale.no.value/accept/server",
+            "${streams}/cache.max-stale.no.value/connect/client",
+            "${streams}/cache.max-stale.no.value/connect/server",
     })
     public void shouldCacheMaxStaleWithNoValue() throws Exception
     {
@@ -201,8 +174,8 @@ public class RFC7234ProxyAcceptIT
 
     @Test
     @Specification({
-            "${streams}/cache.max-stale.with.max-age/accept/client",
-            "${streams}/cache.max-stale.with.max-age/accept/server",
+            "${streams}/cache.max-stale.with.max-age/connect/client",
+            "${streams}/cache.max-stale.with.max-age/connect/server",
     })
     public void shouldCacheMaxStaleWithMaxAge() throws Exception
     {
@@ -213,8 +186,8 @@ public class RFC7234ProxyAcceptIT
 
     @Test
     @Specification({
-            "${streams}/expire.max-stale/accept/client",
-            "${streams}/expire.max-stale/accept/server",
+            "${streams}/expire.max-stale/connect/client",
+            "${streams}/expire.max-stale/connect/server",
     })
     public void shouldExpireMaxStale() throws Exception
     {
@@ -225,8 +198,8 @@ public class RFC7234ProxyAcceptIT
 
     @Test
     @Specification({
-            "${streams}/request.cache.max-age=0/accept/client",
-            "${streams}/request.cache.max-age=0/accept/server",
+            "${streams}/request.cache.max-age=0/connect/client",
+            "${streams}/request.cache.max-age=0/connect/server",
     })
     public void shouldRequestCacheMaxAgeZero() throws Exception
     {
@@ -237,8 +210,8 @@ public class RFC7234ProxyAcceptIT
 
     @Test
     @Specification({
-            "${streams}/request.cache.max-age=0.and.304/accept/client",
-            "${streams}/request.cache.max-age=0.and.304/accept/server",
+            "${streams}/request.cache.max-age=0.and.304/connect/client",
+            "${streams}/request.cache.max-age=0.and.304/connect/server",
     })
     public void shouldRequestCacheMaxAgeZeroAnd304() throws Exception
     {
@@ -249,8 +222,8 @@ public class RFC7234ProxyAcceptIT
 
     @Test
     @Specification({
-            "${streams}/request.no-cache/accept/client",
-            "${streams}/request.no-cache/accept/server",
+            "${streams}/request.no-cache/connect/client",
+            "${streams}/request.no-cache/connect/server",
     })
     public void shouldRequestNoCache() throws Exception
     {
@@ -261,8 +234,8 @@ public class RFC7234ProxyAcceptIT
 
     @Test
     @Specification({
-            "${streams}/request.only-if-cached/accept/client",
-            "${streams}/request.only-if-cached/accept/server",
+            "${streams}/request.only-if-cached/connect/client",
+            "${streams}/request.only-if-cached/connect/server",
     })
     public void shouldRequestOnlyIfCached() throws Exception
     {
@@ -273,20 +246,8 @@ public class RFC7234ProxyAcceptIT
 
     @Test
     @Specification({
-            "${streams}/request.only-if-cached.and.504/accept/client",
-            "${streams}/request.only-if-cached.and.504/accept/server",
-    })
-    public void shouldRequestOnlyIfCachedAnd504() throws Exception
-    {
-        k3po.start();
-        k3po.notifyBarrier("ROUTED_PROXY");
-        k3po.finish();
-    }
-
-    @Test
-    @Specification({
-            "${streams}/request.expire.only-if-cached/accept/client",
-            "${streams}/request.expire.only-if-cached/accept/server",
+            "${streams}/request.expire.only-if-cached/connect/client",
+            "${streams}/request.expire.only-if-cached/connect/server",
     })
     public void shouldRequestExpireOnlyIfCached() throws Exception
     {
@@ -297,10 +258,10 @@ public class RFC7234ProxyAcceptIT
 
     @Test
     @Specification({
-        "${streams}/should.bypass.cache.on.no.cache/accept/client",
-        "${streams}/should.bypass.cache.on.no.cache/accept/server",
+        "${streams}/should.bypass.cache.on.no.cache/connect/client",
+        "${streams}/should.bypass.cache.on.no.cache/connect/server",
     })
-    public void shouldByPassCacheOnNoCache() throws Exception
+    public void shouldBypassCacheOnNoCache() throws Exception
     {
         k3po.start();
         k3po.notifyBarrier("ROUTED_PROXY");
@@ -309,32 +270,8 @@ public class RFC7234ProxyAcceptIT
 
     @Test
     @Specification({
-            "${streams}/cache.get.request.with.no-store/accept/client",
-            "${streams}/cache.get.request.with.no-store/accept/server",
-    })
-    public void shouldCacheGetRequestWithNoStore() throws Exception
-    {
-        k3po.start();
-        k3po.notifyBarrier("ROUTED_PROXY");
-        k3po.finish();
-    }
-
-    @Test
-    @Specification({
-            "${streams}/cache.get.request.with.no-store.and.response.marked.cacheable/accept/client",
-            "${streams}/cache.get.request.with.no-store.and.response.marked.cacheable/accept/server",
-    })
-    public void shouldCacheGetRequestWithNoStoreAndResponeMarkedCacheable() throws Exception
-    {
-        k3po.start();
-        k3po.notifyBarrier("ROUTED_PROXY");
-        k3po.finish();
-    }
-
-    @Test
-    @Specification({
-        "${streams}/cache.s-maxage/accept/client",
-        "${streams}/cache.s-maxage/accept/server",
+        "${streams}/cache.s-maxage/connect/client",
+        "${streams}/cache.s-maxage/connect/server",
     })
     public void shouldCacheSMaxage() throws Exception
     {
@@ -345,8 +282,32 @@ public class RFC7234ProxyAcceptIT
 
     @Test
     @Specification({
-        "${streams}/expire.s-maxage/accept/client",
-        "${streams}/expire.s-maxage/accept/server",
+            "${streams}/cache.get.request.with.no-store/connect/client",
+            "${streams}/cache.get.request.with.no-store/connect/server",
+    })
+    public void shouldCacheGetRequestWithNoStore() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_PROXY");
+        k3po.finish();
+    }
+
+    @Test
+    @Specification({
+            "${streams}/cache.get.request.with.no-store.and.response.marked.cacheable/connect/client",
+            "${streams}/cache.get.request.with.no-store.and.response.marked.cacheable/connect/server",
+    })
+    public void shouldCacheGetRequestWithNoStoreAndResponeMarkedCacheable() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_PROXY");
+        k3po.finish();
+    }
+
+    @Test
+    @Specification({
+        "${streams}/expire.s-maxage/connect/client",
+        "${streams}/expire.s-maxage/connect/server",
     })
     public void shouldExpireSMaxage() throws Exception
     {
@@ -359,10 +320,11 @@ public class RFC7234ProxyAcceptIT
     // TODO quoted maxage header
     // TODO quoted smaxage header
 
+
     @Test
     @Specification({
-        "${streams}/expire.cache.by.default.for.0.seconds/accept/client",
-        "${streams}/expire.cache.by.default.for.0.seconds/accept/server",
+        "${streams}/expire.cache.by.default.for.0.seconds/connect/client",
+        "${streams}/expire.cache.by.default.for.0.seconds/connect/server",
     })
     public void shouldExpireCacheByDefaultFor0Seconds() throws Exception
     {
@@ -373,8 +335,8 @@ public class RFC7234ProxyAcceptIT
 
     @Test
     @Specification({
-        "${streams}/cache.by.default.for.10.percent.of.last-modified/accept/client",
-        "${streams}/cache.by.default.for.10.percent.of.last-modified/accept/server",
+        "${streams}/cache.by.default.for.10.percent.of.last-modified/connect/client",
+        "${streams}/cache.by.default.for.10.percent.of.last-modified/connect/server",
     })
     public void shouldCacheDefaultFor10PercentOfLastModified() throws Exception
     {
@@ -385,8 +347,8 @@ public class RFC7234ProxyAcceptIT
 
     @Test
     @Specification({
-        "${streams}/expire.cache.by.default.for.10.percent.of.last-modified/accept/client",
-        "${streams}/expire.cache.by.default.for.10.percent.of.last-modified/accept/server",
+        "${streams}/expire.cache.by.default.for.10.percent.of.last-modified/connect/client",
+        "${streams}/expire.cache.by.default.for.10.percent.of.last-modified/connect/server",
     })
     public void shouldExpireCacheDefaultFor10PercentOfLastModified() throws Exception
     {
@@ -397,8 +359,8 @@ public class RFC7234ProxyAcceptIT
 
     @Test
     @Specification({
-        "${streams}/private.cache/accept/client",
-        "${streams}/private.cache/accept/server",
+        "${streams}/private.cache/connect/client",
+        "${streams}/private.cache/connect/server",
     })
     public void shouldNotUsePrivateCache() throws Exception
     {
@@ -409,8 +371,8 @@ public class RFC7234ProxyAcceptIT
 
     @Test
     @Specification({
-        "${streams}/implied.private.cache/accept/client",
-        "${streams}/implied.private.cache/accept/server",
+        "${streams}/implied.private.cache/connect/client",
+        "${streams}/implied.private.cache/connect/server",
     })
     public void shouldNotUseImpliedPrivateCache() throws Exception
     {
@@ -421,8 +383,8 @@ public class RFC7234ProxyAcceptIT
 
     @Test
     @Specification({
-        "${streams}/explicitly.public.cache/accept/client",
-        "${streams}/explicitly.public.cache/accept/server",
+        "${streams}/explicitly.public.cache/connect/client",
+        "${streams}/explicitly.public.cache/connect/server",
     })
     public void shouldUseExplicitlyPublicCache() throws Exception
     {
@@ -433,8 +395,8 @@ public class RFC7234ProxyAcceptIT
 
     @Test
     @Specification({
-        "${streams}/not.use.cache.that.varys/accept/client",
-        "${streams}/not.use.cache.that.varys/accept/server",
+        "${streams}/not.use.cache.that.varys/connect/client",
+        "${streams}/not.use.cache.that.varys/connect/server",
     })
     public void shouldNotUseCacheForRequestThatVarys() throws Exception
     {
@@ -445,8 +407,8 @@ public class RFC7234ProxyAcceptIT
 
     @Test
     @Specification({
-        "${streams}/cache.that.varys.but.matches/accept/client",
-        "${streams}/cache.that.varys.but.matches/accept/server",
+        "${streams}/cache.that.varys.but.matches/connect/client",
+        "${streams}/cache.that.varys.but.matches/connect/server",
     })
     public void shouldUseCacheForRequestThatMatchesVarys() throws Exception
     {
@@ -457,8 +419,8 @@ public class RFC7234ProxyAcceptIT
 
     @Test
     @Specification({
-        "${streams}/proxy.response.too.large.to.cache/accept/client",
-        "${streams}/proxy.response.too.large.to.cache/accept/server",
+        "${streams}/proxy.response.too.large.to.cache/connect/client",
+        "${streams}/proxy.response.too.large.to.cache/connect/server",
     })
     public void shouldProxyResponseTooLargeToCache() throws Exception
     {
@@ -466,6 +428,4 @@ public class RFC7234ProxyAcceptIT
         k3po.notifyBarrier("ROUTED_PROXY");
         k3po.finish();
     }
-
-    // TODO 304 on etags or last-modified
 }

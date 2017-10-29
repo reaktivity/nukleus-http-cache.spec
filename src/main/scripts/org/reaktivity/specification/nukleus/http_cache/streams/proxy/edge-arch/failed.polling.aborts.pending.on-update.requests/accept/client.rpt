@@ -18,7 +18,6 @@ property newProxyAcceptRef ${nukleus:newRouteRef()} # external scope
 property response1Date ${http_cache:date()} # sharedProperty
 property response2Date ${http_cache:datePlus(5)} # sharedProperty
 property etag ${http_cache:strongEtag()} # sharedProperty
-property etag2 ${http_cache:strongEtag()} # sharedProperty
 
 connect await ROUTED_PROXY
         "nukleus://http-cache/streams/source"
@@ -46,7 +45,7 @@ read nukleus:data.ext ${http:header(":scheme", "http")}
                       ${http:header(":path", "/data")}
                       ${http:header(":authority", "localhost:8080")}
                       ${http:header("cache-control", "no-cache")}
-                      ${http:header("prefer", "x-on-update, wait=1")}
+                      ${http:header("prefer", "wait=100")}
                       ${http:header("if-none-match", etag)}
 
 read "response #1"
@@ -66,7 +65,7 @@ write nukleus:begin.ext ${http:header(":scheme", "http")}
                         ${http:header(":path", "/data")}
                         ${http:header(":authority", "localhost:8080")}
                         ${http:header("cache-control", "no-cache")}
-                        ${http:header("prefer", "x-on-update, wait=1")}
+                        ${http:header("prefer", "wait=100")}
                         ${http:header("if-none-match", etag)}
 connected
 

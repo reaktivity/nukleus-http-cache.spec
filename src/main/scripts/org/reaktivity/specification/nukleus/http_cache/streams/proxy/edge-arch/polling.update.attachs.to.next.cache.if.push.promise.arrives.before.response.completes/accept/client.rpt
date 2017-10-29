@@ -46,7 +46,7 @@ read nukleus:data.ext ${http:header(":scheme", "http")}
                       ${http:header(":path", "/data")}
                       ${http:header(":authority", "localhost:8080")}
                       ${http:header("cache-control", "no-cache")}
-                      ${http:header("prefer", "x-on-update, wait=1")}
+                      ${http:header("prefer", "wait=100")}
                       ${http:header("if-none-match", etag)}
 
 read notify REQUEST_ONE_COMPLETE
@@ -67,7 +67,7 @@ write nukleus:begin.ext ${http:header(":scheme", "http")}
                         ${http:header(":path", "/data")}
                         ${http:header(":authority", "localhost:8080")}
                         ${http:header("cache-control", "no-cache")}
-                        ${http:header("prefer", "x-on-update, wait=1")}
+                        ${http:header("prefer", "wait=100")}
                         ${http:header("if-none-match", etag)}
 connected
 
@@ -87,7 +87,7 @@ read nukleus:data.ext ${http:header(":scheme", "http")}
                       ${http:header(":path", "/data")}
                       ${http:header(":authority", "localhost:8080")}
                       ${http:header("cache-control", "no-cache")}
-                      ${http:header("prefer", "x-on-update, wait=1")}
+                      ${http:header("prefer", "wait=100")}
                       ${http:header("if-none-match", etag2)}
 
 read "response #2"

@@ -15,6 +15,7 @@
 #
 
 property newProxyAcceptRef ${nukleus:newRouteRef()} # external scope
+property etag ${http_cache:strongEtag()} #shared
 
 accept await ROUTED_PROXY
         "nukleus://http-cache/streams/source"
@@ -35,6 +36,7 @@ read closed
 write nukleus:begin.ext ${http:header(":status", "200")}
                         ${http:header("content-length", "11")}
                         ${http:header("surrogate-control", "max-age=5+100")}
+                        ${http:header("etag", etag)}
                         ${http:header("cache-control", "stale-while-revalidate=100")}
 
 write flush
@@ -44,7 +46,8 @@ write nukleus:data.ext ${http:header(":scheme", "http")}
                        ${http:header(":path", "/data")}
                        ${http:header(":authority", "localhost:8080")}
                        ${http:header("cache-control", "no-cache")}
-                       ${http:header("prefer", "x-on-update, wait=5")}
+                       ${http:header("prefer", "wait=100")}
+                       ${http:header("if-none-match", etag)}
 write "hello world"
 
 write close

@@ -16,6 +16,8 @@
 
 property newProxyAcceptRef ${nukleus:newRouteRef()} # external scope
 property date ${http_cache:date()}
+property etag ${http_cache:strongEtag()} #shared
+property etag2 ${http_cache:strongEtag()} #shared
 
 # Populate Cache
 
@@ -42,6 +44,7 @@ read nukleus:begin.ext ${http:header(":status", "200")}
                        ${http:header("content-length", "11")}
                        ${http:header("date", date)}
                        ${http:header("surrogate-control", "max-age=1+10, x-protected")}
+                       ${http:header("etag", etag)}
                        ${http:header("cache-control", "stale-while-revalidate=10")}
 
 read nukleus:data.ext ${http:header(":scheme", "http")}
@@ -50,7 +53,8 @@ read nukleus:data.ext ${http:header(":scheme", "http")}
                       ${http:header(":authority", "localhost:8080")}
                       ${http:header("authorization", "some-authorization-value")}
                       ${http:header("cache-control", "no-cache")}
-                      ${http:header("prefer", "x-on-update, wait=1")}
+                      ${http:header("prefer", "wait=10")}
+                      ${http:header("if-none-match", etag)}
 
 read "response #1"
 
@@ -77,6 +81,7 @@ read nukleus:begin.ext ${http:header(":status", "200")}
                        ${http:header("content-length", "11")}
                        ${http:header("date", date)}
                        ${http:header("surrogate-control", "max-age=1+10, x-protected")}
+                       ${http:header("etag", etag2)}
                        ${http:header("cache-control", "stale-while-revalidate=10")}
 
 read nukleus:data.ext ${http:header(":scheme", "http")}
@@ -85,7 +90,8 @@ read nukleus:data.ext ${http:header(":scheme", "http")}
                       ${http:header(":authority", "localhost:8080")}
                       ${http:header("authorization", "some-authorization-value2")}
                       ${http:header("cache-control", "no-cache")}
-                      ${http:header("prefer", "x-on-update, wait=1")}
+                      ${http:header("prefer", "wait=10")}
+                      ${http:header("if-none-match", etag2)}
 
 read "response #2"
 

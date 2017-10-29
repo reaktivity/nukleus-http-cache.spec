@@ -17,6 +17,8 @@
 property newProxyAcceptRef ${nukleus:newRouteRef()} # external scope
 property response1Date ${http_cache:date()} # sharedProperty
 property response2Date ${http_cache:datePlus(5)} # sharedProperty
+property etag ${http_cache:strongEtag()} #shared
+property etag2 ${http_cache:strongEtag()} #shared
 
 connect await ROUTED_PROXY
         "nukleus://http-cache/streams/source"
@@ -36,6 +38,7 @@ read nukleus:begin.ext ${http:header(":status", "200")}
                        ${http:header("content-length", "11")}
                        ${http:header("date", response1Date)}
                        ${http:header("surrogate-control", "max-age=1+100")}
+                       ${http:header("etag", etag)}
                        ${http:header("cache-control", "stale-while-revalidate=100")}
 
 read nukleus:data.ext ${http:header(":scheme", "http")}
@@ -43,7 +46,8 @@ read nukleus:data.ext ${http:header(":scheme", "http")}
                       ${http:header(":path", "/data")}
                       ${http:header(":authority", "localhost:8080")}
                       ${http:header("cache-control", "no-cache")}
-                      ${http:header("prefer", "x-on-update, wait=1")}
+                      ${http:header("prefer", "wait=100")}
+                      ${http:header("if-none-match", etag)}
 
 read "response #1"
 
@@ -67,6 +71,7 @@ read nukleus:begin.ext ${http:header(":status", "200")}
                        ${http:header("content-length", "11")}
                        ${http:header("date", response2Date)}
                        ${http:header("surrogate-control", "max-age=1+100")}
+                       ${http:header("etag", etag2)}
                        ${http:header("cache-control", "stale-while-revalidate=100")}
 
 read nukleus:data.ext ${http:header(":scheme", "http")}
@@ -74,7 +79,8 @@ read nukleus:data.ext ${http:header(":scheme", "http")}
                       ${http:header(":path", "/data")}
                       ${http:header(":authority", "localhost:8080")}
                       ${http:header("cache-control", "no-cache")}
-                      ${http:header("prefer", "x-on-update, wait=1")}
+                      ${http:header("prefer", "wait=100")}
+                      ${http:header("if-none-match", etag2)}
 
 read "response #2"
 

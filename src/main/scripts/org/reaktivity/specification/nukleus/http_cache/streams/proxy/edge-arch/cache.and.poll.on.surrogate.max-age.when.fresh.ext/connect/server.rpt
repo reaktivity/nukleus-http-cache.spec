@@ -15,6 +15,8 @@
 #
 
 property newProxyConnectRef ${nuklei:newReferenceId()} # external scope
+property etag ${http_cache:strongEtag()} #shared
+property etag2 ${http_cache:strongEtag()} #shared
 
 accept await ROUTED_PROXY
         "nukleus://target/streams/http-cache"
@@ -35,6 +37,7 @@ read closed
 write nukleus:begin.ext ${http:header(":status", "200")}
                         ${http:header("content-length", "11")}
                         ${http:header("surrogate-control", "max-age=1+100")}
+                        ${http:header("etag", etag)}
 
 write "hello world"
 
@@ -46,6 +49,7 @@ read nukleus:begin.ext ${http:header(":scheme", "http")}
                        ${http:header(":method", "GET")}
                        ${http:header(":path", "/data")}
                        ${http:header(":authority", "localhost:8080")}
+                       ${http:header("if-none-match", etag)}
 
 connected
 
@@ -54,6 +58,7 @@ read closed
 write nukleus:begin.ext ${http:header(":status", "200")}
                         ${http:header("content-length", "11")}
                         ${http:header("surrogate-control", "max-age=1+100")}
+                        ${http:header("etag", etag2)}
 
 write "hello world"
 
