@@ -467,5 +467,17 @@ public class Rfc7234ProxyAcceptIT
         k3po.finish();
     }
 
+    @Test
+    @Specification({
+            "${streams}/cache.if.server.returns.503.while.validation/accept/client",
+            "${streams}/cache.if.server.returns.503.while.validation/accept/server",
+    })
+    public void shouldCacheIfServerReturns503WhileValidation() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_PROXY");
+        k3po.finish();
+    }
+
     // TODO 304 on etags or last-modified
 }

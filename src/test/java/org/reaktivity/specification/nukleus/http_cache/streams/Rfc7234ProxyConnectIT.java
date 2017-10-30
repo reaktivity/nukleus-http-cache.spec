@@ -428,4 +428,16 @@ public class Rfc7234ProxyConnectIT
         k3po.notifyBarrier("ROUTED_PROXY");
         k3po.finish();
     }
+
+    @Test
+    @Specification({
+            "${streams}/cache.if.server.returns.503.while.validation/connect/client",
+            "${streams}/cache.if.server.returns.503.while.validation/connect/server",
+    })
+    public void shouldCacheIfServerReturns503WhileValidation() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_PROXY");
+        k3po.finish();
+    }
 }
