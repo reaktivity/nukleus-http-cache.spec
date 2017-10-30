@@ -440,4 +440,16 @@ public class ProxyConnectCacheIT
         k3po.notifyBarrier("ROUTED_PROXY");
         k3po.finish();
     }
+
+    @Test
+    @Specification({
+            "${streams}/cache.with.freshened.response.that.updated.by.strong.validator/connect/client",
+            "${streams}/cache.with.freshened.response.that.updated.by.strong.validator/connect/server",
+    })
+    public void shouldCacheWithFreshenedResponseThatUpdatedByStromgValidator() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_PROXY");
+        k3po.finish();
+    }
 }
