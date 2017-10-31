@@ -30,7 +30,7 @@ import org.reaktivity.specification.nukleus.NukleusRule;
 public class ProxyConnectExceptionsIT
 {
     private final K3poRule k3po = new K3poRule()
-            .addScriptRoot("streams", "org/reaktivity/specification/nukleus/http_cache/streams/proxy");
+            .addScriptRoot("streams", "org/reaktivity/specification/nukleus/http_cache/streams/proxy/behavior");
 
     private final TestRule timeout = new DisableOnDebug(new Timeout(5, SECONDS));
 
