@@ -65,6 +65,4 @@ write nukleus:begin.ext ${http:header(":status", "403")}
                         ${http:header("surrogate-control", "max-age=1+100, x-protected")}
                         ${http:header("etag", etag2)}
 
-write "response #2"
-
 write close

@@ -73,6 +73,7 @@ write nukleus:begin.ext ${http:header(":scheme", "http")}
                         ${http:header("cache-control", "no-cache")}
                         ${http:header("prefer", "wait=100")}
                         ${http:header("if-none-match", etag)}
+
 connected
 
 write close
