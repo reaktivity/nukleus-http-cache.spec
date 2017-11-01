@@ -202,7 +202,19 @@ public class EdgeArchProxyAcceptIT
         "${streams}/failed.polling.aborts.pending.on-update.requests/accept/client",
         "${streams}/failed.polling.aborts.pending.on-update.requests/accept/server",
     })
-    public void failedPollingUpdatesAbortPendingOnUpdateRequests() throws Exception
+    public void shouldAbortPendingOnUpdateRequestsWhenFailedPollingUpdates() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_PROXY");
+        k3po.finish();
+    }
+
+    @Test
+    @Specification({
+        "${streams}/polling.403.response.cancels.pending.on-update.requests/accept/client",
+        "${streams}/polling.403.response.cancels.pending.on-update.requests/accept/server",
+    })
+    public void shouldCancelPushPromisesOn403() throws Exception
     {
         k3po.start();
         k3po.notifyBarrier("ROUTED_PROXY");
