@@ -15,7 +15,10 @@
 #
 
 property newProxyConnectRef ${nuklei:newReferenceId()} # external scope
-property etag ${http_cache:strongEtag()} #shared
+property response1Date ${http_cache:date()} # sharedProperty
+property response2Date ${http_cache:datePlus(5)} # sharedProperty
+property etag ${http_cache:strongEtag()} # sharedProperty
+property etag2 ${http_cache:strongEtag()} # sharedProperty
 
 connect await ROUTED_PROXY
         "nukleus://target/streams/http-cache"
@@ -35,14 +38,16 @@ write close
 
 read nukleus:begin.ext ${http:header(":status", "200")}
                        ${http:header("content-length", "11")}
-                       ${http:header("surrogate-control", "max-age=1+100")}
+                       ${http:header("date", response1Date)}
+                       ${http:header("surrogate-control", "max-age=1+100, x-protected")}
                        ${http:header("etag", etag)}
 
-read "hello world"
+read "response #1"
 
 read closed
 
 read notify INITIAL_REQUEST_COMPLETE
+read notify REQUEST_TWO_PENDING #assumed
 
 connect await INITIAL_REQUEST_COMPLETE
         "nukleus://target/streams/http-cache"
@@ -55,10 +60,15 @@ write nukleus:begin.ext ${http:header(":scheme", "http")}
                         ${http:header(":method", "GET")}
                         ${http:header(":path", "/data")}
                         ${http:header(":authority", "localhost:8080")}
-                        ${http:header("if-none-match", etag)}
 
 connected
 
 write close
 
+read nukleus:begin.ext ${http:header(":status", "403")}
+                       ${http:header("content-length", "0")}
+                       ${http:header("date", response2Date)}
+                       ${http:header("surrogate-control", "max-age=1+100, x-protected")}
+                       ${http:header("etag", etag2)}
 
+read closed

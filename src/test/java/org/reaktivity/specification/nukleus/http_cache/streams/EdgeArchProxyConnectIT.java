@@ -190,7 +190,7 @@ public class EdgeArchProxyConnectIT
         "${streams}/polling.updates.pending.on-update.requests.only.when.modified/connect/client",
         "${streams}/polling.updates.pending.on-update.requests.only.when.modified/connect/server",
     })
-    public void shouldUpdateOnUpdateRequestsOnlyWhenModified() throws Exception
+    public void shouldAbortPendingOnUpdateRequestsWhenFailedPollingUpdates() throws Exception
     {
         k3po.start();
         k3po.notifyBarrier("ROUTED_PROXY");
@@ -203,6 +203,18 @@ public class EdgeArchProxyConnectIT
         "${streams}/failed.polling.aborts.pending.on-update.requests/connect/server",
     })
     public void failedPollingUpdatesAbortPendingOnUpdateRequests() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_PROXY");
+        k3po.finish();
+    }
+
+    @Test
+    @Specification({
+        "${streams}/polling.403.response.cancels.pending.on-update.requests/connect/client",
+        "${streams}/polling.403.response.cancels.pending.on-update.requests/connect/server",
+    })
+    public void shouldCancelPushPromisesOn403() throws Exception
     {
         k3po.start();
         k3po.notifyBarrier("ROUTED_PROXY");
