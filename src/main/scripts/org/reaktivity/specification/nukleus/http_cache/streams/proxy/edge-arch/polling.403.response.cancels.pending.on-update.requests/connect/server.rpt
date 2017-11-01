@@ -60,7 +60,7 @@ read closed
 write await REQUEST_TWO_PENDING
 
 write nukleus:begin.ext ${http:header(":status", "403")}
-                        ${http:header("content-length", "11")}
+                        ${http:header("content-length", "0")}
                         ${http:header("date", response2Date)}
                         ${http:header("surrogate-control", "max-age=1+100, x-protected")}
                         ${http:header("etag", etag2)}
