@@ -175,6 +175,18 @@ public class EdgeArchProxyAcceptIT
 
     @Test
     @Specification({
+        "${streams}/polling.updates.pending.on-update.requests/accept/client",
+        "${streams}/polling.updates.pending.on-update.requests/accept/server",
+    })
+    public void shouldCancelUpdateRequestWhenPolledResponseCanNotBeShared() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_PROXY");
+        k3po.finish();
+    }
+
+    @Test
+    @Specification({
         "${streams}/polling.update.attachs.to.next.cache.if.push.promise.arrives.before.response.completes/accept/client",
         "${streams}/polling.update.attachs.to.next.cache.if.push.promise.arrives.before.response.completes/accept/server",
     })
@@ -221,4 +233,15 @@ public class EdgeArchProxyAcceptIT
         k3po.finish();
     }
 
+    @Test
+    @Specification({
+        "${streams}/maintain.polling.per.multiple.auth.scopes/accept/client",
+        "${streams}/maintain.polling.per.multiple.auth.scopes/accept/server",
+    })
+    public void shouldMaintainPollingForMultipleAuthScopes() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_PROXY");
+        k3po.finish();
+    }
 }

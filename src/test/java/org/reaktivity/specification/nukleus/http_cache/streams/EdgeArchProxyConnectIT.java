@@ -220,4 +220,16 @@ public class EdgeArchProxyConnectIT
         k3po.notifyBarrier("ROUTED_PROXY");
         k3po.finish();
     }
+
+    @Test
+    @Specification({
+        "${streams}/maintain.polling.per.multiple.auth.scopes/connect/client",
+        "${streams}/maintain.polling.per.multiple.auth.scopes/connect/server",
+    })
+    public void shouldMaintainPollingForMultipleAuthScopes() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_PROXY");
+        k3po.finish();
+    }
 }
