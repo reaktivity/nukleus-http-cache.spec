@@ -14,15 +14,16 @@
 # under the License.
 #
 
-property newProxyConnectRef ${nuklei:newReferenceId()} # external scope
+property newProxyAcceptRef ${nukleus:newRouteRef()} # external scope
 property response1Date ${http_cache:date()} # sharedProperty
 property response2Date ${http_cache:datePlus(5)} # sharedProperty
+property response3Date ${http_cache:datePlus(10)} # sharedProperty
 property etag ${http_cache:strongEtag()} #shared
 property etag2 ${http_cache:strongEtag()} #shared
 
 accept await ROUTED_PROXY
-        "nukleus://target/streams/http-cache"
-        option nukleus:route ${newProxyConnectRef}
+        "nukleus://http-cache/streams/source"
+        option nukleus:route ${newProxyAcceptRef}
         option nukleus:window 8192
         option nukleus:transmission "half-duplex"
 accepted
@@ -39,12 +40,24 @@ read closed
 write nukleus:begin.ext ${http:header(":status", "200")}
                         ${http:header("content-length", "11")}
                         ${http:header("date", response1Date)}
-                        ${http:header("surrogate-control", "max-age=1+100")}
+                        ${http:header("surrogate-control", "max-age=0+100")}
                         ${http:header("etag", etag)}
+                        ${http:header("cache-control", "stale-while-revalidate=100")}
 
+write flush
+
+write nukleus:data.ext ${http:header(":scheme", "http")}
+                       ${http:header(":method", "GET")}
+                       ${http:header(":path", "/data")}
+                       ${http:header(":authority", "localhost:8080")}
+                       ${http:header("cache-control", "no-cache")}
+                       ${http:header("prefer", "wait=100")}
+                       ${http:header("if-none-match", etag)}
 write "response #1"
 
 write close
+
+write notify CACHE_EXPIRED #assumed
 
 accepted
 
@@ -52,20 +65,15 @@ read nukleus:begin.ext ${http:header(":scheme", "http")}
                        ${http:header(":method", "GET")}
                        ${http:header(":path", "/data")}
                        ${http:header(":authority", "localhost:8080")}
-                       ${http:header("if-none-match", etag)}
 
 connected
 
 read closed
 
 write nukleus:begin.ext ${http:header(":status", "200")}
-                        ${http:header("content-length", "11")}
-                        ${http:header("date", response2Date)}
-                        ${http:header("surrogate-control", "max-age=100+100")}
-                        ${http:header("etag", etag2)}
+                        ${http:header("content-length", "19")}
+                        ${http:header("date", response3Date)}
 
-write "response #2"
+write "not-cached-response"
 
 write close
-
-write notify CACHE_UPDATE_SENT # Need to relay barrier due to race on write notify and nukleus process

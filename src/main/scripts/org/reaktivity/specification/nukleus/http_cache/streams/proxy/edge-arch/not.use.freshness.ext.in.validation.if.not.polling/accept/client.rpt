@@ -17,6 +17,7 @@
 property newProxyAcceptRef ${nukleus:newRouteRef()} # external scope
 property response1Date ${http_cache:date()} # sharedProperty
 property response2Date ${http_cache:datePlus(5)} # sharedProperty
+property response3Date ${http_cache:datePlus(10)} # sharedProperty
 property etag ${http_cache:strongEtag()} #shared
 property etag2 ${http_cache:strongEtag()} #shared
 
@@ -37,7 +38,7 @@ write close
 read nukleus:begin.ext ${http:header(":status", "200")}
                        ${http:header("content-length", "11")}
                        ${http:header("date", response1Date)}
-                       ${http:header("surrogate-control", "max-age=1+100")}
+                       ${http:header("surrogate-control", "max-age=0+100")}
                        ${http:header("etag", etag)}
                        ${http:header("cache-control", "stale-while-revalidate=100")}
 
@@ -53,7 +54,7 @@ read "response #1"
 
 read closed
 
-connect await CACHE_UPDATE_RECEIVED # Need to relay barrier due to race on write notify and nukleus process
+connect await CACHE_EXPIRED
         "nukleus://http-cache/streams/source"
         option nukleus:route ${newProxyAcceptRef}
         option nukleus:window 8192
@@ -68,10 +69,9 @@ connected
 write close
 
 read nukleus:begin.ext ${http:header(":status", "200")}
-                       ${http:header("content-length", "11")}
-                       ${http:header("date", response2Date)}
-                       ${http:header("surrogate-control", "max-age=100+100")}
+                       ${http:header("content-length", "19")}
+                       ${http:header("date", response3Date)}
 
-read "response #2"
+read "not-cached-response"
 
 read closed
