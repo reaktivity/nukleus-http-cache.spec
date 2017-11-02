@@ -53,7 +53,7 @@ read "response #1"
 
 read closed
 
-connect await CACHE_UPDATED
+connect await CACHE_UPDATE_RECEIVED # Need to relay barrier due to race on write notify and nukleus process
         "nukleus://http-cache/streams/source"
         option nukleus:route ${newProxyAcceptRef}
         option nukleus:window 8192
@@ -71,16 +71,6 @@ read nukleus:begin.ext ${http:header(":status", "200")}
                        ${http:header("content-length", "11")}
                        ${http:header("date", response2Date)}
                        ${http:header("surrogate-control", "max-age=1+100")}
-                       ${http:header("etag", etag2)}
-                       ${http:header("cache-control", "stale-while-revalidate=100")}
-
-read nukleus:data.ext ${http:header(":scheme", "http")}
-                      ${http:header(":method", "GET")}
-                      ${http:header(":path", "/data")}
-                      ${http:header(":authority", "localhost:8080")}
-                      ${http:header("cache-control", "no-cache")}
-                      ${http:header("prefer", "wait=100")}
-                      ${http:header("if-none-match", etag2)}
 
 read "response #2"
 
