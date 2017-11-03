@@ -223,6 +223,30 @@ public class EdgeArchProxyConnectIT
 
     @Test
     @Specification({
+        "${streams}/not.use.freshness.ext.in.validation.if.not.polling/connect/client",
+        "${streams}/not.use.freshness.ext.in.validation.if.not.polling/connect/server",
+    })
+    public void shouldNotUseFreshnessExtInValidationIfNotPolling() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_PROXY");
+        k3po.finish();
+    }
+
+    @Test
+    @Specification({
+        "${streams}/polling.stops.if.no.subscribers/connect/client",
+        "${streams}/polling.stops.if.no.subscribers/connect/server",
+    })
+    public void shouldStopPollingIfNoSubscribers() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_PROXY");
+        k3po.finish();
+    }
+
+    @Test
+    @Specification({
         "${streams}/maintain.polling.per.multiple.auth.scopes/connect/client",
         "${streams}/maintain.polling.per.multiple.auth.scopes/connect/server",
     })
