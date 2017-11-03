@@ -56,7 +56,7 @@ write "response #1"
 
 write close
 
-write notify CACHE_UPDATED #Assumed
+write notify CACHE_UPDATE_RECEIVED #Assumed
 
 accepted
 
@@ -72,19 +72,8 @@ read closed
 write nukleus:begin.ext ${http:header(":status", "200")}
                         ${http:header("content-length", "11")}
                         ${http:header("date", response2Date)}
-                        ${http:header("surrogate-control", "max-age=1+100")}
-                        ${http:header("etag", etag2)}
-                        ${http:header("cache-control", "stale-while-revalidate=100")}
+                        ${http:header("surrogate-control", "max-age=100+100")}
 
-write flush
-
-write nukleus:data.ext ${http:header(":scheme", "http")}
-                       ${http:header(":method", "GET")}
-                       ${http:header(":path", "/data")}
-                       ${http:header(":authority", "localhost:8080")}
-                       ${http:header("cache-control", "no-cache")}
-                       ${http:header("prefer", "wait=100")}
-                       ${http:header("if-none-match", etag2)}
 write "response #2"
 
 write close
