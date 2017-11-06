@@ -199,6 +199,18 @@ public class EdgeArchProxyConnectIT
 
     @Test
     @Specification({
+        "${streams}/failed.polling.aborts.pending.on-update.requests.and.recovers/connect/client",
+        "${streams}/failed.polling.aborts.pending.on-update.requests.and.recovers/connect/server",
+    })
+    public void shouldAbortPendingOnUpdateRequestsWhenFailedPollingUpdatesAndRecovers() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_PROXY");
+        k3po.finish();
+    }
+
+    @Test
+    @Specification({
         "${streams}/failed.polling.aborts.pending.on-update.requests/connect/client",
         "${streams}/failed.polling.aborts.pending.on-update.requests/connect/server",
     })
