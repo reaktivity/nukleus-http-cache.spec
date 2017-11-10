@@ -67,13 +67,4 @@ write "response #2"
 
 write close
 
-accepted
-
-read nukleus:begin.ext ${http:header(":scheme", "http")}
-                       ${http:header(":method", "GET")}
-                       ${http:header(":path", "/data")}
-                       ${http:header(":authority", "localhost:8080")}
-
-connected
-
-read notify CACHE_UPDATED
+write notify CACHE_UPDATE_SENT # Need to relay barrier due to race on write notify and nukleus process

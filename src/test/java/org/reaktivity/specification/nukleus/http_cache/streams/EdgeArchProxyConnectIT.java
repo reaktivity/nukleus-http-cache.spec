@@ -190,7 +190,19 @@ public class EdgeArchProxyConnectIT
         "${streams}/polling.updates.pending.on-update.requests.only.when.modified/connect/client",
         "${streams}/polling.updates.pending.on-update.requests.only.when.modified/connect/server",
     })
-    public void shouldUpdateOnUpdateRequestsOnlyWhenModified() throws Exception
+    public void shouldAbortPendingOnUpdateRequestsWhenFailedPollingUpdates() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_PROXY");
+        k3po.finish();
+    }
+
+    @Test
+    @Specification({
+        "${streams}/failed.polling.aborts.pending.on-update.requests.and.recovers/connect/client",
+        "${streams}/failed.polling.aborts.pending.on-update.requests.and.recovers/connect/server",
+    })
+    public void shouldAbortPendingOnUpdateRequestsWhenFailedPollingUpdatesAndRecovers() throws Exception
     {
         k3po.start();
         k3po.notifyBarrier("ROUTED_PROXY");
@@ -203,6 +215,54 @@ public class EdgeArchProxyConnectIT
         "${streams}/failed.polling.aborts.pending.on-update.requests/connect/server",
     })
     public void failedPollingUpdatesAbortPendingOnUpdateRequests() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_PROXY");
+        k3po.finish();
+    }
+
+    @Test
+    @Specification({
+        "${streams}/polling.403.response.cancels.pending.on-update.requests/connect/client",
+        "${streams}/polling.403.response.cancels.pending.on-update.requests/connect/server",
+    })
+    public void shouldCancelPushPromisesOn403() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_PROXY");
+        k3po.finish();
+    }
+
+    @Test
+    @Specification({
+        "${streams}/not.use.freshness.ext.in.validation.if.not.polling/connect/client",
+        "${streams}/not.use.freshness.ext.in.validation.if.not.polling/connect/server",
+    })
+    public void shouldNotUseFreshnessExtInValidationIfNotPolling() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_PROXY");
+        k3po.finish();
+    }
+
+    @Test
+    @Specification({
+        "${streams}/polling.stops.if.no.subscribers/connect/client",
+        "${streams}/polling.stops.if.no.subscribers/connect/server",
+    })
+    public void shouldStopPollingIfNoSubscribers() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_PROXY");
+        k3po.finish();
+    }
+
+    @Test
+    @Specification({
+        "${streams}/maintain.polling.per.multiple.auth.scopes/connect/client",
+        "${streams}/maintain.polling.per.multiple.auth.scopes/connect/server",
+    })
+    public void shouldMaintainPollingForMultipleAuthScopes() throws Exception
     {
         k3po.start();
         k3po.notifyBarrier("ROUTED_PROXY");
