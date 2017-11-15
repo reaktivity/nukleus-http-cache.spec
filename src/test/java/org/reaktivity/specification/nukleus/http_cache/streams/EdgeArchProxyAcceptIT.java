@@ -259,6 +259,18 @@ public class EdgeArchProxyAcceptIT
 
     @Test
     @Specification({
+        "${streams}/polling.stops.if.no.subscribers.and.not.updated/accept/client",
+        "${streams}/polling.stops.if.no.subscribers.and.not.updated/accept/server",
+    })
+    public void shouldStopPollingIfNoSubscribersAndNotUpdated() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_PROXY");
+        k3po.finish();
+    }
+
+    @Test
+    @Specification({
         "${streams}/maintain.polling.per.multiple.auth.scopes/accept/client",
         "${streams}/maintain.polling.per.multiple.auth.scopes/accept/server",
     })
