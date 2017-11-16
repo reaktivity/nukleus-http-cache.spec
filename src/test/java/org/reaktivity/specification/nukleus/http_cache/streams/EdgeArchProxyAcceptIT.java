@@ -235,10 +235,10 @@ public class EdgeArchProxyAcceptIT
 
     @Test
     @Specification({
-        "${streams}/not.use.freshness.ext.in.validation.if.not.polling/accept/client",
-        "${streams}/not.use.freshness.ext.in.validation.if.not.polling/accept/server",
+        "${streams}/polling.stops.if.no.subscribers/accept/client",
+        "${streams}/polling.stops.if.no.subscribers/accept/server",
     })
-    public void shouldNotUseFreshnessExtInValidationIfNotPolling() throws Exception
+    public void shouldStopPollingIfNoSubscribers() throws Exception
     {
         k3po.start();
         k3po.notifyBarrier("ROUTED_PROXY");
@@ -247,10 +247,10 @@ public class EdgeArchProxyAcceptIT
 
     @Test
     @Specification({
-        "${streams}/polling.stops.if.no.subscribers/accept/client",
-        "${streams}/polling.stops.if.no.subscribers/accept/server",
+        "${streams}/polling.stops.if.no.subscribers.and.not.updated/accept/client",
+        "${streams}/polling.stops.if.no.subscribers.and.not.updated/accept/server",
     })
-    public void shouldStopPollingIfNoSubscribers() throws Exception
+    public void shouldStopPollingIfNoSubscribersAndNotUpdated() throws Exception
     {
         k3po.start();
         k3po.notifyBarrier("ROUTED_PROXY");

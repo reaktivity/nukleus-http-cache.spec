@@ -73,3 +73,18 @@ read nukleus:begin.ext ${http:header(":status", "200")}
 read "response #2"
 
 read closed
+
+read notify SECOND_REQUEST_COMPLETE
+
+connect await SECOND_REQUEST_COMPLETE
+        "nukleus://target/streams/http-cache"
+        option nukleus:route ${newProxyConnectRef}
+        option nukleus:window 8192
+        option nukleus:transmission "half-duplex"
+
+write nukleus:begin.ext ${http:header(":scheme", "http")}
+                        ${http:header(":method", "GET")}
+                        ${http:header(":path", "/data")}
+                        ${http:header(":authority", "localhost:8080")}
+
+connected
