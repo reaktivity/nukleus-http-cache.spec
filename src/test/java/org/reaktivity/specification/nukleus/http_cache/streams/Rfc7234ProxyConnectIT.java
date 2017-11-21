@@ -431,8 +431,8 @@ public class Rfc7234ProxyConnectIT
 
     @Test
     @Specification({
-            "${streams}/invalidate.multiple.max-age/connect/client",
-            "${streams}/invalidate.multiple.max-age/connect/server",
+        "${streams}/invalidate.multiple.max-age/connect/client",
+        "${streams}/invalidate.multiple.max-age/connect/server",
     })
     public void shouldNotCacheWithMultipleMaxAge() throws Exception
     {
