@@ -64,6 +64,7 @@ read nukleus:begin.ext ${http:header(":status", "200")}
                        ${http:header("cache-control", "max-age=15")}
                        ${http:header("date", date2)}
                        ${http:header("last-modified", date2)}
+                       ${http:header("etag", etag)}
 read "hello alien"
 
 read closed
