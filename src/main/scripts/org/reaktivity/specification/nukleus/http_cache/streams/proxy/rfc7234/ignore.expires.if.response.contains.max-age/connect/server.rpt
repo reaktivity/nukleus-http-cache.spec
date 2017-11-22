@@ -39,7 +39,6 @@ write nukleus:begin.ext ${http:header(":status", "200")}
                         ${http:header("cache-control", "max-age=15")}
                         ${http:header("expires", date2)}
                         ${http:header("date", date)}
-                        ${http:header("last-modified", date)}
 
 write "hello world"
 
