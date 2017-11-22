@@ -38,7 +38,6 @@ read nukleus:begin.ext ${http:header(":status", "200")}
                        ${http:header("content-length", "11")}
                        ${http:header("cache-control", "s-maxage=5")}
                        ${http:header("date", date)}
-                       ${http:header("last-modified", date)}
                        ${http:header("cache-control", "private")}
 read "hello world"
 
@@ -64,7 +63,6 @@ read nukleus:begin.ext ${http:header(":status", "200")}
                        ${http:header("content-length", "11")}
                        ${http:header("cache-control", "s-maxage=5")}
                        ${http:header("date", date2)}
-                       ${http:header("last-modified", date2)}
 read "hello alien"
 
 read closed

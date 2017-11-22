@@ -431,8 +431,8 @@ public class Rfc7234ProxyConnectIT
 
     @Test
     @Specification({
-        "${streams}/expire.with.max-age/connect/client",
-        "${streams}/expire.with.max-age/connect/server",
+        "${streams}/ignore.expires.if.response.contains.max-age/connect/client",
+        "${streams}/ignore.expires.if.response.contains.max-age/connect/server",
     })
     public void shouldCacheMaxAgeAndExpires() throws Exception
     {
@@ -467,8 +467,8 @@ public class Rfc7234ProxyConnectIT
 
     @Test
     @Specification({
-            "${streams}/cache.get.response.with.no-store/connect/client",
-            "${streams}/cache.get.response.with.no-store/connect/server",
+        "${streams}/do.not.cache.response.with.no-store/connect/client",
+        "${streams}/do.not.cache.response.with.no-store/connect/server",
     })
     public void shouldNotCacheResponseWithResponseNoStore() throws Exception
     {
@@ -491,8 +491,8 @@ public class Rfc7234ProxyConnectIT
 
     @Test
     @Specification({
-            "${streams}/s-maxage.with.max-age/connect/client",
-            "${streams}/s-maxage.with.max-age/connect/server",
+            "${streams}/override.max-age.with.s-maxage/connect/client",
+            "${streams}/override.max-age.with.s-maxage/connect/server",
     })
     public void shouldOverrideMaxAgeWithSMaxage() throws Exception
     {
@@ -503,8 +503,8 @@ public class Rfc7234ProxyConnectIT
 
     @Test
     @Specification({
-        "${streams}/expire.with.s-maxage/connect/client",
-        "${streams}/expire.with.s-maxage/connect/server",
+        "${streams}/ignore.expires.if.response.contains.s-maxage/connect/client",
+        "${streams}/ignore.expires.if.response.contains.s-maxage/connect/server",
     })
     public void shouldOverrideExpireWithSMaxage() throws Exception
     {

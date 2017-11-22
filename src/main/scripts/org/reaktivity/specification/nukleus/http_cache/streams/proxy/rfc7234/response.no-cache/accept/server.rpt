@@ -59,12 +59,7 @@ connected
 
 read closed
 
-write nukleus:begin.ext ${http:header(":status", "200")}
-                        ${http:header("content-length", "11")}
-                        ${http:header("cache-control", "no-cache")}
-                        ${http:header("date", date)}
-                        ${http:header("etag", etag)}
-
-write "hello world"
+write nukleus:begin.ext ${http:header(":status", "304 Not Modified")}
+                       ${http:header("date", date2)}
 
 write close
