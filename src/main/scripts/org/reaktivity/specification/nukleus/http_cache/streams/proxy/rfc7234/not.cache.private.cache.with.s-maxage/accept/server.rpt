@@ -14,13 +14,13 @@
 # under the License.
 #
 
-property newProxyConnectRef ${nuklei:newReferenceId()} # external scope
-
-property etag ${http_cache:strongEtag()}
+property newProxyAcceptRef ${nukleus:newRouteRef()} # external scope
+property date ${http_cache:date()} # shared property
+property date2 ${http_cache:datePlus(2)} # shared property
 
 accept await ROUTED_PROXY
-        "nukleus://target/streams/http-cache"
-        option nukleus:route ${newProxyConnectRef}
+        "nukleus://http-cache/streams/source"
+        option nukleus:route ${newProxyAcceptRef}
         option nukleus:window 8192
         option nukleus:transmission "half-duplex"
 accepted
@@ -29,16 +29,18 @@ read nukleus:begin.ext ${http:header(":scheme", "http")}
                        ${http:header(":method", "GET")}
                        ${http:header(":path", "/path")}
                        ${http:header(":authority", "localhost:8080")}
-                       ${http:header("etag", etag)}
+
 
 connected
 
 read closed
 
-write nukleus:begin.ext ${http:header(":status", "304")}
-                        ${http:header("etag", etag)}
-
-write flush
+write nukleus:begin.ext ${http:header(":status", "200")}
+                        ${http:header("content-length", "11")}
+                        ${http:header("cache-control", "s-maxage=5")}
+                        ${http:header("date", date)}
+                        ${http:header("cache-control", "private")}
+write "hello world"
 
 write close
 
@@ -48,7 +50,6 @@ read nukleus:begin.ext ${http:header(":scheme", "http")}
                        ${http:header(":method", "GET")}
                        ${http:header(":path", "/path")}
                        ${http:header(":authority", "localhost:8080")}
-                       ${http:header("etag", etag)}
 
 connected
 
@@ -56,7 +57,9 @@ read closed
 
 write nukleus:begin.ext ${http:header(":status", "200")}
                         ${http:header("content-length", "11")}
+                        ${http:header("cache-control", "s-maxage=5")}
+                        ${http:header("date", date2)}
 
-write "hello world"
+write "hello alien"
 
 write close

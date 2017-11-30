@@ -14,13 +14,14 @@
 # under the License.
 #
 
-property newProxyConnectRef ${nuklei:newReferenceId()} # external scope
-
+property newProxyAcceptRef ${nukleus:newRouteRef()} # external scope
+property date ${http_cache:date()} # shared property
+property date2 ${http_cache:datePlus(2)} # shared property
 property etag ${http_cache:strongEtag()}
 
 accept await ROUTED_PROXY
-        "nukleus://target/streams/http-cache"
-        option nukleus:route ${newProxyConnectRef}
+        "nukleus://http-cache/streams/source"
+        option nukleus:route ${newProxyAcceptRef}
         option nukleus:window 8192
         option nukleus:transmission "half-duplex"
 accepted
@@ -28,27 +29,8 @@ accepted
 read nukleus:begin.ext ${http:header(":scheme", "http")}
                        ${http:header(":method", "GET")}
                        ${http:header(":path", "/path")}
+                       ${http:header("cache-control", "max-age=1")}
                        ${http:header(":authority", "localhost:8080")}
-                       ${http:header("etag", etag)}
-
-connected
-
-read closed
-
-write nukleus:begin.ext ${http:header(":status", "304")}
-                        ${http:header("etag", etag)}
-
-write flush
-
-write close
-
-accepted
-
-read nukleus:begin.ext ${http:header(":scheme", "http")}
-                       ${http:header(":method", "GET")}
-                       ${http:header(":path", "/path")}
-                       ${http:header(":authority", "localhost:8080")}
-                       ${http:header("etag", etag)}
 
 connected
 
@@ -56,7 +38,30 @@ read closed
 
 write nukleus:begin.ext ${http:header(":status", "200")}
                         ${http:header("content-length", "11")}
+                        ${http:header("cache-control", "no-cache")}
+                        ${http:header("date", date)}
+                        ${http:header("etag", etag)}
 
 write "hello world"
+
+write close
+
+write notify CACHE_EXPIRED
+
+accepted
+
+read nukleus:begin.ext ${http:header(":scheme", "http")}
+                       ${http:header(":method", "GET")}
+                       ${http:header(":path", "/path")}
+                       ${http:header(":authority", "localhost:8080")}
+                       ${http:header("cache-control", "max-stale=15")}
+                       ${http:header("if-none-match", etag)}
+
+connected
+
+read closed
+
+write nukleus:begin.ext ${http:header(":status", "304 Not Modified")}
+                        ${http:header("date", date2)}
 
 write close
