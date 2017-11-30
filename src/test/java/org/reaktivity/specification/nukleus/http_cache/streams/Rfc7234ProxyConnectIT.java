@@ -431,10 +431,10 @@ public class Rfc7234ProxyConnectIT
 
     @Test
     @Specification({
-            "${streams}/cache.if.server.returns.503.while.validation/connect/client",
-            "${streams}/cache.if.server.returns.503.while.validation/connect/server",
+        "${streams}/serve.from.cache.if.server.returns.503.on.forced.revalidation/connect/client",
+        "${streams}/serve.from.cache.if.server.returns.503.on.forced.revalidation/connect/server",
     })
-    public void shouldCacheIfServerReturns503WhileValidation() throws Exception
+    public void shouldServeFromCacheIfServerReturns503OnForcedRevalidation() throws Exception
     {
         k3po.start();
         k3po.notifyBarrier("ROUTED_PROXY");

@@ -469,8 +469,8 @@ public class Rfc7234ProxyAcceptIT
 
     @Test
     @Specification({
-            "${streams}/cache.if.server.returns.503.while.validation/accept/client",
-            "${streams}/cache.if.server.returns.503.while.validation/accept/server",
+            "${streams}/serve.from.cache.if.server.returns.503.on.forced.revalidation/accept/client",
+            "${streams}/serve.from.cache.if.server.returns.503.on.forced.revalidation/accept/server",
     })
     public void shouldCacheIfServerReturns503WhileValidation() throws Exception
     {
@@ -484,7 +484,7 @@ public class Rfc7234ProxyAcceptIT
             "${streams}/not.cache.when.authorization.is.provided/accept/client",
             "${streams}/not.cache.when.authorization.is.provided/accept/server",
     })
-    public void shouldNotCacheWithRequestAuthorizationHeader() throws Exception
+    public void shouldServeFromCacheIfServerReturns503OnForcedRevalidation() throws Exception
     {
         k3po.start();
         k3po.notifyBarrier("ROUTED_PROXY");
