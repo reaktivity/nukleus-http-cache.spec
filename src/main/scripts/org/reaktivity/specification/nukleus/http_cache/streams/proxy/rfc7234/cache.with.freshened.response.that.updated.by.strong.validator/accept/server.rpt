@@ -62,6 +62,4 @@ read closed
 write nukleus:begin.ext ${http:header(":status", "304 (Not Modified)")}
                         ${http:header("date", date2)}
 
-write "hello world"
-
 write close
