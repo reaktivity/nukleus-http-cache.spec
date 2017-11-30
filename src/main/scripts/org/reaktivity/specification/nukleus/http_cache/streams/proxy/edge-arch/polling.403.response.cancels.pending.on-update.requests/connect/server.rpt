@@ -17,8 +17,8 @@
 property newProxyConnectRef ${nuklei:newReferenceId()} # external scope
 property response1Date ${http_cache:date()} # sharedProperty
 property response2Date ${http_cache:datePlus(5)} # sharedProperty
-property etag ${http_cache:strongEtag()} #shared
-property etag2 ${http_cache:strongEtag()} #shared
+property etag ${http_cache:strongEtag()} # sharedProperty
+property etag2 ${http_cache:strongEtag()} # sharedProperty
 
 accept await ROUTED_PROXY
         "nukleus://target/streams/http-cache"
@@ -39,7 +39,7 @@ read closed
 write nukleus:begin.ext ${http:header(":status", "200")}
                         ${http:header("content-length", "11")}
                         ${http:header("date", response1Date)}
-                        ${http:header("surrogate-control", "max-age=1+100")}
+                        ${http:header("surrogate-control", "max-age=1+100, x-protected")}
                         ${http:header("etag", etag)}
 
 write "response #1"
@@ -52,20 +52,17 @@ read nukleus:begin.ext ${http:header(":scheme", "http")}
                        ${http:header(":method", "GET")}
                        ${http:header(":path", "/data")}
                        ${http:header(":authority", "localhost:8080")}
-                       ${http:header("if-none-match", etag)}
 
 connected
 
 read closed
 
-write nukleus:begin.ext ${http:header(":status", "200")}
-                        ${http:header("content-length", "11")}
+write await REQUEST_TWO_PENDING
+
+write nukleus:begin.ext ${http:header(":status", "403")}
+                        ${http:header("content-length", "0")}
                         ${http:header("date", response2Date)}
-                        ${http:header("surrogate-control", "max-age=100+100")}
+                        ${http:header("surrogate-control", "max-age=1+100, x-protected")}
                         ${http:header("etag", etag2)}
 
-write "response #2"
-
 write close
-
-write notify CACHE_UPDATE_SENT # Need to relay barrier due to race on write notify and nukleus process

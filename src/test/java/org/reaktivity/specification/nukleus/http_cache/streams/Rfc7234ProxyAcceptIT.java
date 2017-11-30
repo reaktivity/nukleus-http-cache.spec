@@ -481,10 +481,34 @@ public class Rfc7234ProxyAcceptIT
 
     @Test
     @Specification({
+        "${streams}/not.cache.when.authorization.is.provided/accept/client",
+        "${streams}/not.cache.when.authorization.is.provided/accept/server",
+    })
+    public void shouldNotCacheWithRequestAuthorizationHeader() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_PROXY");
+        k3po.finish();
+    }
+
+    @Test
+    @Specification({
         "${streams}/response.no-cache/accept/client",
         "${streams}/response.no-cache/accept/server",
     })
     public void shouldRevalidateOnResponseNoCache() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_PROXY");
+        k3po.finish();
+    }
+
+    @Test
+    @Specification({
+        "${streams}/explicitly.smaxage.and.authorization/accept/client",
+        "${streams}/explicitly.smaxage.and.authorization/accept/server",
+    })
+    public void shouldCacheWithRequestAuthorizationHeaderAndSmaxage() throws Exception
     {
         k3po.start();
         k3po.notifyBarrier("ROUTED_PROXY");
@@ -550,5 +574,6 @@ public class Rfc7234ProxyAcceptIT
         k3po.notifyBarrier("ROUTED_PROXY");
         k3po.finish();
     }
+
     // TODO 304 on etags or last-modified
 }
