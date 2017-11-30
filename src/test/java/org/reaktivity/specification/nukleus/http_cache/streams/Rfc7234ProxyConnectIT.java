@@ -431,6 +431,18 @@ public class Rfc7234ProxyConnectIT
 
     @Test
     @Specification({
+        "${streams}/serve.from.cache.if.server.returns.503.on.forced.revalidation/connect/client",
+        "${streams}/serve.from.cache.if.server.returns.503.on.forced.revalidation/connect/server",
+    })
+    public void shouldServeFromCacheIfServerReturns503OnForcedRevalidation() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_PROXY");
+        k3po.finish();
+    }
+
+    @Test
+    @Specification({
         "${streams}/not.cache.when.authorization.is.provided/connect/client",
         "${streams}/not.cache.when.authorization.is.provided/connect/server",
     })
@@ -443,8 +455,8 @@ public class Rfc7234ProxyConnectIT
 
     @Test
     @Specification({
-            "${streams}/explicitly.smaxage.and.authorization/connect/client",
-            "${streams}/explicitly.smaxage.and.authorization/connect/server",
+        "${streams}/explicitly.smaxage.and.authorization/connect/client",
+        "${streams}/explicitly.smaxage.and.authorization/connect/server",
     })
     public void shouldCacheWithRequestAuthorizationHeaderAndSmaxage() throws Exception
     {
