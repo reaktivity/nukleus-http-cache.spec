@@ -469,8 +469,8 @@ public class Rfc7234ProxyAcceptIT
 
     @Test
     @Specification({
-            "${streams}/serve.from.cache.if.server.returns.503.on.forced.revalidation/accept/client",
-            "${streams}/serve.from.cache.if.server.returns.503.on.forced.revalidation/accept/server",
+        "${streams}/serve.from.cache.if.server.returns.503.on.forced.revalidation/accept/client",
+        "${streams}/serve.from.cache.if.server.returns.503.on.forced.revalidation/accept/server",
     })
     public void shouldCacheIfServerReturns503WhileValidation() throws Exception
     {
@@ -481,8 +481,20 @@ public class Rfc7234ProxyAcceptIT
 
     @Test
     @Specification({
-            "${streams}/not.cache.when.authorization.is.provided/accept/client",
-            "${streams}/not.cache.when.authorization.is.provided/accept/server",
+        "${streams}/invalidate.multiple.max-age/accept/client",
+        "${streams}/invalidate.multiple.max-age/accept/server",
+    })
+    public void shouldNotCacheWithMultipleMaxAge() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_PROXY");
+        k3po.finish();
+    }
+
+    @Test
+    @Specification({
+        "${streams}/not.cache.when.authorization.is.provided/accept/client",
+        "${streams}/not.cache.when.authorization.is.provided/accept/server",
     })
     public void shouldServeFromCacheIfServerReturns503OnForcedRevalidation() throws Exception
     {
@@ -493,8 +505,32 @@ public class Rfc7234ProxyAcceptIT
 
     @Test
     @Specification({
-            "${streams}/explicitly.smaxage.and.authorization/accept/client",
-            "${streams}/explicitly.smaxage.and.authorization/accept/server",
+        "${streams}/not.use.cache.that.varys.with.asterisk.value/accept/client",
+        "${streams}/not.use.cache.that.varys.with.asterisk.value/accept/server",
+    })
+    public void shouldNotUseCacheForRequestThatHasAsteriskSymbolValueInVary() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_PROXY");
+        k3po.finish();
+    }
+
+    @Test
+    @Specification({
+        "${streams}/cache.with.freshened.response.that.updated.by.strong.validator/accept/client",
+        "${streams}/cache.with.freshened.response.that.updated.by.strong.validator/accept/server",
+    })
+    public void shouldCacheWithFreshenedResponseThatUpdatedByStrongValidator() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_PROXY");
+        k3po.finish();
+    }
+
+    @Test
+    @Specification({
+        "${streams}/explicitly.smaxage.and.authorization/accept/client",
+        "${streams}/explicitly.smaxage.and.authorization/accept/server",
     })
     public void shouldCacheWithRequestAuthorizationHeaderAndSmaxage() throws Exception
     {
