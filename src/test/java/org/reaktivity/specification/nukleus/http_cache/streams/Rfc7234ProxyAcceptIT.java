@@ -469,8 +469,8 @@ public class Rfc7234ProxyAcceptIT
 
     @Test
     @Specification({
-            "${streams}/serve.from.cache.if.server.returns.503.on.forced.revalidation/accept/client",
-            "${streams}/serve.from.cache.if.server.returns.503.on.forced.revalidation/accept/server",
+        "${streams}/serve.from.cache.if.server.returns.503.on.forced.revalidation/accept/client",
+        "${streams}/serve.from.cache.if.server.returns.503.on.forced.revalidation/accept/server",
     })
     public void shouldCacheIfServerReturns503WhileValidation() throws Exception
     {
@@ -481,8 +481,20 @@ public class Rfc7234ProxyAcceptIT
 
     @Test
     @Specification({
-            "${streams}/not.cache.when.authorization.is.provided/accept/client",
-            "${streams}/not.cache.when.authorization.is.provided/accept/server",
+        "${streams}/ignore.expires.if.response.contains.max-age/accept/client",
+        "${streams}/ignore.expires.if.response.contains.max-age/accept/server",
+    })
+    public void shouldCacheMaxAgeAndExpires() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_PROXY");
+        k3po.finish();
+    }
+
+    @Test
+    @Specification({
+        "${streams}/not.cache.when.authorization.is.provided/accept/client",
+        "${streams}/not.cache.when.authorization.is.provided/accept/server",
     })
     public void shouldServeFromCacheIfServerReturns503OnForcedRevalidation() throws Exception
     {
@@ -493,10 +505,82 @@ public class Rfc7234ProxyAcceptIT
 
     @Test
     @Specification({
-            "${streams}/explicitly.smaxage.and.authorization/accept/client",
-            "${streams}/explicitly.smaxage.and.authorization/accept/server",
+        "${streams}/response.no-cache/accept/client",
+        "${streams}/response.no-cache/accept/server",
+    })
+    public void shouldRevalidateOnResponseNoCache() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_PROXY");
+        k3po.finish();
+    }
+
+    @Test
+    @Specification({
+        "${streams}/explicitly.smaxage.and.authorization/accept/client",
+        "${streams}/explicitly.smaxage.and.authorization/accept/server",
     })
     public void shouldCacheWithRequestAuthorizationHeaderAndSmaxage() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_PROXY");
+        k3po.finish();
+    }
+
+    @Test
+    @Specification({
+        "${streams}/response.no-cache.with.max-stale/accept/client",
+        "${streams}/response.no-cache.with.max-stale/accept/server",
+    })
+    public void shouldRevalidateOnResponseNoCacheWithStaleResponseConfigured() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_PROXY");
+        k3po.finish();
+    }
+
+    @Test
+    @Specification({
+            "${streams}/do.not.cache.response.with.no-store/accept/client",
+            "${streams}/do.not.cache.response.with.no-store/accept/server",
+    })
+    public void shouldNotCacheResponseWithResponseNoStore() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_PROXY");
+        k3po.finish();
+    }
+
+    @Test
+    @Specification({
+        "${streams}/not.cache.private.cache.with.s-maxage/accept/client",
+        "${streams}/not.cache.private.cache.with.s-maxage/accept/server",
+    })
+    public void shouldNotCacheResponseWithSMaxageInPrivateCache() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_PROXY");
+        k3po.finish();
+    }
+
+    @Test
+    @Specification({
+            "${streams}/override.max-age.with.s-maxage/accept/client",
+            "${streams}/override.max-age.with.s-maxage/accept/server",
+    })
+    public void shouldOverrideMaxAgeWithSMaxage() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_PROXY");
+        k3po.finish();
+    }
+
+    @Test
+    @Specification({
+        "${streams}/ignore.expires.if.response.contains.s-maxage/accept/client",
+        "${streams}/ignore.expires.if.response.contains.s-maxage/accept/server",
+    })
+    public void shouldOverrideExpireWithSMaxage() throws Exception
     {
         k3po.start();
         k3po.notifyBarrier("ROUTED_PROXY");

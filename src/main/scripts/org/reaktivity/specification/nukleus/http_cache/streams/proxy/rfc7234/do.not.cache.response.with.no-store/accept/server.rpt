@@ -14,13 +14,12 @@
 # under the License.
 #
 
-property newProxyConnectRef ${nuklei:newReferenceId()} # external scope
-
-property etag ${http_cache:strongEtag()}
+property newProxyAcceptRef ${nukleus:newRouteRef()} # external scope
+property date ${http_cache:date()} # shared property
 
 accept await ROUTED_PROXY
-        "nukleus://target/streams/http-cache"
-        option nukleus:route ${newProxyConnectRef}
+        "nukleus://http-cache/streams/source"
+        option nukleus:route ${newProxyAcceptRef}
         option nukleus:window 8192
         option nukleus:transmission "half-duplex"
 accepted
@@ -29,18 +28,21 @@ read nukleus:begin.ext ${http:header(":scheme", "http")}
                        ${http:header(":method", "GET")}
                        ${http:header(":path", "/path")}
                        ${http:header(":authority", "localhost:8080")}
-                       ${http:header("etag", etag)}
+                       ${http:header("cache-control", "max-age=15")}
 
 connected
 
 read closed
 
-write nukleus:begin.ext ${http:header(":status", "304")}
-                        ${http:header("etag", etag)}
+write nukleus:begin.ext ${http:header(":status", "200")}
+                        ${http:header("content-length", "18")}
+                        ${http:header("cache-control", "no-store")}
+                        ${http:header("date", date)}
 
-write flush
+write "response content 1"
 
 write close
+
 
 accepted
 
@@ -48,15 +50,16 @@ read nukleus:begin.ext ${http:header(":scheme", "http")}
                        ${http:header(":method", "GET")}
                        ${http:header(":path", "/path")}
                        ${http:header(":authority", "localhost:8080")}
-                       ${http:header("etag", etag)}
 
 connected
 
 read closed
 
 write nukleus:begin.ext ${http:header(":status", "200")}
-                        ${http:header("content-length", "11")}
+                        ${http:header("content-length", "18")}
+                        ${http:header("cache-control", "max-age=15")}
+                        ${http:header("date", date)}
 
-write "hello world"
+write "response content 2"
 
 write close

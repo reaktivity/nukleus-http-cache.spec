@@ -36,7 +36,6 @@ connected
 write close
 
 read nukleus:begin.ext ${http:header(":status", "304")}
-                       ${http:header("content-length", "11")}
                        ${http:header("etag", etag)}
 
 read closed
@@ -59,7 +58,5 @@ write close
 
 read nukleus:begin.ext ${http:header(":status", "200")}
                        ${http:header("content-length", "11")}
-
-read "hello world"
 
 read closed
