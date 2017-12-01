@@ -15,7 +15,8 @@
 #
 
 property newProxyConnectRef ${nuklei:newReferenceId()} # external scope
-
+property date ${http_cache:date()} # shared property
+property date2 ${http_cache:datePlus(2)} # shared property
 property etag ${http_cache:strongEtag()}
 
 accept await ROUTED_PROXY
@@ -28,17 +29,20 @@ accepted
 read nukleus:begin.ext ${http:header(":scheme", "http")}
                        ${http:header(":method", "GET")}
                        ${http:header(":path", "/path")}
+                       ${http:header("cache-control", "max-age=15")}
                        ${http:header(":authority", "localhost:8080")}
-                       ${http:header("etag", etag)}
 
 connected
 
 read closed
 
-write nukleus:begin.ext ${http:header(":status", "304")}
+write nukleus:begin.ext ${http:header(":status", "200")}
+                        ${http:header("content-length", "11")}
+                        ${http:header("cache-control", "no-cache")}
+                        ${http:header("date", date)}
                         ${http:header("etag", etag)}
 
-write flush
+write "hello world"
 
 write close
 
@@ -48,15 +52,13 @@ read nukleus:begin.ext ${http:header(":scheme", "http")}
                        ${http:header(":method", "GET")}
                        ${http:header(":path", "/path")}
                        ${http:header(":authority", "localhost:8080")}
-                       ${http:header("etag", etag)}
+                       ${http:header("if-none-match", etag)}
 
 connected
 
 read closed
 
-write nukleus:begin.ext ${http:header(":status", "200")}
-                        ${http:header("content-length", "11")}
-
-write "hello world"
+write nukleus:begin.ext ${http:header(":status", "304 Not Modified")}
+                        ${http:header("date", date2)}
 
 write close
