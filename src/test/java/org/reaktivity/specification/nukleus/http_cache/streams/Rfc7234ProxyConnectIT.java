@@ -431,6 +431,18 @@ public class Rfc7234ProxyConnectIT
 
     @Test
     @Specification({
+        "${streams}/invalidate.multiple.max-age/connect/client",
+        "${streams}/invalidate.multiple.max-age/connect/server",
+    })
+    public void shouldNotCacheWithMultipleMaxAge() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_PROXY");
+        k3po.finish();
+    }
+
+    @Test
+    @Specification({
         "${streams}/ignore.expires.if.response.contains.max-age/connect/client",
         "${streams}/ignore.expires.if.response.contains.max-age/connect/server",
     })
@@ -440,12 +452,25 @@ public class Rfc7234ProxyConnectIT
         k3po.notifyBarrier("ROUTED_PROXY");
         k3po.finish();
     }
+
     @Test
     @Specification({
         "${streams}/not.cache.when.authorization.is.provided/connect/client",
         "${streams}/not.cache.when.authorization.is.provided/connect/server",
     })
     public void shouldNotCacheWithRequestAuthorizationHeader() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_PROXY");
+        k3po.finish();
+    }
+
+    @Test
+    @Specification({
+        "${streams}/cache.with.freshened.response.that.updated.by.strong.validator/connect/client",
+        "${streams}/cache.with.freshened.response.that.updated.by.strong.validator/connect/server",
+    })
+    public void shouldCacheWithFreshenedResponseThatUpdatedByStrongValidator() throws Exception
     {
         k3po.start();
         k3po.notifyBarrier("ROUTED_PROXY");
@@ -526,8 +551,8 @@ public class Rfc7234ProxyConnectIT
 
     @Test
     @Specification({
-            "${streams}/explicitly.smaxage.and.authorization/connect/client",
-            "${streams}/explicitly.smaxage.and.authorization/connect/server",
+        "${streams}/explicitly.smaxage.and.authorization/connect/client",
+        "${streams}/explicitly.smaxage.and.authorization/connect/server",
     })
     public void shouldCacheWithRequestAuthorizationHeaderAndSmaxage() throws Exception
     {
