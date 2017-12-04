@@ -431,6 +431,18 @@ public class Rfc7234ProxyConnectIT
 
     @Test
     @Specification({
+        "${streams}/serve.from.cache.if.server.returns.503.on.forced.revalidation/connect/client",
+        "${streams}/serve.from.cache.if.server.returns.503.on.forced.revalidation/connect/server",
+    })
+    public void shouldServeFromCacheIfServerReturns503OnForcedRevalidation() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_PROXY");
+        k3po.finish();
+    }
+
+    @Test
+    @Specification({
         "${streams}/invalidate.multiple.max-age/connect/client",
         "${streams}/invalidate.multiple.max-age/connect/server",
     })
@@ -527,8 +539,8 @@ public class Rfc7234ProxyConnectIT
 
     @Test
     @Specification({
-            "${streams}/override.max-age.with.s-maxage/connect/client",
-            "${streams}/override.max-age.with.s-maxage/connect/server",
+        "${streams}/override.max-age.with.s-maxage/connect/client",
+        "${streams}/override.max-age.with.s-maxage/connect/server",
     })
     public void shouldOverrideMaxAgeWithSMaxage() throws Exception
     {
