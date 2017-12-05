@@ -469,6 +469,30 @@ public class Rfc7234ProxyAcceptIT
 
     @Test
     @Specification({
+        "${streams}/serve.from.cache.if.server.returns.503.on.forced.revalidation/accept/client",
+        "${streams}/serve.from.cache.if.server.returns.503.on.forced.revalidation/accept/server",
+    })
+    public void shouldCacheIfServerReturns503WhileValidation() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_PROXY");
+        k3po.finish();
+    }
+
+    @Test
+    @Specification({
+        "${streams}/invalidate.multiple.max-age/accept/client",
+        "${streams}/invalidate.multiple.max-age/accept/server",
+    })
+    public void shouldNotCacheWithMultipleMaxAge() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_PROXY");
+        k3po.finish();
+    }
+
+    @Test
+    @Specification({
         "${streams}/ignore.expires.if.response.contains.max-age/accept/client",
         "${streams}/ignore.expires.if.response.contains.max-age/accept/server",
     })
@@ -482,15 +506,16 @@ public class Rfc7234ProxyAcceptIT
 
     @Test
     @Specification({
-        "${streams}/invalidate.multiple.max-age/accept/client",
-        "${streams}/invalidate.multiple.max-age/accept/server",
+        "${streams}/not.cache.when.authorization.is.provided/accept/client",
+        "${streams}/not.cache.when.authorization.is.provided/accept/server",
     })
-    public void shouldNotCacheWithMultipleMaxAge() throws Exception
+    public void shouldNotCacheWithRequestAuthorizationHeader() throws Exception
     {
         k3po.start();
         k3po.notifyBarrier("ROUTED_PROXY");
         k3po.finish();
     }
+
 
     @Test
     @Specification({

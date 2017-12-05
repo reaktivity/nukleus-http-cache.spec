@@ -443,6 +443,18 @@ public class Rfc7234ProxyConnectIT
 
     @Test
     @Specification({
+        "${streams}/invalidate.multiple.max-age/connect/client",
+        "${streams}/invalidate.multiple.max-age/connect/server",
+    })
+    public void shouldNotCacheWithMultipleMaxAge() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_PROXY");
+        k3po.finish();
+    }
+
+    @Test
+    @Specification({
         "${streams}/ignore.expires.if.response.contains.max-age/connect/client",
         "${streams}/ignore.expires.if.response.contains.max-age/connect/server",
     })
@@ -453,17 +465,6 @@ public class Rfc7234ProxyConnectIT
         k3po.finish();
     }
 
-    @Test
-    @Specification({
-        "${streams}/invalidate.multiple.max-age/connect/client",
-        "${streams}/invalidate.multiple.max-age/connect/server",
-    })
-    public void shouldNotCacheWithMultipleMaxAge() throws Exception
-    {
-        k3po.start();
-        k3po.notifyBarrier("ROUTED_PROXY");
-        k3po.finish();
-    }
 
     @Test
     @Specification({
@@ -539,8 +540,8 @@ public class Rfc7234ProxyConnectIT
 
     @Test
     @Specification({
-            "${streams}/override.max-age.with.s-maxage/connect/client",
-            "${streams}/override.max-age.with.s-maxage/connect/server",
+        "${streams}/override.max-age.with.s-maxage/connect/client",
+        "${streams}/override.max-age.with.s-maxage/connect/server",
     })
     public void shouldOverrideMaxAgeWithSMaxage() throws Exception
     {
@@ -563,8 +564,8 @@ public class Rfc7234ProxyConnectIT
 
     @Test
     @Specification({
-            "${streams}/explicitly.smaxage.and.authorization/connect/client",
-            "${streams}/explicitly.smaxage.and.authorization/connect/server",
+        "${streams}/explicitly.smaxage.and.authorization/connect/client",
+        "${streams}/explicitly.smaxage.and.authorization/connect/server",
     })
     public void shouldCacheWithRequestAuthorizationHeaderAndSmaxage() throws Exception
     {
