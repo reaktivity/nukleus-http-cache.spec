@@ -235,6 +235,18 @@ public class EdgeArchProxyAcceptIT
 
     @Test
     @Specification({
+        "${streams}/polling.304.response.does.not.cancel.pending.on-update.requests/accept/client",
+        "${streams}/polling.304.response.does.not.cancel.pending.on-update.requests/accept/server",
+    })
+    public void shouldNotCancelPushPromiseOn304() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_PROXY");
+        k3po.finish();
+    }
+
+    @Test
+    @Specification({
         "${streams}/polling.stops.if.no.subscribers/accept/client",
         "${streams}/polling.stops.if.no.subscribers/accept/server",
     })

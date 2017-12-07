@@ -419,10 +419,10 @@ public class Rfc7234ProxyConnectIT
 
     @Test
     @Specification({
-        "${streams}/proxy.response.too.large.to.cache/connect/client",
-        "${streams}/proxy.response.too.large.to.cache/connect/server",
+        "${streams}/cache.large.response/connect/client",
+        "${streams}/cache.large.response/connect/server",
     })
-    public void shouldProxyResponseTooLargeToCache() throws Exception
+    public void shouldCacheLargeResponse() throws Exception
     {
         k3po.start();
         k3po.notifyBarrier("ROUTED_PROXY");

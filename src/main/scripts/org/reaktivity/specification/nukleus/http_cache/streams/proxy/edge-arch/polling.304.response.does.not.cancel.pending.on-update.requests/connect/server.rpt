@@ -15,9 +15,10 @@
 #
 
 property newProxyConnectRef ${nuklei:newReferenceId()} # external scope
-property date ${http_cache:date()} # shared property
-property date2 ${http_cache:datePlus(2)} # shared property
-property etag ${http_cache:strongEtag()}
+property response1Date ${http_cache:date()} # sharedProperty
+property response2Date ${http_cache:datePlus(5)} # sharedProperty
+property etag ${http_cache:strongEtag()} # sharedProperty
+property etag2 ${http_cache:strongEtag()} # sharedProperty
 
 accept await ROUTED_PROXY
         "nukleus://target/streams/http-cache"
@@ -28,7 +29,7 @@ accepted
 
 read nukleus:begin.ext ${http:header(":scheme", "http")}
                        ${http:header(":method", "GET")}
-                       ${http:header(":path", "/path")}
+                       ${http:header(":path", "/data")}
                        ${http:header(":authority", "localhost:8080")}
 
 connected
@@ -37,30 +38,53 @@ read closed
 
 write nukleus:begin.ext ${http:header(":status", "200")}
                         ${http:header("content-length", "11")}
-                        ${http:header("cache-control", "max-age=15")}
-                        ${http:header("date", date)}
+                        ${http:header("date", response1Date)}
+                        ${http:header("surrogate-control", "max-age=1+100, x-protected")}
                         ${http:header("etag", etag)}
 
-write "hello world"
+write "response #1"
 
 write close
-
 
 accepted
 
 read nukleus:begin.ext ${http:header(":scheme", "http")}
                        ${http:header(":method", "GET")}
-                       ${http:header(":path", "/path")}
+                       ${http:header(":path", "/data")}
                        ${http:header(":authority", "localhost:8080")}
-                       ${http:header("cache-control", "no-cache")}
                        ${http:header("if-none-match", etag)}
 
 connected
 
 read closed
 
-write nukleus:begin.ext ${http:header(":status", "304 (Not Modified)")}
-                        ${http:header("date", date2)}
+write await REQUEST_TWO_PENDING
+
+write nukleus:begin.ext ${http:header(":status", "304")}
+                        ${http:header("content-length", "11")}
+                        ${http:header("date", response1Date)}
+                        ${http:header("surrogate-control", "max-age=1+100, x-protected")}
+                        ${http:header("etag", etag)}
 
 write close
 
+accepted
+
+read nukleus:begin.ext ${http:header(":scheme", "http")}
+                       ${http:header(":method", "GET")}
+                       ${http:header(":path", "/data")}
+                       ${http:header(":authority", "localhost:8080")}
+
+connected
+
+read closed
+
+write nukleus:begin.ext ${http:header(":status", "200")}
+                        ${http:header("content-length", "11")}
+                        ${http:header("date", response2Date)}
+                        ${http:header("surrogate-control", "max-age=1+100, x-protected")}
+                        ${http:header("etag", etag2)}
+
+write "response #2"
+
+write close
