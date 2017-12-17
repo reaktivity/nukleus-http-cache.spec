@@ -127,6 +127,18 @@ public class EdgeArchProxyAcceptIT
 
     @Test
     @Specification({
+        "${streams}/inject.and.update.stale-while-revalidate/accept/client",
+        "${streams}/inject.and.update.stale-while-revalidate/accept/server",
+    })
+    public void shouldInjectAndUpdateStaleWhileRevalidate() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_PROXY");
+        k3po.finish();
+    }
+
+    @Test
+    @Specification({
         "${streams}/cache.and.poll.on.surrogate.max-age.when.fresh.ext/accept/client",
         "${streams}/cache.and.poll.on.surrogate.max-age.when.fresh.ext/accept/server",
     })
