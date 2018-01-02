@@ -39,7 +39,6 @@ read closed
 write nukleus:begin.ext ${http:header(":status", "200")}
                         ${http:header("content-length", "11")}
                         ${http:header("date", response1Date)}
-                        ${http:header("last-modified", response1Date)}
                         ${http:header("surrogate-control", "max-age=1+100")}
                         ${http:header("etag", etag)}
 
@@ -63,7 +62,6 @@ write await REQUEST_TWO_PENDING
 write nukleus:begin.ext ${http:header(":status", "200")}
                         ${http:header("content-length", "11")}
                         ${http:header("date", response2Date)}
-                        ${http:header("last-modified", response2Date)}
                         ${http:header("surrogate-control", "max-age=1+100")}
                         ${http:header("etag", etag2)}
 

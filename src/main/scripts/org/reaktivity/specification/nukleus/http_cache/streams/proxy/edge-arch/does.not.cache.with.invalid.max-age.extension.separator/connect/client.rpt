@@ -38,5 +38,4 @@ read nukleus:begin.ext ${http:header(":status", "200")}
                        ${http:header("surrogate-control", "max-age=1-100")}
                        ${http:header("etag", etag)}
 
-read close
-
+read closed

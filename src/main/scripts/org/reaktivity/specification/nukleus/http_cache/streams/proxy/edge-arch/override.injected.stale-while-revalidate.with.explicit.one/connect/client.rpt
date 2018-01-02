@@ -14,19 +14,21 @@
 # under the License.
 #
 
-property newProxyAcceptRef ${nukleus:newRouteRef()} # external scope
+property newProxyConnectRef ${nuklei:newReferenceId()} # external scope
 property etag ${http_cache:strongEtag()} #shared
 
 connect await ROUTED_PROXY
-        "nukleus://http-cache/streams/source"
-        option nukleus:route ${newProxyAcceptRef}
+        "nukleus://target/streams/http-cache"
+        option nukleus:route ${newProxyConnectRef}
         option nukleus:window 8192
         option nukleus:transmission "half-duplex"
+
 
 write nukleus:begin.ext ${http:header(":scheme", "http")}
                         ${http:header(":method", "GET")}
                         ${http:header(":path", "/data")}
                         ${http:header(":authority", "localhost:8080")}
+
 connected
 
 write close

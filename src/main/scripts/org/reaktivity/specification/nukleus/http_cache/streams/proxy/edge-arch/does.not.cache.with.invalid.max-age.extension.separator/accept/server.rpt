@@ -32,3 +32,5 @@ read nukleus:begin.ext ${http:header(":scheme", "http")}
 connected
 
 read closed
+
+write close
