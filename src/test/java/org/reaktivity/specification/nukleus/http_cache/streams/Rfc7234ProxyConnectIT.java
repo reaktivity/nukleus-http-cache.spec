@@ -573,4 +573,5 @@ public class Rfc7234ProxyConnectIT
         k3po.notifyBarrier("ROUTED_PROXY");
         k3po.finish();
     }
+
 }

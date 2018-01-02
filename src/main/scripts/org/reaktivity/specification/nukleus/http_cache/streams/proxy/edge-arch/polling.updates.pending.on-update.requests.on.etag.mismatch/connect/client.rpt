@@ -47,7 +47,6 @@ read "response #1"
 read closed
 
 read notify INITIAL_REQUEST_COMPLETE
-read notify REQUEST_TWO_PENDING #assumed
 
 connect await INITIAL_REQUEST_COMPLETE
         "nukleus://target/streams/http-cache"
@@ -64,6 +63,8 @@ write nukleus:begin.ext ${http:header(":scheme", "http")}
 connected
 
 write close
+
+write notify REQUEST_TWO_PENDING
 
 read nukleus:begin.ext ${http:header(":status", "200")}
                        ${http:header("content-length", "11")}

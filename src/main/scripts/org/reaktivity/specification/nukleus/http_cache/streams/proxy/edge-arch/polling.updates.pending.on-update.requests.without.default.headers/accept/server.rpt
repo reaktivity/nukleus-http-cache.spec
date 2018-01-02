@@ -56,7 +56,7 @@ write "response #1"
 
 write close
 
-write notify CACHE_UPDATED #Assumed
+write notify REQUEST_ONE_COMPLETE #Assumed
 
 accepted
 
@@ -64,13 +64,15 @@ read nukleus:begin.ext ${http:header(":scheme", "http")}
                        ${http:header(":method", "GET")}
                        ${http:header(":path", "/data")}
                        ${http:header(":authority", "localhost:8080")}
-                       ${http:header("cache-control", "no-cache")}
+                       ${http:header("cache-control", "public")}
                        ${http:header("prefer", "wait=100")}
                        ${http:header("if-none-match", etag)}
 
 connected
 
 read closed
+
+read notify REQUEST_TWO_PENDING
 
 write nukleus:begin.ext ${http:header(":status", "200")}
                         ${http:header("content-length", "11")}

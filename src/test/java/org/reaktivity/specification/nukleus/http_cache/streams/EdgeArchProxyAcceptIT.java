@@ -292,4 +292,64 @@ public class EdgeArchProxyAcceptIT
         k3po.notifyBarrier("ROUTED_PROXY");
         k3po.finish();
     }
+
+    @Test
+    @Specification({
+        "${streams}/does.not.cache.with.invalid.max-age.extension.separator/accept/client",
+        "${streams}/does.not.cache.with.invalid.max-age.extension.separator/accept/server",
+    })
+    public void shouldNotCacheWithInvalidMaxAgeFreshnessExtensionSeparator() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_PROXY");
+        k3po.finish();
+    }
+
+    @Test
+    @Specification({
+        "${streams}/override.injected.stale-while-revalidate.with.explicit.one/accept/client",
+        "${streams}/override.injected.stale-while-revalidate.with.explicit.one/accept/server",
+    })
+    public void shouldOverrideInjectedStaleWhileRevalidateValueWithExplicitOne() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_PROXY");
+        k3po.finish();
+    }
+
+    @Test
+    @Specification({
+        "${streams}/polling.updates.cache.for.single.user/accept/client",
+        "${streams}/polling.updates.cache.for.single.user/accept/server",
+    })
+    public void shouldNotUpdateCacheForSingleUser() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_PROXY");
+        k3po.finish();
+    }
+
+    @Test
+    @Specification({
+        "${streams}/polling.updates.pending.on-update.requests.on.etag.mismatch/connect/client",
+        "${streams}/polling.updates.pending.on-update.requests.on.etag.mismatch/connect/server",
+    })
+    public void shouldUpdateOnUpdateRequestOnEtagMismatch() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_PROXY");
+        k3po.finish();
+    }
+
+    @Test
+    @Specification({
+        "${streams}/polling.updates.pending.on-update.requests.without.default.headers/accept/client",
+        "${streams}/polling.updates.pending.on-update.requests.without.default.headers/accept/server",
+    })
+    public void shouldUpdateOnUpdateRequestsByDefaultingMissingHeaders() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_PROXY");
+        k3po.finish();
+    }
 }
