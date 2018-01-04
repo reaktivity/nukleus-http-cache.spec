@@ -53,6 +53,8 @@ read "response #1"
 
 read closed
 
+read notify CACHE_UPDATE_RECEIVED
+
 connect await CACHE_UPDATE_RECEIVED # Need to relay barrier due to race on write notify and nukleus process
         "nukleus://http-cache/streams/source"
         option nukleus:route ${newProxyAcceptRef}
