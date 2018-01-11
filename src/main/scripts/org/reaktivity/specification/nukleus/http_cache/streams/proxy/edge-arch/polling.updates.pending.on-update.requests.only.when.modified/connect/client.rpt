@@ -65,6 +65,7 @@ write nukleus:begin.ext ${http:headers()
                               .item(":method", "GET")
                               .item(":path", "/data")
                               .item(":authority", "localhost:8080")
+                              .item("if-none-match", etag)
                               .build()}
 
 connected
@@ -97,6 +98,7 @@ write nukleus:begin.ext ${http:headers()
                               .item(":method", "GET")
                               .item(":path", "/data")
                               .item(":authority", "localhost:8080")
+                              .item("if-none-match", etag)
                               .build()}
 
 connected

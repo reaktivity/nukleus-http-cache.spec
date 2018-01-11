@@ -62,6 +62,7 @@ write nukleus:begin.ext ${http:headers()
                               .item(":path", "/path")
                               .item(":authority", "localhost:8080")
                               .item("authorization", "some-authorization-value")
+                              .item("if-none-match", etag)
                               .build()}
 
 connected
@@ -110,6 +111,7 @@ write nukleus:begin.ext ${http:headers()
                               .item(":path", "/path")
                               .item(":authority", "localhost:8080")
                               .item("authorization", "some-authorization-value2")
+                              .item("if-none-match", etag2)
                               .build()}
 
 connected

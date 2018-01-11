@@ -81,6 +81,7 @@ read nukleus:begin.ext ${http:headers()
                              .item("date", response2Date)
                              .item("surrogate-control", "max-age=5+100")
                              .item("etag", etag2)
+                             .item("cache-control", "stale-while-revalidate=100")
                              .build()}
 
 read "response #2"

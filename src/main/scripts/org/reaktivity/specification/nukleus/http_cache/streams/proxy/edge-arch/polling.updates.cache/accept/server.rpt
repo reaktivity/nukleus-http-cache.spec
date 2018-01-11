@@ -82,6 +82,8 @@ write nukleus:begin.ext ${http:headers()
                               .item("content-length", "11")
                               .item("date", response2Date)
                               .item("surrogate-control", "max-age=100+100")
+                              .item("etag", etag2)
+                              .item("cache-control", "stale-while-revalidate=100")
                               .build()}
 
 write "response #2"
