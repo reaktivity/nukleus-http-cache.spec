@@ -25,21 +25,25 @@ accept await ROUTED_PROXY
         option nukleus:transmission "half-duplex"
 accepted
 
-read nukleus:begin.ext ${http:header(":scheme", "http")}
-                       ${http:header(":method", "GET")}
-                       ${http:header(":path", "/path")}
-                       ${http:header(":authority", "localhost:8080")}
+read nukleus:begin.ext ${http:headers()
+                             .item(":scheme", "http")
+                             .item(":method", "GET")
+                             .item(":path", "/path")
+                             .item(":authority", "localhost:8080")
+                             .build()}
 
 
 connected
 
 read closed
 
-write nukleus:begin.ext ${http:header(":status", "200")}
-                        ${http:header("content-length", "11")}
-                        ${http:header("cache-control", "max-age=15")}
-                        ${http:header("cache-control", "max-age=5")}
-                        ${http:header("date", date)}
+write nukleus:begin.ext ${http:headers()
+                              .item(":status", "200")
+                              .item("content-length", "11")
+                              .item("cache-control", "max-age=15")
+                              .item("cache-control", "max-age=5")
+                              .item("date", date)
+                              .build()}
 write "hello world"
 
 write close
@@ -48,19 +52,23 @@ write notify CACHE_EXPIRED # assumed
 
 accepted
 
-read nukleus:begin.ext ${http:header(":scheme", "http")}
-                       ${http:header(":method", "GET")}
-                       ${http:header(":path", "/path")}
-                       ${http:header(":authority", "localhost:8080")}
+read nukleus:begin.ext ${http:headers()
+                             .item(":scheme", "http")
+                             .item(":method", "GET")
+                             .item(":path", "/path")
+                             .item(":authority", "localhost:8080")
+                             .build()}
 
 connected
 
 read closed
 
-write nukleus:begin.ext ${http:header(":status", "200")}
-                        ${http:header("content-length", "11")}
-                        ${http:header("cache-control", "max-age=15")}
-                        ${http:header("date", date2)}
+write nukleus:begin.ext ${http:headers()
+                              .item(":status", "200")
+                              .item("content-length", "11")
+                              .item("cache-control", "max-age=15")
+                              .item("date", date2)
+                              .build()}
 
 write "hello alien"
 

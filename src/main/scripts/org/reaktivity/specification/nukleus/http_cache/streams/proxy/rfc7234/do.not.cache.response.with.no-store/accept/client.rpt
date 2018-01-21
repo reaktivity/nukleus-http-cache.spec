@@ -23,19 +23,23 @@ connect await ROUTED_PROXY
         option nukleus:window 8192
         option nukleus:transmission "half-duplex"
 
-write nukleus:begin.ext ${http:header(":scheme", "http")}
-                        ${http:header(":method", "GET")}
-                        ${http:header(":path", "/path")}
-                        ${http:header(":authority", "localhost:8080")}
-                        ${http:header("cache-control", "max-age=15")}
+write nukleus:begin.ext ${http:headers()
+                              .item(":scheme", "http")
+                              .item(":method", "GET")
+                              .item(":path", "/path")
+                              .item(":authority", "localhost:8080")
+                              .item("cache-control", "max-age=15")
+                              .build()}
 
 connected
 
 write close
-read nukleus:begin.ext ${http:header(":status", "200")}
-                       ${http:header("content-length", "18")}
-                       ${http:header("cache-control", "no-store")}
-                       ${http:header("date", date)}
+read nukleus:begin.ext ${http:headers()
+                             .item(":status", "200")
+                             .item("content-length", "18")
+                             .item("cache-control", "no-store")
+                             .item("date", date)
+                             .build()}
 
 
 read "response content 1"
@@ -51,19 +55,23 @@ connect await REQUEST_CACHED
         option nukleus:window 8192
         option nukleus:transmission "half-duplex"
 
-write nukleus:begin.ext ${http:header(":scheme", "http")}
-                        ${http:header(":method", "GET")}
-                        ${http:header(":path", "/path")}
-                        ${http:header(":authority", "localhost:8080")}
+write nukleus:begin.ext ${http:headers()
+                              .item(":scheme", "http")
+                              .item(":method", "GET")
+                              .item(":path", "/path")
+                              .item(":authority", "localhost:8080")
+                              .build()}
 
 connected
 
 write close
 
-read nukleus:begin.ext ${http:header(":status", "200")}
-                       ${http:header("content-length", "18")}
-                       ${http:header("cache-control", "max-age=15")}
-                       ${http:header("date", date)}
+read nukleus:begin.ext ${http:headers()
+                             .item(":status", "200")
+                             .item("content-length", "18")
+                             .item("cache-control", "max-age=15")
+                             .item("date", date)
+                             .build()}
 
 read "response content 2"
 

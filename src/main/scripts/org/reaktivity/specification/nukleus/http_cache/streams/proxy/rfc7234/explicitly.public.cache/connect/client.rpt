@@ -23,22 +23,26 @@ connect await ROUTED_PROXY
         option nukleus:window 8192
         option nukleus:transmission "half-duplex"
 
-write nukleus:begin.ext ${http:header(":scheme", "http")}
-                        ${http:header(":method", "GET")}
-                        ${http:header(":path", "/path")}
-                        ${http:header(":authority", "localhost:8080")}
-                        ${http:header("authorization", "SOME_AUTH_HEADER_VALUE")}
+write nukleus:begin.ext ${http:headers()
+                              .item(":scheme", "http")
+                              .item(":method", "GET")
+                              .item(":path", "/path")
+                              .item(":authority", "localhost:8080")
+                              .item("authorization", "SOME_AUTH_HEADER_VALUE")
+                              .build()}
 
 connected
 
 write close
 
-read nukleus:begin.ext ${http:header(":status", "200")}
-                       ${http:header("content-length", "11")}
-                       ${http:header("cache-control", "max-age=15")}
-                       ${http:header("date", date)}
-                       ${http:header("last-modified", date)}
-                       ${http:header("cache-control", "public")}
+read nukleus:begin.ext ${http:headers()
+                             .item(":status", "200")
+                             .item("content-length", "11")
+                             .item("cache-control", "max-age=15")
+                             .item("date", date)
+                             .item("last-modified", date)
+                             .item("cache-control", "public")
+                             .build()}
 read "hello world"
 
 read closed

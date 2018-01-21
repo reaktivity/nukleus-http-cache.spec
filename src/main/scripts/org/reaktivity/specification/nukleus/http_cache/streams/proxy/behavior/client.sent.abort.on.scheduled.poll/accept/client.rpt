@@ -24,13 +24,15 @@ connect await ROUTED_PROXY
 
 connected
 
-write nukleus:begin.ext ${http:header(":scheme", "http")}
-                        ${http:header(":method", "GET")}
-                        ${http:header(":path", "/data")}
-                        ${http:header(":authority", "localhost:8080")}
-                        ${http:header("x-retry-after", "2")}
-                        ${http:header("x-poll-injected", "x-http-cache-sync, no-cache")}
-                        ${http:header("cache-control", "no-cache")}
-                        ${http:header("x-http-cache-sync", "always")}
+write nukleus:begin.ext ${http:headers()
+                              .item(":scheme", "http")
+                              .item(":method", "GET")
+                              .item(":path", "/data")
+                              .item(":authority", "localhost:8080")
+                              .item("x-retry-after", "2")
+                              .item("x-poll-injected", "x-http-cache-sync, no-cache")
+                              .item("cache-control", "no-cache")
+                              .item("x-http-cache-sync", "always")
+                              .build()}
 
 write abort

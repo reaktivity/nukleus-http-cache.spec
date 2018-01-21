@@ -26,21 +26,25 @@ accept await ROUTED_PROXY
         option nukleus:transmission "half-duplex"
 accepted
 
-read nukleus:begin.ext ${http:header(":scheme", "http")}
-                       ${http:header(":method", "GET")}
-                       ${http:header(":path", "/path")}
-                       ${http:header("cache-control", "max-age=1")}
-                       ${http:header(":authority", "localhost:8080")}
+read nukleus:begin.ext ${http:headers()
+                             .item(":scheme", "http")
+                             .item(":method", "GET")
+                             .item(":path", "/path")
+                             .item("cache-control", "max-age=1")
+                             .item(":authority", "localhost:8080")
+                             .build()}
 
 connected
 
 read closed
 
-write nukleus:begin.ext ${http:header(":status", "200")}
-                        ${http:header("content-length", "11")}
-                        ${http:header("cache-control", "no-cache")}
-                        ${http:header("date", date)}
-                        ${http:header("etag", etag)}
+write nukleus:begin.ext ${http:headers()
+                              .item(":status", "200")
+                              .item("content-length", "11")
+                              .item("cache-control", "no-cache")
+                              .item("date", date)
+                              .item("etag", etag)
+                              .build()}
 
 write "hello world"
 
@@ -48,18 +52,22 @@ write close
 
 accepted
 
-read nukleus:begin.ext ${http:header(":scheme", "http")}
-                       ${http:header(":method", "GET")}
-                       ${http:header(":path", "/path")}
-                       ${http:header(":authority", "localhost:8080")}
-                       ${http:header("cache-control", "max-stale=15")}
-                       ${http:header("if-none-match", etag)}
+read nukleus:begin.ext ${http:headers()
+                             .item(":scheme", "http")
+                             .item(":method", "GET")
+                             .item(":path", "/path")
+                             .item(":authority", "localhost:8080")
+                             .item("cache-control", "max-stale=15")
+                             .item("if-none-match", etag)
+                             .build()}
 
 connected
 
 read closed
 
-write nukleus:begin.ext ${http:header(":status", "304 Not Modified")}
-                        ${http:header("date", date2)}
+write nukleus:begin.ext ${http:headers()
+                              .item(":status", "304 Not Modified")
+                              .item("date", date2)
+                              .build()}
 
 write close
