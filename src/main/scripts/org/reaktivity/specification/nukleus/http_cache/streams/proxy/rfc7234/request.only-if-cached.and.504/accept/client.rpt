@@ -22,18 +22,21 @@ connect await ROUTED_PROXY
         option nukleus:window 8192
         option nukleus:transmission "half-duplex"
 
-write nukleus:begin.ext ${http:header(":scheme", "http")}
-                        ${http:header(":method", "GET")}
-                        ${http:header(":path", "/path")}
-                        ${http:header(":authority", "localhost:8080")}
-                        ${http:header("cache-control", "only-if-cached")}
+write nukleus:begin.ext ${http:headers()
+                              .item(":scheme", "http")
+                              .item(":method", "GET")
+                              .item(":path", "/path")
+                              .item(":authority", "localhost:8080")
+                              .item("cache-control", "only-if-cached")
+                              .build()}
 
 
 connected
 
 write close
 
-read nukleus:begin.ext ${http:header(":status", "504")}
+read nukleus:begin.ext ${http:headers()
+                             .item(":status", "504")
+                             .build()}
 
 read aborted
-

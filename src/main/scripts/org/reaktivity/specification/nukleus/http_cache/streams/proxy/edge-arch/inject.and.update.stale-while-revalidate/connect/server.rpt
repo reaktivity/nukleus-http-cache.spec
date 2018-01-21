@@ -24,20 +24,24 @@ accept await ROUTED_PROXY
         option nukleus:transmission "half-duplex"
 accepted
 
-read nukleus:begin.ext ${http:header(":scheme", "http")}
-                       ${http:header(":method", "GET")}
-                       ${http:header(":path", "/data")}
-                       ${http:header(":authority", "localhost:8080")}
+read nukleus:begin.ext ${http:headers()
+                             .item(":scheme", "http")
+                             .item(":method", "GET")
+                             .item(":path", "/data")
+                             .item(":authority", "localhost:8080")
+                             .build()}
 
 connected
 
 read closed
 
-write nukleus:begin.ext ${http:header(":status", "200")}
-                        ${http:header("content-length", "11")}
-                        ${http:header("cache-control", "max-age=5, stale-while-revalidate=1")}
-                        ${http:header("surrogate-control", "max-age=5+100")}
-                        ${http:header("etag", etag)}
+write nukleus:begin.ext ${http:headers()
+                              .item(":status", "200")
+                              .item("content-length", "11")
+                              .item("cache-control", "max-age=5, stale-while-revalidate=1")
+                              .item("surrogate-control", "max-age=5+100")
+                              .item("etag", etag)
+                              .build()}
 
 write "hello world"
 

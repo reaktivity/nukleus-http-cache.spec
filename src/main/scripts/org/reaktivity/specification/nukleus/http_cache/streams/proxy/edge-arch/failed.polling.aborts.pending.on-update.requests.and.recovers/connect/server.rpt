@@ -28,20 +28,24 @@ accept await ROUTED_PROXY
         option nukleus:transmission "half-duplex"
 accepted
 
-read nukleus:begin.ext ${http:header(":scheme", "http")}
-                       ${http:header(":method", "GET")}
-                       ${http:header(":path", "/data")}
-                       ${http:header(":authority", "localhost:8080")}
+read nukleus:begin.ext ${http:headers()
+                             .item(":scheme", "http")
+                             .item(":method", "GET")
+                             .item(":path", "/data")
+                             .item(":authority", "localhost:8080")
+                             .build()}
 
 connected
 
 read closed
 
-write nukleus:begin.ext ${http:header(":status", "200")}
-                        ${http:header("content-length", "11")}
-                        ${http:header("date", response1Date)}
-                        ${http:header("surrogate-control", "max-age=1+100")}
-                        ${http:header("etag", etag)}
+write nukleus:begin.ext ${http:headers()
+                              .item(":status", "200")
+                              .item("content-length", "11")
+                              .item("date", response1Date)
+                              .item("surrogate-control", "max-age=1+100")
+                              .item("etag", etag)
+                              .build()}
 
 write "response #1"
 
@@ -49,11 +53,13 @@ write close
 
 accepted
 
-read nukleus:begin.ext ${http:header(":scheme", "http")}
-                       ${http:header(":method", "GET")}
-                       ${http:header(":path", "/data")}
-                       ${http:header(":authority", "localhost:8080")}
-                       ${http:header("if-none-match", etag)}
+read nukleus:begin.ext ${http:headers()
+                             .item(":scheme", "http")
+                             .item(":method", "GET")
+                             .item(":path", "/data")
+                             .item(":authority", "localhost:8080")
+                             .item("if-none-match", etag)
+                             .build()}
 
 connected
 
@@ -61,27 +67,33 @@ read closed
 
 write await REQUEST_TWO_PENDING
 
-write nukleus:begin.ext ${http:header(":status", "503")}
-                        ${http:header("date", response2Date)}
+write nukleus:begin.ext ${http:headers()
+                              .item(":status", "503")
+                              .item("date", response2Date)
+                              .build()}
 
 write abort
 
 accepted
 
-read nukleus:begin.ext ${http:header(":scheme", "http")}
-                       ${http:header(":method", "GET")}
-                       ${http:header(":path", "/data")}
-                       ${http:header(":authority", "localhost:8080")}
+read nukleus:begin.ext ${http:headers()
+                             .item(":scheme", "http")
+                             .item(":method", "GET")
+                             .item(":path", "/data")
+                             .item(":authority", "localhost:8080")
+                             .build()}
 
 connected
 
 read closed
 
-write nukleus:begin.ext ${http:header(":status", "200")}
-                        ${http:header("content-length", "11")}
-                        ${http:header("date", response1Date)}
-                        ${http:header("surrogate-control", "max-age=1+100")}
-                        ${http:header("etag", etag2)}
+write nukleus:begin.ext ${http:headers()
+                              .item(":status", "200")
+                              .item("content-length", "11")
+                              .item("date", response1Date)
+                              .item("surrogate-control", "max-age=1+100")
+                              .item("etag", etag2)
+                              .build()}
 
 write flush
 
@@ -93,20 +105,25 @@ write close
 
 accepted
 
-read nukleus:begin.ext ${http:header(":scheme", "http")}
-                       ${http:header(":method", "GET")}
-                       ${http:header(":path", "/data")}
-                       ${http:header(":authority", "localhost:8080")}
+read nukleus:begin.ext ${http:headers()
+                             .item(":scheme", "http")
+                             .item(":method", "GET")
+                             .item(":path", "/data")
+                             .item(":authority", "localhost:8080")
+                             .item("if-none-match", etag2)
+                             .build()}
 
 connected
 
 read closed
 
-write nukleus:begin.ext ${http:header(":status", "200")}
-                        ${http:header("content-length", "11")}
-                        ${http:header("date", response1Date)}
-                        ${http:header("surrogate-control", "max-age=1+100")}
-                        ${http:header("etag", etag3)}
+write nukleus:begin.ext ${http:headers()
+                              .item(":status", "200")
+                              .item("content-length", "11")
+                              .item("date", response1Date)
+                              .item("surrogate-control", "max-age=1+100")
+                              .item("etag", etag3)
+                              .build()}
 
 write "response #4"
 
