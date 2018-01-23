@@ -22,11 +22,13 @@ connect await ROUTED_PROXY
         option nukleus:window 8192
         option nukleus:transmission "half-duplex"
 
-write nukleus:begin.ext ${http:header(":scheme", "http")}
-                        ${http:header(":method", "POST")}
-                        ${http:header(":path", "/path")}
-                        ${http:header(":authority", "localhost:8080")}
-                        ${http:header("content-length", "11")}
+write nukleus:begin.ext ${http:headers()
+                              .item(":scheme", "http")
+                              .item(":method", "POST")
+                              .item(":path", "/path")
+                              .item(":authority", "localhost:8080")
+                              .item("content-length", "11")
+                              .build()}
 
 connected
 
@@ -34,8 +36,8 @@ write "hello world"
 
 write close
 
-read nukleus:begin.ext ${http:header(":status", "200")}
+read nukleus:begin.ext ${http:headers()
+                             .item(":status", "200")
+                             .build()}
 
 read closed
-
-
