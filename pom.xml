@@ -51,7 +51,7 @@
     <k3po.nukleus.ext.version>0.18</k3po.nukleus.ext.version>
 
     <nukleus.plugin.version>0.25</nukleus.plugin.version>
-    <nukleus-http2.spec.version>develop-SNAPSHOT</nukleus-http2.spec.version>
+    <nukleus.http2.spec.version>0.37</nukleus-http2.spec.version>
   </properties>
 
   <dependencies>
@@ -73,7 +73,7 @@
     <dependency>
       <groupId>org.reaktivity</groupId>
       <artifactId>nukleus-http2.spec</artifactId>
-      <version>${nukleus-http2.spec.version}</version>
+      <version>${nukleus.http2.spec.version}</version>
     </dependency>
   </dependencies>
 
