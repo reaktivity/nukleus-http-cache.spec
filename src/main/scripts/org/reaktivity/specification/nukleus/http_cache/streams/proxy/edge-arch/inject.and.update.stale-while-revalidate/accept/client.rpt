@@ -20,7 +20,6 @@ property etag ${http_cache:strongEtag()} #shared
 connect await ROUTED_PROXY
         "nukleus://http-cache/streams/source"
         option nukleus:route ${newProxyAcceptRef}
-        option nukleus:window 8192
         option nukleus:transmission "half-duplex"
 
 write nukleus:begin.ext ${http:headers()
@@ -41,7 +40,7 @@ read nukleus:begin.ext ${http:headers()
                              .item("etag", etag)
                              .build()}
 
-read nukleus:data.ext ${http:headers()
+read nukleus:transfer.ext ${http:headers()
                             .item(":scheme", "http")
                             .item(":method", "GET")
                             .item(":path", "/data")

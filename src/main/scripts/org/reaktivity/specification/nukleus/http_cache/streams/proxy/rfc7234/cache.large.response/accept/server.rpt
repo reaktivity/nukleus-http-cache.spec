@@ -22,7 +22,6 @@ property payloadSize 1048576 # shared property
 accept await ROUTED_PROXY
         "nukleus://http-cache/streams/source"
         option nukleus:route ${newProxyAcceptRef}
-        option nukleus:window 50000
         option nukleus:transmission "half-duplex"
 accepted
 

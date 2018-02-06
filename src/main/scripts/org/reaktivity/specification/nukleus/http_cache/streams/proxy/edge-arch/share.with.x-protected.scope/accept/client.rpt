@@ -23,7 +23,6 @@ property etag ${http_cache:strongEtag()} #shared
 connect await ROUTED_PROXY
         "nukleus://http-cache/streams/source"
         option nukleus:route ${newProxyAcceptRef}
-        option nukleus:window 8192
         option nukleus:transmission "half-duplex"
         option nukleus:authorization 0x0001_000000_000000L
 
@@ -50,7 +49,7 @@ read nukleus:begin.ext ${http:headers()
                              .item("cache-control", "stale-while-revalidate=10")
                              .build()}
 
-read nukleus:data.ext ${http:headers()
+read nukleus:transfer.ext ${http:headers()
                             .item(":scheme", "http")
                             .item(":method", "GET")
                             .item(":path", "/path")
@@ -70,7 +69,6 @@ read notify RESPONSE_CACHED
 connect await RESPONSE_CACHED
         "nukleus://http-cache/streams/source"
         option nukleus:route ${newProxyAcceptRef}
-        option nukleus:window 8192
         option nukleus:transmission "half-duplex"
         option nukleus:authorization 0x0001_000000_000000L
 
@@ -95,7 +93,7 @@ read nukleus:begin.ext ${http:headers()
                              .item("cache-control", "stale-while-revalidate=10")
                              .build()}
 
-read nukleus:data.ext ${http:headers()
+read nukleus:transfer.ext ${http:headers()
                             .item(":scheme", "http")
                             .item(":method", "GET")
                             .item(":path", "/path")

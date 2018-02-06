@@ -22,7 +22,6 @@ property payloadSize 1048576 # shared property
 connect await ROUTED_PROXY
         "nukleus://target/streams/http-cache"
         option nukleus:route ${newProxyConnectRef}
-        option nukleus:window 5000
         option nukleus:transmission "half-duplex"
 
 write nukleus:begin.ext ${http:headers()

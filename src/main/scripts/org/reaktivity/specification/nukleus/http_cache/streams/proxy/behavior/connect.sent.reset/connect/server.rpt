@@ -19,7 +19,6 @@ property newProxyConnectRef ${nuklei:newReferenceId()} # external scope
 accept await ROUTED_PROXY
         "nukleus://target/streams/http-cache"
         option nukleus:route ${newProxyConnectRef}
-        option nukleus:window 8192
         option nukleus:transmission "simplex"
 accepted
 

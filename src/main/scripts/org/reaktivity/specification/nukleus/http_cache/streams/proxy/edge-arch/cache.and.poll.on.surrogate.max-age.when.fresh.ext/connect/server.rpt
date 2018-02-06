@@ -21,7 +21,6 @@ property etag2 ${http_cache:strongEtag()} #shared
 accept await ROUTED_PROXY
         "nukleus://target/streams/http-cache"
         option nukleus:route ${newProxyConnectRef}
-        option nukleus:window 8192
         option nukleus:transmission "half-duplex"
 accepted
 

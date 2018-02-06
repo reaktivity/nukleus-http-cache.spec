@@ -23,7 +23,6 @@ property etag2 ${http_cache:strongEtag()} # sharedProperty
 connect await ROUTED_PROXY
         "nukleus://target/streams/http-cache"
         option nukleus:route ${newProxyConnectRef}
-        option nukleus:window 8192
         option nukleus:transmission "half-duplex"
 
 
@@ -56,7 +55,6 @@ read notify REQUEST_TWO_PENDING #assumed
 connect await INITIAL_REQUEST_COMPLETE
         "nukleus://target/streams/http-cache"
         option nukleus:route ${newProxyConnectRef}
-        option nukleus:window 8192
         option nukleus:transmission "half-duplex"
 
 
@@ -89,7 +87,6 @@ read notify REQUEST_2_COMPLETE
 connect await REQUEST_2_COMPLETE
         "nukleus://target/streams/http-cache"
         option nukleus:route ${newProxyConnectRef}
-        option nukleus:window 8192
         option nukleus:transmission "half-duplex"
 
 

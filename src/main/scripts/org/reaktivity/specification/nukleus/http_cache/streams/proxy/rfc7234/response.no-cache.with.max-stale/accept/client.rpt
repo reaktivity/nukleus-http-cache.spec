@@ -22,7 +22,6 @@ property etag ${http_cache:strongEtag()}
 connect await ROUTED_PROXY
         "nukleus://http-cache/streams/source"
         option nukleus:route ${newProxyAcceptRef}
-        option nukleus:window 8192
         option nukleus:transmission "half-duplex"
 
 write nukleus:begin.ext ${http:headers()
@@ -54,7 +53,6 @@ read notify REQUEST_CACHED
 connect await CACHE_EXPIRED
         "nukleus://http-cache/streams/source"
         option nukleus:route ${newProxyAcceptRef}
-        option nukleus:window 8192
         option nukleus:transmission "half-duplex"
 
 write nukleus:begin.ext ${http:headers()

@@ -21,7 +21,6 @@ property date2 ${http_cache:datePlus(2)}
 accept await ROUTED_PROXY
         "nukleus://http-cache/streams/source"
         option nukleus:route ${newProxyAcceptRef}
-        option nukleus:window 8192
         option nukleus:transmission "half-duplex"
 accepted
 
