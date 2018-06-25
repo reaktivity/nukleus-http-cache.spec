@@ -25,6 +25,7 @@ accept await ROUTED_PROXY
         option nukleus:route ${newProxyAcceptRef}
         option nukleus:window 8192
         option nukleus:transmission "half-duplex"
+        option nukleus:authorization 0x0001_000000_000000L
 accepted
 
 read nukleus:begin.ext ${http:headers()
@@ -32,6 +33,7 @@ read nukleus:begin.ext ${http:headers()
                              .item(":method", "GET")
                              .item(":path", "/data")
                              .item(":authority", "localhost:8080")
+                             .item("authorization", "some-authorization-value")
                              .build()}
 
 connected
@@ -86,7 +88,7 @@ write nukleus:begin.ext ${http:headers()
                               .item("date", response2Date)
                               .item("surrogate-control", "max-age=1+100")
                               .item("etag", etag2)
-                              .item("cache-control", "private, stale-while-revalidate=100")
+                              .item("cache-control", "public, stale-while-revalidate=100")
                               .build()}
 
 write flush

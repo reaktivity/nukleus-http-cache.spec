@@ -31,6 +31,7 @@ write nukleus:begin.ext ${http:headers()
                               .item(":method", "GET")
                               .item(":path", "/data")
                               .item(":authority", "localhost:8080")
+                              .item("user-agent", "user-agent-1")
                               .build()}
 connected
 
@@ -42,6 +43,7 @@ read nukleus:begin.ext ${http:headers()
                              .item("date", response1Date)
                              .item("surrogate-control", "max-age=1+100")
                              .item("etag", etag)
+                             .item("vary", "user-agent")
                              .item("cache-control", "stale-while-revalidate=100")
                              .build()}
 
@@ -53,6 +55,7 @@ read nukleus:data.ext ${http:headers()
                             .item("cache-control", "no-cache")
                             .item("prefer", "wait=100")
                             .item("if-none-match", etag)
+                            .item("user-agent", "user-agent-1")
                             .build()}
 
 read "response #1"
@@ -75,6 +78,7 @@ write nukleus:begin.ext ${http:headers()
                               .item("cache-control", "no-cache")
                               .item("prefer", "wait=100")
                               .item("if-none-match", etag)
+                              .item("user-agent", "user-agent-2")
                               .build()}
 connected
 
@@ -83,24 +87,7 @@ write close
 write notify REQUEST_TWO_PENDING
 
 read nukleus:begin.ext ${http:headers()
-                             .item(":status", "200")
-                             .item("content-length", "11")
-                             .item("date", response2Date)
-                             .item("surrogate-control", "max-age=1+100")
-                             .item("etag", etag2)
-                             .item("cache-control", "private, stale-while-revalidate=100")
+                             .item(":status", "503")
                              .build()}
 
-read nukleus:data.ext ${http:headers()
-                            .item(":scheme", "http")
-                            .item(":method", "GET")
-                            .item(":path", "/data")
-                            .item(":authority", "localhost:8080")
-                            .item("cache-control", "no-cache")
-                            .item("prefer", "wait=100")
-                            .item("if-none-match", etag2)
-                            .build()}
-
-read "response #2"
-
-read closed
+read aborted
