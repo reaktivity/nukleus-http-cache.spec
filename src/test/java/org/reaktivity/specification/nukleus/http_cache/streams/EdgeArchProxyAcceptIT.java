@@ -334,7 +334,19 @@ public class EdgeArchProxyAcceptIT
             "${streams}/polling.vary.header.value.mismatch/accept/client",
             "${streams}/polling.vary.header.value.mismatch/accept/server",
     })
-    public void pollingVaryHeadeValuerMismatch() throws Exception
+    public void pollingVaryHeaderValuerMismatch() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_PROXY");
+        k3po.finish();
+    }
+
+    @Test
+    @Specification({
+            "${streams}/polling.vary.header.asterisk/accept/client",
+            "${streams}/polling.vary.header.asterisk/accept/server",
+    })
+    public void pollingVaryHeaderAsterisk() throws Exception
     {
         k3po.start();
         k3po.notifyBarrier("ROUTED_PROXY");

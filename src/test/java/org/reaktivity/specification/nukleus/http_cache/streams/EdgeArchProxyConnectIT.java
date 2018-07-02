@@ -329,4 +329,16 @@ public class EdgeArchProxyConnectIT
         k3po.notifyBarrier("ROUTED_PROXY");
         k3po.finish();
     }
+
+    @Test
+    @Specification({
+            "${streams}/polling.vary.header.asterisk/accept/client",
+            "${streams}/polling.vary.header.asterisk/accept/server",
+    })
+    public void pollingVaryHeaderAsterisk() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_PROXY");
+        k3po.finish();
+    }
 }
