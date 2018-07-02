@@ -44,7 +44,6 @@ read nukleus:begin.ext ${http:headers()
                              .item("surrogate-control", "max-age=1+100")
                              .item("etag", etag)
                              .item("vary", "user-agent")
-                             .item("user-agent", "user-agent-1")
                              .item("cache-control", "stale-while-revalidate=100")
                              .build()}
 
