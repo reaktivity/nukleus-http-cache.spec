@@ -32,6 +32,7 @@ write nukleus:begin.ext ${http:headers()
                               .item(":method", "GET")
                               .item(":path", "/data")
                               .item(":authority", "localhost:8080")
+                              .item("user-agent", "user-agent-1")
                               .build()}
 
 connected
@@ -44,6 +45,7 @@ read nukleus:begin.ext ${http:headers()
                              .item("date", response1Date)
                              .item("surrogate-control", "max-age=1+100")
                              .item("etag", etag)
+                             .item("vary", "user-agent")
                              .build()}
 
 read "response #1"
@@ -65,6 +67,7 @@ write nukleus:begin.ext ${http:headers()
                               .item(":method", "GET")
                               .item(":path", "/data")
                               .item(":authority", "localhost:8080")
+                              .item("user-agent", "user-agent-1")
                               .item("if-none-match", etag)
                               .build()}
 
@@ -78,6 +81,7 @@ read nukleus:begin.ext ${http:headers()
                              .item("date", response2Date)
                              .item("surrogate-control", "max-age=1+100")
                              .item("etag", etag2)
+                             .item("vary", "content-encoding")
                              .build()}
 
 read "response #2"
@@ -98,6 +102,7 @@ write nukleus:begin.ext ${http:headers()
                               .item(":method", "GET")
                               .item(":path", "/data")
                               .item(":authority", "localhost:8080")
+                              .item("user-agent", "user-agent-1")
                               .item("if-none-match", etag2)
                               .build()}
 
