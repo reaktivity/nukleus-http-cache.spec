@@ -14,17 +14,18 @@
 # under the License.
 #
 
-property newProxyAcceptRef ${nukleus:newRouteRef()} # external scope
+property newProxyConnectRef ${nuklei:newReferenceId()} # external scope
 property response1Date ${http_cache:date()} # sharedProperty
 property response2Date ${http_cache:datePlus(5)} # sharedProperty
 property etag ${http_cache:strongEtag()} # sharedProperty
 property etag2 ${http_cache:strongEtag()} # sharedProperty
 
 connect await ROUTED_PROXY
-        "nukleus://http-cache/streams/source"
-        option nukleus:route ${newProxyAcceptRef}
+        "nukleus://target/streams/http-cache"
+        option nukleus:route ${newProxyConnectRef}
         option nukleus:window 8192
         option nukleus:transmission "half-duplex"
+
 
 write nukleus:begin.ext ${http:headers()
                               .item(":scheme", "http")
@@ -32,6 +33,7 @@ write nukleus:begin.ext ${http:headers()
                               .item(":path", "/data")
                               .item(":authority", "localhost:8080")
                               .build()}
+
 connected
 
 write close
@@ -42,45 +44,33 @@ read nukleus:begin.ext ${http:headers()
                              .item("date", response1Date)
                              .item("surrogate-control", "max-age=1+100")
                              .item("etag", etag)
-                             .item("cache-control", "stale-while-revalidate=100")
                              .build()}
-
-read nukleus:data.ext ${http:headers()
-                            .item(":scheme", "http")
-                            .item(":method", "GET")
-                            .item(":path", "/data")
-                            .item(":authority", "localhost:8080")
-                            .item("cache-control", "no-cache")
-                            .item("prefer", "wait=100")
-                            .item("if-none-match", etag)
-                            .build()}
 
 read "response #1"
 
 read closed
 
-read notify REQUEST_ONE_COMPLETE
+read notify INITIAL_REQUEST_COMPLETE
+read notify REQUEST_TWO_PENDING #assumed
 
-connect await REQUEST_ONE_COMPLETE
-        "nukleus://http-cache/streams/source"
-        option nukleus:route ${newProxyAcceptRef}
+connect await INITIAL_REQUEST_COMPLETE
+        "nukleus://target/streams/http-cache"
+        option nukleus:route ${newProxyConnectRef}
         option nukleus:window 8192
         option nukleus:transmission "half-duplex"
+
 
 write nukleus:begin.ext ${http:headers()
                               .item(":scheme", "http")
                               .item(":method", "GET")
                               .item(":path", "/data")
                               .item(":authority", "localhost:8080")
-                              .item("cache-control", "no-cache")
-                              .item("prefer", "wait=100")
                               .item("if-none-match", etag)
                               .build()}
+
 connected
 
 write close
-
-write notify REQUEST_TWO_PENDING
 
 read nukleus:begin.ext ${http:headers()
                              .item(":status", "200")
@@ -88,19 +78,27 @@ read nukleus:begin.ext ${http:headers()
                              .item("date", response2Date)
                              .item("surrogate-control", "max-age=1+100")
                              .item("etag", etag2)
-                             .item("cache-control", "private, stale-while-revalidate=100")
                              .build()}
-
-read nukleus:data.ext ${http:headers()
-                            .item(":scheme", "http")
-                            .item(":method", "GET")
-                            .item(":path", "/data")
-                            .item(":authority", "localhost:8080")
-                            .item("cache-control", "no-cache")
-                            .item("prefer", "wait=100")
-                            .item("if-none-match", etag2)
-                            .build()}
 
 read "response #2"
 
 read closed
+
+read notify SECOND_REQUEST_COMPLETE
+
+connect await SECOND_REQUEST_COMPLETE
+        "nukleus://target/streams/http-cache"
+        option nukleus:route ${newProxyConnectRef}
+        option nukleus:window 8192
+        option nukleus:transmission "half-duplex"
+
+
+write nukleus:begin.ext ${http:headers()
+                              .item(":scheme", "http")
+                              .item(":method", "GET")
+                              .item(":path", "/data")
+                              .item(":authority", "localhost:8080")
+                              .item("if-none-match", etag2)
+                              .build()}
+
+connected
