@@ -280,4 +280,65 @@ public class EdgeArchProxyConnectIT
         k3po.notifyBarrier("ROUTED_PROXY");
         k3po.finish();
     }
+
+
+    @Test
+    @Specification({
+        "${streams}/no.authorization.sends.cache.control.private/accept/client",
+        "${streams}/no.authorization.sends.cache.control.private/accept/server",
+    })
+    public void noAuthorizationSendsCacheControlPrivate() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_PROXY");
+        k3po.finish();
+    }
+
+    @Test
+    @Specification({
+        "${streams}/no.authorization.sends.cache.control.private.except.when.public/accept/client",
+        "${streams}/no.authorization.sends.cache.control.private.except.when.public/accept/server",
+    })
+    public void noAuthorizationSendsCacheControlPrivateExceptWhenPublic() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_PROXY");
+        k3po.finish();
+    }
+
+    @Test
+    @Specification({
+        "${streams}/polling.vary.header.mismatch/accept/client",
+        "${streams}/polling.vary.header.mismatch/accept/server",
+    })
+    public void pollingVaryHeaderMismatch() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_PROXY");
+        k3po.finish();
+    }
+
+    @Test
+    @Specification({
+        "${streams}/polling.vary.header.value.mismatch/accept/client",
+        "${streams}/polling.vary.header.value.mismatch/accept/server",
+    })
+    public void pollingVaryHeadeValuerMismatch() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_PROXY");
+        k3po.finish();
+    }
+
+    @Test
+    @Specification({
+            "${streams}/polling.vary.header.asterisk/accept/client",
+            "${streams}/polling.vary.header.asterisk/accept/server",
+    })
+    public void pollingVaryHeaderAsterisk() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_PROXY");
+        k3po.finish();
+    }
 }

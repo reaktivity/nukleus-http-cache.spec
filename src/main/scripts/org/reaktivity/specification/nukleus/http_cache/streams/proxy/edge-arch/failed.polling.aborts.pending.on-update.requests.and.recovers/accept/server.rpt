@@ -143,7 +143,7 @@ write nukleus:begin.ext ${http:headers()
                               .item("date", response1Date)
                               .item("surrogate-control", "max-age=1+100")
                               .item("etag", etag3)
-                              .item("cache-control", "stale-while-revalidate=100")
+                              .item("cache-control", "private, stale-while-revalidate=100")
                               .build()}
 
 write flush
