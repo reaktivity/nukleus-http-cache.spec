@@ -68,8 +68,36 @@ read nukleus:begin.ext ${http:headers()
 read closed
 
 
+
 #
 # retry attempt 2
+#
+connect await ROUTED_PROXY
+        "nukleus://target/streams/http-cache"
+        option nukleus:route ${newProxyConnectRef}
+        option nukleus:window 8192
+        option nukleus:transmission "half-duplex"
+
+write nukleus:begin.ext ${http:headers()
+                             .item(":scheme", "http")
+                             .item(":method", "GET")
+                             .item(":path", "/path")
+                             .item(":authority", "localhost:8080")
+                             .build()}
+
+connected
+
+write close
+
+read nukleus:begin.ext ${http:headers()
+                              .item(":status", "503")
+                              .item("retry-after", retryAfter)
+                              .build()}
+read closed
+
+
+#
+# retry attempt 3
 #
 connect await ROUTED_PROXY
         "nukleus://target/streams/http-cache"

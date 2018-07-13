@@ -16,7 +16,8 @@
 
 property newProxyConnectRef ${nuklei:newReferenceId()} # external scope
 property date ${http_cache:date()} # shared property
-property date2 ${http_cache:datePlus(2)} # shared property
+#property date2 ${http_cache:datePlus(2)} # shared property
+property retryAfter ${http_cache:datePlus(3)} # shared property
 
 accept await ROUTED_PROXY
         "nukleus://target/streams/http-cache"
@@ -68,6 +69,29 @@ write close
 
 #
 # retry attempt 2
+#
+accepted
+
+read nukleus:begin.ext ${http:headers()
+                             .item(":scheme", "http")
+                             .item(":method", "GET")
+                             .item(":path", "/path")
+                             .item(":authority", "localhost:8080")
+                             .build()}
+
+connected
+
+read closed
+
+write nukleus:begin.ext ${http:headers()
+                              .item(":status", "503")
+                              .item("retry-after", retryAfter)
+                              .build()}
+write close
+
+
+#
+# retry attempt 3
 #
 accepted
 
