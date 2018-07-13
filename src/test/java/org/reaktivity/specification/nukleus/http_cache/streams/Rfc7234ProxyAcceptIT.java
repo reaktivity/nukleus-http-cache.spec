@@ -114,6 +114,18 @@ public class Rfc7234ProxyAcceptIT
 
     @Test
     @Specification({
+        "${streams}/503.retry-after/accept/client",
+        "${streams}/503.retry-after/accept/server",
+    })
+    public void shouldRetryFor503RetryAfter() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_PROXY");
+        k3po.finish();
+    }
+
+    @Test
+    @Specification({
             "${streams}/request.greater.max-age/accept/client",
             "${streams}/request.greater.max-age/accept/server",
     })
