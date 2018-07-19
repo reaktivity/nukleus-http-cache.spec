@@ -138,6 +138,18 @@ public class Rfc7234ProxyConnectIT
 
     @Test
     @Specification({
+        "${streams}/503.retry-after/connect/client",
+        "${streams}/503.retry-after/connect/server",
+    })
+    public void shouldRetryFor503RetryAfter() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_PROXY");
+        k3po.finish();
+    }
+
+    @Test
+    @Specification({
         "${streams}/expire.max-age/connect/client",
         "${streams}/expire.max-age/connect/server",
     })

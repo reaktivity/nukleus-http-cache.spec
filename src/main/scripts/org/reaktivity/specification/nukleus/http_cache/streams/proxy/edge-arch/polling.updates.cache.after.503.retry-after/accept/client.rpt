@@ -1,0 +1,89 @@
+#
+# Copyright 2016-2017 The Reaktivity Project
+#
+# The Reaktivity Project licenses this file to you under the Apache License,
+# version 2.0 (the "License"); you may not use this file except in compliance
+# with the License. You may obtain a copy of the License at:
+#
+#   http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+# WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+# License for the specific language governing permissions and limitations
+# under the License.
+#
+
+property newProxyAcceptRef ${nukleus:newRouteRef()} # external scope
+property response1Date ${http_cache:date()} # sharedProperty
+property response2Date ${http_cache:datePlus(5)} # sharedProperty
+property etag ${http_cache:strongEtag()} #shared
+property etag2 ${http_cache:strongEtag()} #shared
+
+connect await ROUTED_PROXY
+        "nukleus://http-cache/streams/source"
+        option nukleus:route ${newProxyAcceptRef}
+        option nukleus:window 8192
+        option nukleus:transmission "half-duplex"
+
+write nukleus:begin.ext ${http:headers()
+                              .item(":scheme", "http")
+                              .item(":method", "GET")
+                              .item(":path", "/data")
+                              .item(":authority", "localhost:8080")
+                              .build()}
+connected
+
+write close
+
+read nukleus:begin.ext ${http:headers()
+                             .item(":status", "200")
+                             .item("content-length", "11")
+                             .item("date", response1Date)
+                             .item("surrogate-control", "max-age=1+100")
+                             .item("etag", etag)
+                             .item("cache-control", "stale-while-revalidate=100")
+                             .build()}
+
+read nukleus:data.ext ${http:headers()
+                            .item(":scheme", "http")
+                            .item(":method", "GET")
+                            .item(":path", "/data")
+                            .item(":authority", "localhost:8080")
+                            .item("cache-control", "no-cache")
+                            .item("prefer", "wait=100")
+                            .item("if-none-match", etag)
+                            .build()}
+
+read "response #1"
+
+read closed
+
+connect await CACHE_UPDATE_RECEIVED # Need to relay barrier due to race on write notify and nukleus process
+        "nukleus://http-cache/streams/source"
+        option nukleus:route ${newProxyAcceptRef}
+        option nukleus:window 8192
+        option nukleus:transmission "half-duplex"
+
+write nukleus:begin.ext ${http:headers()
+                              .item(":scheme", "http")
+                              .item(":method", "GET")
+                              .item(":path", "/data")
+                              .item(":authority", "localhost:8080")
+                              .build()}
+connected
+
+write close
+
+read nukleus:begin.ext ${http:headers()
+                             .item(":status", "200")
+                             .item("content-length", "11")
+                             .item("date", response2Date)
+                             .item("surrogate-control", "max-age=100+100")
+                             .item("etag", etag2)
+                             .item("cache-control", "stale-while-revalidate=100")
+                             .build()}
+
+read "response #2"
+
+read closed
