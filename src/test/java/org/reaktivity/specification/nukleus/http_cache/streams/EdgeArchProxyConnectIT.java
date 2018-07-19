@@ -344,10 +344,22 @@ public class EdgeArchProxyConnectIT
 
     @Test
     @Specification({
-            "${streams}/polling.vary.header.asterisk/accept/client",
-            "${streams}/polling.vary.header.asterisk/accept/server",
+        "${streams}/polling.vary.header.asterisk/accept/client",
+        "${streams}/polling.vary.header.asterisk/accept/server",
     })
     public void pollingVaryHeaderAsterisk() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_PROXY");
+        k3po.finish();
+    }
+
+    @Test
+    @Specification({
+        "${streams}/cache.sends.503.retry-after/connect/client",
+        "${streams}/cache.sends.503.retry-after/connect/server",
+    })
+    public void sends503RetryAfter() throws Exception
     {
         k3po.start();
         k3po.notifyBarrier("ROUTED_PROXY");
