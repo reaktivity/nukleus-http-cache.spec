@@ -151,6 +151,18 @@ public class EdgeArchProxyConnectIT
 
     @Test
     @Specification({
+        "${streams}/polling.updates.cache.after.503.retry-after/connect/client",
+        "${streams}/polling.updates.cache.after.503.retry-after/connect/server",
+    })
+    public void shouldUpdateCacheOnPollAfter503RetryAfter() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_PROXY");
+        k3po.finish();
+    }
+
+    @Test
+    @Specification({
         "${streams}/polling.waits.on.surrogate-age/connect/client",
         "${streams}/polling.waits.on.surrogate-age/connect/server",
     })
