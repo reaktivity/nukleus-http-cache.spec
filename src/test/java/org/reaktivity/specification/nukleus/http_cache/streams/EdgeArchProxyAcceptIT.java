@@ -364,4 +364,16 @@ public class EdgeArchProxyAcceptIT
         k3po.notifyBarrier("ROUTED_PROXY");
         k3po.finish();
     }
+
+    @Test
+    @Specification({
+        "${streams}/cache.sends.503.retry-after/accept/client",
+        "${streams}/cache.sends.503.retry-after/accept/server",
+    })
+    public void sends503RetryAfter() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_PROXY");
+        k3po.finish();
+    }
 }
