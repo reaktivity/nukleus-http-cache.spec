@@ -31,4 +31,4 @@ write nukleus:begin.ext ${http:headers()
 connected
 
 
-write abort
+write aborted

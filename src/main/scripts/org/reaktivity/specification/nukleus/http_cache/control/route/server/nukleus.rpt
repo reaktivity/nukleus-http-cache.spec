@@ -32,12 +32,13 @@ read [0x00]
 read [0x06] "source"
 read 0L
 read [0x06] ${routeTarget} 
-read (long:targetInputRefRG010001N)
+read (long:serverConnectRefRG010001N)
 read [0..8] # authorization
 
 write 0x40000001
 write ${correlationIdRG010001N}
 write ${nukleus:newRouteRef()}
+write ${serverConnectRefRG010001N}
 write flush
 
 close
