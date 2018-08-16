@@ -16,6 +16,7 @@
 package org.reaktivity.specification.nukleus.http_cache.specification.internal;
 
 import static java.lang.System.currentTimeMillis;
+import static java.lang.System.nanoTime;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -92,7 +93,7 @@ public final class Functions
     @Function
     public static String strongEtag()
     {
-        return "\"" + MD5.digest(date().getBytes()) + "\"";
+        return "\"" + nanoTime() + "\"";
     }
 
     @Function
