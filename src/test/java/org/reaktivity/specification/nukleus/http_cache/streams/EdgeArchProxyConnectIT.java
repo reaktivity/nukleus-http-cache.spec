@@ -365,4 +365,16 @@ public class EdgeArchProxyConnectIT
         k3po.notifyBarrier("ROUTED_PROXY");
         k3po.finish();
     }
+
+    @Test
+    @Specification({
+        "${streams}/cache.sends.304.for.matching.etag/connect/client",
+        "${streams}/cache.sends.304.for.matching.etag/connect/server",
+    })
+    public void sends304ForMatchingEtag() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_PROXY");
+        k3po.finish();
+    }
 }
