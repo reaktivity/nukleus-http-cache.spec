@@ -29,6 +29,7 @@ write nukleus:begin.ext ${http:headers()
                               .item(":path", "/path")
                               .item(":authority", "localhost:8080")
                               .item("user-agent", "user-agent-1")
+                              .item("accept-encoding", "gzip, deflate, br")
                               .build()}
 
 connected
@@ -40,7 +41,7 @@ read nukleus:begin.ext ${http:headers()
                              .item("cache-control", "max-age=15")
                              .item("date", date)
                              .item("last-modified", date)
-                             .item("vary", "user-agent")
+                             .item("vary", "user-agent,Accept-Encoding")
                              .build()}
 read "hello world"
 
@@ -61,6 +62,7 @@ write nukleus:begin.ext ${http:headers()
                               .item(":path", "/path")
                               .item(":authority", "localhost:8080")
                               .item("user-agent", "user-agent-1")
+                              .item("accept-encoding", "gzip")
                               .build()}
 connected
 
@@ -72,7 +74,7 @@ read nukleus:begin.ext ${http:headers()
                              .item("cache-control", "max-age=15")
                              .item("date", date)
                              .item("last-modified", date)
-                             .item("vary", "user-agent")
+                             .item("vary", "user-agent,Accept-Encoding")
                              .build()}
 read "hello world"
 
