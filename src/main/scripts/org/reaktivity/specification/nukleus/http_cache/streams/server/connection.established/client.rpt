@@ -37,3 +37,5 @@ read nukleus:begin.ext ${http:headers()
                              .item(":status", "200")
                              .item("content-type", "text/event-stream")
                              .build()}
+
+read abort

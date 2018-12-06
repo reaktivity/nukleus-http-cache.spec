@@ -68,7 +68,7 @@ connect await REQUEST1_COMPLETE
         "nukleus://http-cache/streams/source"
         option nukleus:route ${newProxyAcceptRef}
         option nukleus:window 8192
-        option nukleus:transmission "half-duplex"
+        option nukleus:transmission "simplex"
 
 write nukleus:begin.ext ${http:headers()
                               .item(":scheme", "http")
