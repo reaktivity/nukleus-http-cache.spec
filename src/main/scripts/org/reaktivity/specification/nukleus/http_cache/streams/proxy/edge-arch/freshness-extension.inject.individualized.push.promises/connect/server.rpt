@@ -65,3 +65,5 @@ connected
 
 read closed
 read notify REVALIDATING
+
+write abort
