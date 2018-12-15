@@ -151,6 +151,18 @@ public class EdgeArchProxyConnectIT
 
     @Test
     @Specification({
+        "${streams}/push.promise.after.cache.full/connect/client",
+        "${streams}/push.promise.after.cache.full/connect/server",
+    })
+    public void pushPromiseAfterCacheFull() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_PROXY");
+        k3po.finish();
+    }
+
+    @Test
+    @Specification({
         "${streams}/polling.updates.cache.after.503.retry-after/connect/client",
         "${streams}/polling.updates.cache.after.503.retry-after/connect/server",
     })
