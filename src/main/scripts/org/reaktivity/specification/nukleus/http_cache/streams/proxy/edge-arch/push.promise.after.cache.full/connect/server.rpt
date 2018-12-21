@@ -14,15 +14,12 @@
 # under the License.
 #
 
-property newProxyConnectRef ${nuklei:newReferenceId()} # external scope
-
 property date ${http_cache:date()}
 property etag ${http_cache:strongEtag()}
 
 
 accept await ROUTED_PROXY
-        "nukleus://target/streams/http-cache"
-        option nukleus:route ${newProxyConnectRef}
+        "nukleus://streams/target#0"
         option nukleus:window 8192
         option nukleus:transmission "half-duplex"
 accepted

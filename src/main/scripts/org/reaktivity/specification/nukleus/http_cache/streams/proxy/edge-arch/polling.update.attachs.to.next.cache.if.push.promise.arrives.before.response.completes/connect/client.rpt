@@ -14,15 +14,13 @@
 # under the License.
 #
 
-property newProxyConnectRef ${nuklei:newReferenceId()} # external scope
 property response1Date ${http_cache:date()} # sharedProperty
 property response2Date ${http_cache:datePlus(5)} # sharedProperty
 property etag ${http_cache:strongEtag()} # sharedProperty
 property etag2 ${http_cache:strongEtag()} # sharedProperty
 
 connect await ROUTED_PROXY
-        "nukleus://target/streams/http-cache"
-        option nukleus:route ${newProxyConnectRef}
+        "nukleus://streams/target#0"
         option nukleus:window 8192
         option nukleus:transmission "half-duplex"
 
@@ -53,8 +51,7 @@ read "response #1"
 read closed
 
 connect await REQUEST_TWO_PENDING
-        "nukleus://target/streams/http-cache"
-        option nukleus:route ${newProxyConnectRef}
+        "nukleus://streams/target#0"
         option nukleus:window 8192
         option nukleus:transmission "half-duplex"
 
@@ -86,8 +83,7 @@ read closed
 read notify SECOND_REQUEST_COMPLETE
 
 connect await SECOND_REQUEST_COMPLETE
-        "nukleus://target/streams/http-cache"
-        option nukleus:route ${newProxyConnectRef}
+        "nukleus://streams/target#0"
         option nukleus:window 8192
         option nukleus:transmission "half-duplex"
 
