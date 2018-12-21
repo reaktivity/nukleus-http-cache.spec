@@ -14,15 +14,13 @@
 # under the License.
 #
 
-property newProxyAcceptRef ${nukleus:newRouteRef()} # external scope
 property date ${http_cache:date()}
 property etag ${http_cache:strongEtag()} #shared
 
 # Populate Cache
 
 connect await ROUTED_PROXY
-        "nukleus://http-cache/streams/source"
-        option nukleus:route ${newProxyAcceptRef}
+        "nukleus://streams/http-cache#0"
         option nukleus:window 8192
         option nukleus:transmission "half-duplex"
         option nukleus:authorization 0x0001_000000_000000L
@@ -66,8 +64,7 @@ read notify REQUEST1_COMPLETE
 ## Served from cache
 
 connect await REQUEST1_COMPLETE
-        "nukleus://http-cache/streams/source"
-        option nukleus:route ${newProxyAcceptRef}
+        "nukleus://streams/http-cache#0"
         option nukleus:window 8192
         option nukleus:transmission "half-duplex"
         option nukleus:authorization 0x0001_000000_000000L

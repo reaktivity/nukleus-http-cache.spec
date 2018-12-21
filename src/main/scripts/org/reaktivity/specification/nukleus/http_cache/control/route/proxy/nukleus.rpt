@@ -26,19 +26,16 @@ connected
 
 read 0x00000001
 read (long:correlationIdRG010101N)
+read ${core:string("http-cache")}
 read [0x02]
-read [0x06] "source"
-read 0L
-read [0x06] "target"
-read (long:proxyConnectRefRG010101N)
 read [0..8] # authorization
+read ${core:string("http-cache#0")}
+read ${core:string("target#0")}
 
 write 0x40000001
 write ${correlationIdRG010101N}
-write ${nukleus:newRouteRef()}
-write ${proxyConnectRefRG010101N}
+write ${nukleus:newProxyRouteId("http-cache#0", "target#0")}
 write flush
 
 close
 closed
-
