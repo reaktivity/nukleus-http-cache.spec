@@ -1,5 +1,5 @@
 #
-# Copyright 2016-2017 The Reaktivity Project
+# Copyright 2016-2018 The Reaktivity Project
 #
 # The Reaktivity Project licenses this file to you under the Apache License,
 # version 2.0 (the "License"); you may not use this file except in compliance
@@ -14,34 +14,29 @@
 # under the License.
 #
 
-property newServerAcceptRef ${nukleus:newRouteRef()} # external scope
-property newServerConnectRef ${nukleus:newRouteRef()} # external scope
+property newServerRouteId ${nukleus:newServerRouteId("http-cache#0", "target#0")} # external
 
-property nukleiUR020001C ${nuklei:directory("target/nukleus-itests").controlCapacity(1024, 1024)}
+property nukleiUR020101C ${nuklei:directory("target/nukleus-itests").controlCapacity(1024, 1024)}
 
-property controlUR020001C ${nukleiUR020001C.control("http-cache")}
+property controlUR020101C ${nukleiUR020101C.control("http-cache")}
 
 property routeAuthorization 0x0000_000000000000L # external
 
 connect await ROUTED_SERVER
         "agrona://stream/bidirectional"
-        option agrona:reader ${agrona:broadcastReceiver(controlUR020001C.controller)}
-        option agrona:writer ${agrona:manyToOneWriter(controlUR020001C.nukleus)}
+        option agrona:reader ${agrona:broadcastReceiver(controlUR020101C.controller)}
+        option agrona:writer ${agrona:manyToOneWriter(controlUR020101C.nukleus)}
 
 connected
 
 write 0x00000002
-write ${controlUR020001C.nextCorrelationId()}
-write [0x00]
-write [0x06] "source"
-write ${newServerAcceptRef}
-write [0x06] "target"
-write ${newServerConnectRef}
-write ${routeAuthorization}
+write ${controlUR020101C.nextCorrelationId()}
+write ${core:string("http-cache")}
+write ${newServerRouteId}
 write flush
 
 read 0x40000002
-read ${controlUR020001C.correlationId()}
+read ${controlUR020101C.correlationId()}
 
 close
 closed

@@ -1,5 +1,5 @@
 /**
- * Copyright 2016-2017 The Reaktivity Project
+ * Copyright 2016-2018 The Reaktivity Project
  *
  * The Reaktivity Project licenses this file to you under the Apache License,
  * version 2.0 (the "License"); you may not use this file except in compliance
@@ -16,6 +16,7 @@
 package org.reaktivity.specification.nukleus.http_cache.specification.internal;
 
 import static java.lang.System.currentTimeMillis;
+import static java.lang.System.nanoTime;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -92,7 +93,7 @@ public final class Functions
     @Function
     public static String strongEtag()
     {
-        return "\"" + MD5.digest(date().getBytes()) + "\"";
+        return "\"" + nanoTime() + "\"";
     }
 
     @Function

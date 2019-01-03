@@ -1,5 +1,5 @@
 /**
- * Copyright 2016-2017 The Reaktivity Project
+ * Copyright 2016-2018 The Reaktivity Project
  *
  * The Reaktivity Project licenses this file to you under the Apache License,
  * version 2.0 (the "License"); you may not use this file except in compliance
@@ -143,6 +143,30 @@ public class EdgeArchProxyConnectIT
         "${streams}/polling.updates.cache/connect/server",
     })
     public void shouldUpdateCacheOnPoll() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_PROXY");
+        k3po.finish();
+    }
+
+    @Test
+    @Specification({
+        "${streams}/push.promise.after.cache.full/connect/client",
+        "${streams}/push.promise.after.cache.full/connect/server",
+    })
+    public void pushPromiseAfterCacheFull() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_PROXY");
+        k3po.finish();
+    }
+
+    @Test
+    @Specification({
+        "${streams}/polling.updates.cache.after.503.retry-after/connect/client",
+        "${streams}/polling.updates.cache.after.503.retry-after/connect/server",
+    })
+    public void shouldUpdateCacheOnPollAfter503RetryAfter() throws Exception
     {
         k3po.start();
         k3po.notifyBarrier("ROUTED_PROXY");
@@ -295,10 +319,58 @@ public class EdgeArchProxyConnectIT
 
     @Test
     @Specification({
+        "${streams}/no.authorization.sends.cache.control.private/accept/client",
+        "${streams}/no.authorization.sends.cache.control.private/accept/server",
+    })
+    public void noAuthorizationSendsCacheControlPrivate() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_PROXY");
+        k3po.finish();
+    }
+
+    @Test
+    @Specification({
+        "${streams}/no.authorization.sends.cache.control.private.except.when.public/accept/client",
+        "${streams}/no.authorization.sends.cache.control.private.except.when.public/accept/server",
+    })
+    public void noAuthorizationSendsCacheControlPrivateExceptWhenPublic() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_PROXY");
+        k3po.finish();
+    }
+
+    @Test
+    @Specification({
+        "${streams}/polling.vary.header.mismatch/accept/client",
+        "${streams}/polling.vary.header.mismatch/accept/server",
+    })
+    public void pollingVaryHeaderMismatch() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_PROXY");
+        k3po.finish();
+    }
+
+    @Test
+    @Specification({
         "${streams}/override.injected.stale-while-revalidate.with.explicit.one/connect/client",
         "${streams}/override.injected.stale-while-revalidate.with.explicit.one/connect/server",
     })
     public void shouldOverrideInjectedStaleWhileRevalidateValueWithExplicitOne() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_PROXY");
+        k3po.finish();
+    }
+
+    @Test
+    @Specification({
+        "${streams}/polling.vary.header.value.mismatch/accept/client",
+        "${streams}/polling.vary.header.value.mismatch/accept/server",
+    })
+    public void pollingVaryHeadeValuerMismatch() throws Exception
     {
         k3po.start();
         k3po.notifyBarrier("ROUTED_PROXY");
@@ -319,10 +391,34 @@ public class EdgeArchProxyConnectIT
 
     @Test
     @Specification({
+        "${streams}/polling.vary.header.asterisk/accept/client",
+        "${streams}/polling.vary.header.asterisk/accept/server",
+    })
+    public void pollingVaryHeaderAsterisk() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_PROXY");
+        k3po.finish();
+    }
+
+    @Test
+    @Specification({
         "${streams}/polling.updates.pending.on-update.requests.on.etag.mismatch/connect/client",
         "${streams}/polling.updates.pending.on-update.requests.on.etag.mismatch/connect/server",
     })
     public void shouldUpdateOnUpdateRequestOnEtagMismatch() throws Exception
+    {
+    k3po.start();
+    k3po.notifyBarrier("ROUTED_PROXY");
+    k3po.finish();
+    }
+
+    @Test
+    @Specification({
+        "${streams}/cache.sends.503.retry-after/connect/client",
+        "${streams}/cache.sends.503.retry-after/connect/server",
+    })
+    public void sends503RetryAfter() throws Exception
     {
         k3po.start();
         k3po.notifyBarrier("ROUTED_PROXY");
@@ -335,6 +431,18 @@ public class EdgeArchProxyConnectIT
         "${streams}/polling.updates.pending.on-update.requests.without.default.headers/connect/server",
     })
     public void shouldUpdateOnUpdateRequestsByDefaultingMissingHeaders() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_PROXY");
+        k3po.finish();
+    }
+
+    @Test
+    @Specification({
+        "${streams}/cache.sends.304.for.matching.etag/connect/client",
+        "${streams}/cache.sends.304.for.matching.etag/connect/server",
+    })
+    public void sends304ForMatchingEtag() throws Exception
     {
         k3po.start();
         k3po.notifyBarrier("ROUTED_PROXY");

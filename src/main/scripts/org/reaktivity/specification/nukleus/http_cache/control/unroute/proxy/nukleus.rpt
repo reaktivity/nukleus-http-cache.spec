@@ -1,5 +1,5 @@
 #
-# Copyright 2016-2017 The Reaktivity Project
+# Copyright 2016-2018 The Reaktivity Project
 #
 # The Reaktivity Project licenses this file to you under the Apache License,
 # version 2.0 (the "License"); you may not use this file except in compliance
@@ -27,12 +27,8 @@ connected
 
 read 0x00000002
 read (long:correlationIdUR020101N)
-read [0x02]
-read [0x06] "source"
-read (long:proxyAcceptRefUR020101N)
-read [0x06] "target"
-read (long:proxyConnectRefRG010101N)
-read [0..8] # authorization
+read ${core:string("http-cache")}
+read [0..8] # routeId
 
 write 0x40000002
 write ${correlationIdUR020101N}

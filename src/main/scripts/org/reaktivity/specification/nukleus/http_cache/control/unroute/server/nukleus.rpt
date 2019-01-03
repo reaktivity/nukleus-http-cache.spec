@@ -1,5 +1,5 @@
 #
-# Copyright 2016-2017 The Reaktivity Project
+# Copyright 2016-2018 The Reaktivity Project
 #
 # The Reaktivity Project licenses this file to you under the Apache License,
 # version 2.0 (the "License"); you may not use this file except in compliance
@@ -14,28 +14,24 @@
 # under the License.
 #
 
-property nukleiUR020001N ${nuklei:directory("target/nukleus-itests").controlCapacity(1024, 1024)}
+property nukleiUR020101N ${nuklei:directory("target/nukleus-itests").controlCapacity(1024, 1024)}
 
-property controlUR020001N ${nukleiUR020001N.controlNew("http-cache")}
+property controlUR020101N ${nukleiUR020101N.controlNew("http-cache")}
 
 connect await ROUTED_SERVER
         "agrona://stream/bidirectional"
-        option agrona:reader ${agrona:manyToOneReader(controlUR020001N.nukleus)}
-        option agrona:writer ${agrona:broadcastTransmitter(controlUR020001N.controller)}
+        option agrona:reader ${agrona:manyToOneReader(controlUR020101N.nukleus)}
+        option agrona:writer ${agrona:broadcastTransmitter(controlUR020101N.controller)}
 
 connected
 
 read 0x00000002
-read (long:correlationIdUR020001N)
-read [0x00]
-read [0x06] "source"
-read (long:serverAcceptRefRG010001N)
-read [0x06] "target"
-read (long:serverConnectRefRG010001N)
-read [0..8] # authorization
+read (long:correlationIdUR020101N)
+read ${core:string("http-cache")}
+read [0..8] # routeId
 
 write 0x40000002
-write ${correlationIdUR020001N}
+write ${correlationIdUR020101N}
 write flush
 
 close

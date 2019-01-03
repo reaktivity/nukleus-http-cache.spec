@@ -1,5 +1,5 @@
 #
-# Copyright 2016-2017 The Reaktivity Project
+# Copyright 2016-2018 The Reaktivity Project
 #
 # The Reaktivity Project licenses this file to you under the Apache License,
 # version 2.0 (the "License"); you may not use this file except in compliance
@@ -14,30 +14,32 @@
 # under the License.
 #
 
-property newProxyConnectRef ${nuklei:newReferenceId()} # external scope
 property statusCode ${http_cache:randomCacheableByDefaultStatusCode()} # shared property
 property lastModified ${http_cache:date()} # shared property
 property currentTime ${http_cache:datePlus(50)} # shared property
 
 connect await ROUTED_PROXY
-        "nukleus://target/streams/http-cache"
-        option nukleus:route ${newProxyConnectRef}
+        "nukleus://streams/target#0"
         option nukleus:window 8192
         option nukleus:transmission "half-duplex"
 
-write nukleus:begin.ext ${http:header(":scheme", "http")}
-                        ${http:header(":method", "GET")}
-                        ${http:header(":path", "/path")}
-                        ${http:header(":authority", "localhost:8080")}
+write nukleus:begin.ext ${http:headers()
+                              .item(":scheme", "http")
+                              .item(":method", "GET")
+                              .item(":path", "/path")
+                              .item(":authority", "localhost:8080")
+                              .build()}
 
 connected
 
 write close
 
-read nukleus:begin.ext ${http:header(":status", statusCode)}
-                       ${http:header("content-length", "11")}
-                       ${http:header("last-modified", lastModified)}
-                       ${http:header("date", currentTime)}
+read nukleus:begin.ext ${http:headers()
+                             .item(":status", statusCode)
+                             .item("content-length", "11")
+                             .item("last-modified", lastModified)
+                             .item("date", currentTime)
+                             .build()}
 read "hello world"
 
 read closed

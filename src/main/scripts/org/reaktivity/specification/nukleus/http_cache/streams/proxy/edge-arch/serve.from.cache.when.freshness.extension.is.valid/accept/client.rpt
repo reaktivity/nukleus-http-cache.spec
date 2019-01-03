@@ -1,5 +1,5 @@
 #
-# Copyright 2016-2017 The Reaktivity Project
+# Copyright 2016-2018 The Reaktivity Project
 #
 # The Reaktivity Project licenses this file to you under the Apache License,
 # version 2.0 (the "License"); you may not use this file except in compliance
@@ -14,42 +14,46 @@
 # under the License.
 #
 
-property newProxyAcceptRef ${nukleus:newRouteRef()} # external scope
 property date ${http_cache:date()}
 property etag ${http_cache:strongEtag()} #shared
 
 # Populate Cache
 
 connect await ROUTED_PROXY
-        "nukleus://http-cache/streams/source"
-        option nukleus:route ${newProxyAcceptRef}
+        "nukleus://streams/http-cache#0"
         option nukleus:window 8192
         option nukleus:transmission "half-duplex"
         option nukleus:authorization 0x0001_000000_000000L
 
-write nukleus:begin.ext ${http:header(":scheme", "http")}
-                        ${http:header(":method", "GET")}
-                        ${http:header(":path", "/path")}
-                        ${http:header(":authority", "localhost:8080")}
+write nukleus:begin.ext ${http:headers()
+                              .item(":scheme", "http")
+                              .item(":method", "GET")
+                              .item(":path", "/path")
+                              .item(":authority", "localhost:8080")
+                              .build()}
 
 connected
 
 write close
 
-read nukleus:begin.ext ${http:header(":status", "200")}
-                       ${http:header("content-length", "11")}
-                       ${http:header("date", date)}
-                       ${http:header("surrogate-control", "max-age=1+10, x-protected")}
-                       ${http:header("etag", etag)}
-                       ${http:header("cache-control", "stale-while-revalidate=10")}
+read nukleus:begin.ext ${http:headers()
+                             .item(":status", "200")
+                             .item("content-length", "11")
+                             .item("date", date)
+                             .item("surrogate-control", "max-age=1+10, x-protected")
+                             .item("etag", etag)
+                             .item("cache-control", "stale-while-revalidate=10")
+                             .build()}
 
-read nukleus:data.ext ${http:header(":scheme", "http")}
-                      ${http:header(":method", "GET")}
-                      ${http:header(":path", "/path")}
-                      ${http:header(":authority", "localhost:8080")}
-                      ${http:header("cache-control", "no-cache")}
-                      ${http:header("prefer", "wait=10")}
-                      ${http:header("if-none-match", etag)}
+read nukleus:data.ext ${http:headers()
+                            .item(":scheme", "http")
+                            .item(":method", "GET")
+                            .item(":path", "/path")
+                            .item(":authority", "localhost:8080")
+                            .item("cache-control", "no-cache")
+                            .item("prefer", "wait=10")
+                            .item("if-none-match", etag)
+                            .build()}
 
 read "hello world"
 
@@ -60,35 +64,40 @@ read notify REQUEST1_COMPLETE
 ## Served from cache
 
 connect await REQUEST1_COMPLETE
-        "nukleus://http-cache/streams/source"
-        option nukleus:route ${newProxyAcceptRef}
+        "nukleus://streams/http-cache#0"
         option nukleus:window 8192
         option nukleus:transmission "half-duplex"
         option nukleus:authorization 0x0001_000000_000000L
 
-write nukleus:begin.ext ${http:header(":scheme", "http")}
-                        ${http:header(":method", "GET")}
-                        ${http:header(":path", "/path")}
-                        ${http:header(":authority", "localhost:8080")}
+write nukleus:begin.ext ${http:headers()
+                              .item(":scheme", "http")
+                              .item(":method", "GET")
+                              .item(":path", "/path")
+                              .item(":authority", "localhost:8080")
+                              .build()}
 
 connected
 
 write close
 
-read nukleus:begin.ext ${http:header(":status", "200")}
-                       ${http:header("content-length", "11")}
-                       ${http:header("date", date)}
-                       ${http:header("surrogate-control", "max-age=1+10, x-protected")}
-                       ${http:header("etag", etag)}
-                       ${http:header("cache-control", "stale-while-revalidate=10")}
+read nukleus:begin.ext ${http:headers()
+                             .item(":status", "200")
+                             .item("content-length", "11")
+                             .item("date", date)
+                             .item("surrogate-control", "max-age=1+10, x-protected")
+                             .item("etag", etag)
+                             .item("cache-control", "stale-while-revalidate=10")
+                             .build()}
 
-read nukleus:data.ext ${http:header(":scheme", "http")}
-                      ${http:header(":method", "GET")}
-                      ${http:header(":path", "/path")}
-                      ${http:header(":authority", "localhost:8080")}
-                      ${http:header("cache-control", "no-cache")}
-                      ${http:header("prefer", "wait=10")}
-                      ${http:header("if-none-match", etag)}
+read nukleus:data.ext ${http:headers()
+                            .item(":scheme", "http")
+                            .item(":method", "GET")
+                            .item(":path", "/path")
+                            .item(":authority", "localhost:8080")
+                            .item("cache-control", "no-cache")
+                            .item("prefer", "wait=10")
+                            .item("if-none-match", etag)
+                            .build()}
 
 read "hello world"
 

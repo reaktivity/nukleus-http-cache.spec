@@ -1,5 +1,5 @@
 #
-# Copyright 2016-2017 The Reaktivity Project
+# Copyright 2016-2018 The Reaktivity Project
 #
 # The Reaktivity Project licenses this file to you under the Apache License,
 # version 2.0 (the "License"); you may not use this file except in compliance
@@ -14,8 +14,7 @@
 # under the License.
 #
 
-property newProxyAcceptRef ${nukleus:newRouteRef()} # external scope
-property newProxyConnectRef ${nukleus:newRouteRef()} # external scope
+property newProxyRouteId ${nukleus:newProxyRouteId("http-cache#0", "target#0")} # external
 
 property nukleiUR020101C ${nuklei:directory("target/nukleus-itests").controlCapacity(1024, 1024)}
 
@@ -32,12 +31,8 @@ connected
 
 write 0x00000002
 write ${controlUR020101C.nextCorrelationId()}
-write [0x02]
-write [0x06] "source"
-write ${newProxyAcceptRef}
-write [0x06] "target"
-write ${newProxyConnectRef}
-write ${routeAuthorization}
+write ${core:string("http-cache")}
+write ${newProxyRouteId}
 write flush
 
 read 0x40000002

@@ -1,5 +1,5 @@
 #
-# Copyright 2016-2017 The Reaktivity Project
+# Copyright 2016-2018 The Reaktivity Project
 #
 # The Reaktivity Project licenses this file to you under the Apache License,
 # version 2.0 (the "License"); you may not use this file except in compliance
@@ -14,15 +14,11 @@
 # under the License.
 #
 
-property newServerConnectRef ${nukleus:newRouteRef()} # external scope
-
 property nukleiRG010001C ${nuklei:directory("target/nukleus-itests").controlCapacity(1024, 1024)}
 
 property controlRG010001C ${nukleiRG010001C.control("http-cache")}
 
 property routeAuthorization 0x0000_000000000000L # external
-
-property routeTarget "target"
 
 connect "agrona://stream/bidirectional"
         option agrona:reader ${agrona:broadcastReceiver(controlRG010001C.controller)}
@@ -32,19 +28,19 @@ connected
 
 write 0x00000001
 write ${controlRG010001C.nextCorrelationId()}
+write ${core:string("http-cache")}
 write [0x00]
-write [0x06] "source"
-write 0L
-write [0x06] ${routeTarget} 
-write ${newServerConnectRef}
 write ${routeAuthorization}
+write ${core:string("http-cache#0")}
+write ${core:string("target#0")}
 write flush
 
 read 0x40000001
 read ${controlRG010001C.correlationId()}
-read (long:newServerAcceptRef)
+read (long:newServerRouteId)
 
 read notify ROUTED_SERVER
 
 close
 closed
+

@@ -1,5 +1,5 @@
 #
-# Copyright 2016-2017 The Reaktivity Project
+# Copyright 2016-2018 The Reaktivity Project
 #
 # The Reaktivity Project licenses this file to you under the Apache License,
 # version 2.0 (the "License"); you may not use this file except in compliance
@@ -14,11 +14,8 @@
 # under the License.
 #
 
-property newProxyAcceptRef ${nukleus:newRouteRef()} # external scope
-
 accept await ROUTED_PROXY
-        "nukleus://http-cache/streams/source"
-        option nukleus:route ${newProxyAcceptRef}
+        "nukleus://streams/http-cache#0"
         option nukleus:window 8192
         option nukleus:transmission "simplex"
 
@@ -26,13 +23,15 @@ accepted
 
 connected
 
-read nukleus:begin.ext ${http:header(":scheme", "http")}
-                        ${http:header(":method", "GET")}
-                        ${http:header(":path", "/data")}
-                        ${http:header(":authority", "localhost:8080")}
-                        ${http:header("x-retry-after", "2")}
-                        ${http:header("x-poll-injected", "x-http-cache-sync, no-cache")}
-                        ${http:header("cache-control", "no-cache")}
-                        ${http:header("x-http-cache-sync", "always")}
+read nukleus:begin.ext ${http:headers()
+                             .item(":scheme", "http")
+                             .item(":method", "GET")
+                             .item(":path", "/data")
+                             .item(":authority", "localhost:8080")
+                             .item("x-retry-after", "2")
+                             .item("x-poll-injected", "x-http-cache-sync, no-cache")
+                             .item("cache-control", "no-cache")
+                             .item("x-http-cache-sync", "always")
+                             .build()}
 
 read aborted
