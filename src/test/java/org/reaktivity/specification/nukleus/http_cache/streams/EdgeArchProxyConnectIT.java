@@ -370,7 +370,7 @@ public class EdgeArchProxyConnectIT
         "${streams}/polling.vary.header.value.mismatch/accept/client",
         "${streams}/polling.vary.header.value.mismatch/accept/server",
     })
-    public void pollingVaryHeadeValuerMismatch() throws Exception
+    public void pollingVaryHeaderValuerMismatch() throws Exception
     {
         k3po.start();
         k3po.notifyBarrier("ROUTED_PROXY");

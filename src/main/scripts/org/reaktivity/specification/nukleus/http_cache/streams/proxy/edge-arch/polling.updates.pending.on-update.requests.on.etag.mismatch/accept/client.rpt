@@ -1,5 +1,5 @@
 #
-# Copyright 2016-2017 The Reaktivity Project
+# Copyright 2016-2018 The Reaktivity Project
 #
 # The Reaktivity Project licenses this file to you under the Apache License,
 # version 2.0 (the "License"); you may not use this file except in compliance
@@ -20,7 +20,6 @@ property etag ${http_cache:strongEtag()} # sharedProperty
 
 connect await ROUTED_PROXY
         "nukleus://http-cache/streams/source"
-        option nukleus:route ${newProxyAcceptRef}
         option nukleus:window 8192
         option nukleus:transmission "half-duplex"
 
@@ -55,7 +54,6 @@ read notify REQUEST_ONE_COMPLETE
 
 connect await REQUEST_ONE_COMPLETE
         "nukleus://http-cache/streams/source"
-        option nukleus:route ${newProxyAcceptRef}
         option nukleus:window 8192
         option nukleus:transmission "half-duplex"
 
@@ -95,7 +93,6 @@ read notify REQUEST_THREE_COMPLETE
 
 connect await REQUEST_THREE_COMPLETE
         "nukleus://http-cache/streams/source"
-        option nukleus:route ${newProxyAcceptRef}
         option nukleus:window 8192
         option nukleus:transmission "half-duplex"
 
