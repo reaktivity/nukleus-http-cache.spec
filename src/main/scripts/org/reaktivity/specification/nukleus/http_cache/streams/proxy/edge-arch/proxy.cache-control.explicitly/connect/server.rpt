@@ -14,30 +14,32 @@
 # under the License.
 #
 
-
 property etag ${http_cache:strongEtag()} #shared
 
 accept await ROUTED_PROXY
-        "nukleus://target/streams/http-cache"
-
+        "nukleus://streams/target#0"
         option nukleus:window 8192
         option nukleus:transmission "half-duplex"
 accepted
 
-read nukleus:begin.ext .item(":scheme", "http")}
-                       .item(":method", "GET")}
-                       .item(":path", "/data")}
-                       .item(":authority", "localhost:8080")}
+read nukleus:begin.ext ${http:headers()
+                       .item(":scheme", "http")
+                       .item(":method", "GET")
+                       .item(":path", "/data")
+                       .item(":authority", "localhost:8080")
+                       .build()}
 
 connected
 
 read closed
 
-write nukleus:begin.ext .item(":status", "200")}
-                        .item("content-length", "11")}
-                        .item("surrogate-control", "max-age=5+100")}
-                        .item("etag", etag)}
-                        .item("cache-control", "max-age=6")}
+write nukleus:begin.ext ${http:headers()
+                        .item(":status", "200")
+                        .item("content-length", "11")
+                        .item("surrogate-control", "max-age=5+100")
+                        .item("etag", etag)
+                        .item("cache-control", "max-age=6")
+                        .build()}
 
 write "hello world"
 

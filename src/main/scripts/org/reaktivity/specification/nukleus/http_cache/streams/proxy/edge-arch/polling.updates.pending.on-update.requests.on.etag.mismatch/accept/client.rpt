@@ -14,7 +14,6 @@
 # under the License.
 #
 
-.item(
 property response1Date ${http_cache:date()} # sharedProperty
 property etag ${http_cache:strongEtag()} # sharedProperty
 
@@ -64,7 +63,7 @@ connect await REQUEST_ONE_COMPLETE
         option nukleus:window 8192
         option nukleus:transmission "half-duplex"
 
-write nukleus:begin.ext  ${http:headers()
+write nukleus:begin.ext ${http:headers()
                         .item(":scheme", "http")
                         .item(":method", "GET")
                         .item(":path", "/data")
@@ -125,6 +124,8 @@ write close
 
 write notify REQUEST_THREE_PENDING
 
-read nukleus:begin.ext  ${http:headers().item(":status", "503").build()}
+read nukleus:begin.ext  ${http:headers()
+                                .item(":status", "503")
+                                .build()}
 
 read aborted

@@ -14,7 +14,6 @@
 # under the License.
 #
 
-.item(
 property response1Date ${http_cache:date()} # sharedProperty
 property response2Date ${http_cache:datePlus(5)} # sharedProperty
 property etag ${http_cache:strongEtag()} # sharedProperty
@@ -121,6 +120,8 @@ read closed
 
 read notify REQUEST_THREE_PENDING
 
-write nukleus:begin.ext ${http:headers().item(":status", "503").build()}
+write nukleus:begin.ext ${http:headers()
+                            .item(":status", "503")
+                            .build()}
 
 write abort
