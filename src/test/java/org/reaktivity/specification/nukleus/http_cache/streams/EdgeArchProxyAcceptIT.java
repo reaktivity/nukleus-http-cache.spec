@@ -163,6 +163,18 @@ public class EdgeArchProxyAcceptIT
 
     @Test
     @Specification({
+        "${streams}/polling.updates.after.cache.full/accept/client",
+        "${streams}/polling.updates.after.cache.full/accept/server",
+    })
+    public void pollingUpdateShouldRemoveCacheEntry() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_PROXY");
+        k3po.finish();
+    }
+
+    @Test
+    @Specification({
         "${streams}/polling.updates.cache.after.503.retry-after/accept/client",
         "${streams}/polling.updates.cache.after.503.retry-after/accept/server",
     })

@@ -1,0 +1,113 @@
+#
+# Copyright 2016-2018 The Reaktivity Project
+#
+# The Reaktivity Project licenses this file to you under the Apache License,
+# version 2.0 (the "License"); you may not use this file except in compliance
+# with the License. You may obtain a copy of the License at:
+#
+#   http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+# WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+# License for the specific language governing permissions and limitations
+# under the License.
+#
+
+property response1Date ${http_cache:date()} # sharedProperty
+property response2Date ${http_cache:datePlus(5)} # sharedProperty
+property response3Date ${http_cache:datePlus(7)} # sharedProperty
+
+property etag ${http_cache:strongEtag()} #shared
+property etag2 ${http_cache:strongEtag()} #shared
+property etag3 ${http_cache:strongEtag()} #shared
+
+accept await ROUTED_PROXY
+        "nukleus://streams/target#0"
+        option nukleus:window 8192
+        option nukleus:transmission "half-duplex"
+accepted
+
+read nukleus:begin.ext ${http:headers()
+                             .item(":scheme", "http")
+                             .item(":method", "GET")
+                             .item(":path", "/data")
+                             .item(":authority", "localhost:8080")
+                             .build()}
+
+connected
+
+read closed
+
+write nukleus:begin.ext ${http:headers()
+                              .item(":status", "200")
+                              .item("content-length", "11")
+                              .item("date", response1Date)
+                              .item("surrogate-control", "max-age=1+100")
+                              .item("etag", etag)
+                              .build()}
+
+write "response #1"
+
+write close
+
+
+#
+# polling request. response doesn't get into cache as it is full
+#
+accepted
+
+read nukleus:begin.ext ${http:headers()
+                             .item(":scheme", "http")
+                             .item(":method", "GET")
+                             .item(":path", "/data")
+                             .item(":authority", "localhost:8080")
+                             .item("if-none-match", etag)
+                             .build()}
+
+connected
+
+read closed
+
+write nukleus:begin.ext ${http:headers()
+                              .item(":status", "200")
+                              .item("content-length", "11")
+                              .item("date", response2Date)
+                              .item("surrogate-control", "max-age=100+100")
+                              .item("etag", etag2)
+                              .build()}
+
+write "response #2"
+
+write close
+
+write notify CACHE_UPDATE_SENT # Need to relay barrier due to race on write notify and nukleus process
+
+
+#
+# As there is no entry in cache, server receives a request
+#
+accepted
+
+read nukleus:begin.ext ${http:headers()
+                             .item(":scheme", "http")
+                             .item(":method", "GET")
+                             .item(":path", "/data")
+                             .item(":authority", "localhost:8080")
+                             .build()}
+
+connected
+
+read closed
+
+write nukleus:begin.ext ${http:headers()
+                              .item(":status", "200")
+                              .item("content-length", "11")
+                              .item("date", response3Date)
+                              .item("surrogate-control", "max-age=100+100")
+                              .item("etag", etag3)
+                              .build()}
+
+write "response #3"
+
+write close
