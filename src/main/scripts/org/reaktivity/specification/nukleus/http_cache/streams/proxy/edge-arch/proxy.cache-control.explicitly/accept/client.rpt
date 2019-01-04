@@ -14,7 +14,7 @@
 # under the License.
 #
 
-property newProxyAcceptRef ${nukleus:newRouteRef()} # external scope
+.item(
 property etag ${http_cache:strongEtag()} #shared
 
 connect await ROUTED_PROXY
@@ -22,27 +22,27 @@ connect await ROUTED_PROXY
         option nukleus:window 8192
         option nukleus:transmission "half-duplex"
 
-write nukleus:begin.ext ${http:header(":scheme", "http")}
-                        ${http:header(":method", "GET")}
-                        ${http:header(":path", "/data")}
-                        ${http:header(":authority", "localhost:8080")}
+write nukleus:begin.ext .item(":scheme", "http")}
+                        .item(":method", "GET")}
+                        .item(":path", "/data")}
+                        .item(":authority", "localhost:8080")}
 connected
 
 write close
 
-read nukleus:begin.ext ${http:header(":status", "200")}
-                       ${http:header("content-length", "11")}
-                       ${http:header("surrogate-control", "max-age=5+100")}
-                       ${http:header("etag", etag)}
-                       ${http:header("cache-control", "max-age=6, stale-while-revalidate=100")}
+read nukleus:begin.ext .item(":status", "200")}
+                       .item("content-length", "11")}
+                       .item("surrogate-control", "max-age=5+100")}
+                       .item("etag", etag)}
+                       .item("cache-control", "max-age=6, stale-while-revalidate=100")}
 
-read nukleus:data.ext ${http:header(":scheme", "http")}
-                      ${http:header(":method", "GET")}
-                      ${http:header(":path", "/data")}
-                      ${http:header(":authority", "localhost:8080")}
-                      ${http:header("cache-control", "no-cache")}
-                      ${http:header("prefer", "wait=100")}
-                      ${http:header("if-none-match", etag)}
+read nukleus:data.ext .item(":scheme", "http")}
+                      .item(":method", "GET")}
+                      .item(":path", "/data")}
+                      .item(":authority", "localhost:8080")}
+                      .item("cache-control", "no-cache")}
+                      .item("prefer", "wait=100")}
+                      .item("if-none-match", etag)}
 
 read "hello world"
 

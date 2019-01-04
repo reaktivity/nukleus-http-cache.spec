@@ -14,28 +14,31 @@
 # under the License.
 #
 
-property newProxyConnectRef ${nuklei:newReferenceId()} # external scope
+
 property etag ${http_cache:strongEtag()} #shared
 
 connect await ROUTED_PROXY
-        "nukleus://target/streams/http-cache"
-
+        "nukleus://streams/target#0"
         option nukleus:window 8192
         option nukleus:transmission "half-duplex"
 
 
-write nukleus:begin.ext ${http:header(":scheme", "http")}
-                        ${http:header(":method", "GET")}
-                        ${http:header(":path", "/data")}
-                        ${http:header(":authority", "localhost:8080")}
+write nukleus:begin.ext ${http:headers()
+                                .item(":scheme", "http")
+                                .item(":method", "GET")
+                                .item(":path", "/data")
+                                .item(":authority", "localhost:8080")
+                                .build()};
 
 connected
 
 write close
 
-read nukleus:begin.ext ${http:header(":status", "200")}
-                       ${http:header("content-length", "11")}
-                       ${http:header("surrogate-control", "max-age=1-100")}
-                       ${http:header("etag", etag)}
+read nukleus:begin.ext ${http:headers()
+                               .item(":status", "200")
+                               .item("content-length", "11")
+                               .item("surrogate-control", "max-age=1-100")
+                               .item("etag", etag)
+                               .build()}
 
 read closed
