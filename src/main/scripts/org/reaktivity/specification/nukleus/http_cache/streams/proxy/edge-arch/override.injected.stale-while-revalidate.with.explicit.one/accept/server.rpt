@@ -38,7 +38,7 @@ read closed
 write nukleus:begin.ext ${http:headers()
                         .item(":status", "200")
                         .item("content-length", "11")
-                        .item("surrogate-control", "max-age=1+100")
+                        .item("surrogate-control", "max-age=5+100")
                         .item("etag", etag)
                         .item("cache-control", "max-age=5, stale-while-revalidate=100")
                         .build()}

@@ -26,36 +26,36 @@ accept await ROUTED_PROXY
 accepted
 
 read nukleus:begin.ext ${http:headers()
-                       .item(":scheme", "http")
-                       .item(":method", "GET")
-                       .item(":path", "/data")
-                       .item(":authority", "localhost:8080")
-                       .build()}
+                             .item(":scheme", "http")
+                             .item(":method", "GET")
+                             .item(":path", "/data")
+                             .item(":authority", "localhost:8080")
+                             .build()}
 
 connected
 
 read closed
 
 write nukleus:begin.ext ${http:headers()
-                        .item(":status", "200")
-                        .item("content-length", "11")
-                        .item("date", response1Date)
-                        .item("surrogate-control", "max-age=1+100")
-                        .item("etag", etag)
-                        .item("cache-control", "stale-while-revalidate=100")
-                        .build()}
+                              .item(":status", "200")
+                              .item("content-length", "11")
+                              .item("date", response1Date)
+                              .item("surrogate-control", "max-age=1+100")
+                              .item("etag", etag)
+                              .item("cache-control", "stale-while-revalidate=100")
+                              .build()}
 
 write flush
 
 write nukleus:data.ext ${http:headers()
-                       .item(":scheme", "http")
-                       .item(":method", "GET")
-                       .item(":path", "/data")
-                       .item(":authority", "localhost:8080")
-                       .item("cache-control", "no-cache")
-                       .item("prefer", "wait=100")
-                       .item("if-none-match", etag)
-                       .build()}
+                             .item(":scheme", "http")
+                             .item(":method", "GET")
+                             .item(":path", "/data")
+                             .item(":authority", "localhost:8080")
+                             .item("cache-control", "no-cache")
+                             .item("prefer", "wait=100")
+                             .item("if-none-match", etag)
+                             .build()}
 write "response #1"
 
 write close
@@ -65,40 +65,40 @@ write notify CACHE_UPDATED #Assumed
 accepted
 
 read nukleus:begin.ext ${http:headers()
-                       .item(":scheme", "http")
-                       .item(":method", "GET")
-                       .item(":path", "/data")
-                       .item(":authority", "localhost:8080")
-                       .item("cache-control", "public")
-                       .item("prefer", "wait=100")
-                       .item("if-none-match", etag)
-                       .build()}
+                             .item(":scheme", "http")
+                             .item(":method", "GET")
+                             .item(":path", "/data")
+                             .item(":authority", "localhost:8080")
+                             .item("cache-control", "public")
+                             .item("prefer", "wait=100")
+                             .item("if-none-match", etag)
+                             .item("if-modified-since", response1Date)
+                             .build()}
 
 connected
 
 read closed
 
-read await REQUEST_TWO_PENDING
-
 write nukleus:begin.ext ${http:headers()
-                        .item("content-length", "11")
-                        .item("date", response2Date)
-                        .item("surrogate-control", "max-age=1+100")
-                        .item("etag", etag2)
-                        .item("cache-control", "stale-while-revalidate=100")
-                        .build()}
+                              .item(":status", "200")
+                              .item("content-length", "11")
+                              .item("date", response2Date)
+                              .item("surrogate-control", "max-age=1+100")
+                              .item("etag", etag2)
+                              .item("cache-control", "stale-while-revalidate=100")
+                              .build()}
 
 write flush
 
 write nukleus:data.ext ${http:headers()
-                       .item(":scheme", "http")
-                       .item(":method", "GET")
-                       .item(":path", "/data")
-                       .item(":authority", "localhost:8080")
-                       .item("cache-control", "public, no-cache")
-                       .item("prefer", "wait=100")
-                       .item("if-none-match", etag2)
-                       .build()}
+                             .item(":scheme", "http")
+                             .item(":method", "GET")
+                             .item(":path", "/data")
+                             .item(":authority", "localhost:8080")
+                             .item("cache-control", "public, no-cache")
+                             .item("prefer", "wait=100")
+                             .item("if-none-match", etag2)
+                             .build()}
 
 write "response #2"
 
