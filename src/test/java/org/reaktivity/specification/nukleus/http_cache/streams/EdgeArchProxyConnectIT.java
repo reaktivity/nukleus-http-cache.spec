@@ -392,10 +392,22 @@ public class EdgeArchProxyConnectIT
 
     @Test
     @Specification({
-        "${streams}/cache.sends.304.for.matching.etag/connect/client",
-        "${streams}/cache.sends.304.for.matching.etag/connect/server",
+        "${streams}/update.cache.when.304.response.has.matching.etag/connect/client",
+        "${streams}/update.cache.when.304.response.has.matching.etag/connect/server",
     })
-    public void sends304ForMatchingEtag() throws Exception
+    public void shouldUpdateCacheHeadersOn304ForMatchingEtag() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_PROXY");
+        k3po.finish();
+    }
+
+    @Test
+    @Specification({
+        "${streams}/update.cache.when.200.response.has.different.etag/accept/client",
+        "${streams}/update.cache.when.200.response.has.different.etag/accept/server",
+    })
+    public void shouldUpdateCacheWhen200ResponseHasDifferentEtag() throws Exception
     {
         k3po.start();
         k3po.notifyBarrier("ROUTED_PROXY");
