@@ -29,6 +29,7 @@ read nukleus:begin.ext ${http:headers()
                              .item(":scheme", "http")
                              .item(":method", "GET")
                              .item(":path", "/data")
+                             .item("accept-encoding", "gzip")
                              .item(":authority", "localhost:8080")
                              .build()}
 
@@ -39,6 +40,7 @@ read closed
 write nukleus:begin.ext ${http:headers()
                               .item(":status", "200")
                               .item("content-length", "11")
+                              .item("content-encoding", "gzip")
                               .item("date", response1Date)
                               .item("surrogate-control", "max-age=1+100, x-protected")
                               .item("etag", etag)
@@ -54,6 +56,7 @@ read nukleus:begin.ext ${http:headers()
                              .item(":scheme", "http")
                              .item(":method", "GET")
                              .item(":path", "/data")
+                             .item("accept-encoding", "gzip")
                              .item(":authority", "localhost:8080")
                              .item("if-none-match", etag)
                              .build()}
