@@ -30,6 +30,7 @@ read nukleus:begin.ext ${http:headers()
                              .item(":scheme", "http")
                              .item(":method", "GET")
                              .item(":path", "/data")
+                             .item("accept", "text/plain")
                              .item(":authority", "localhost:8080")
                              .build()}
 
@@ -40,6 +41,7 @@ read closed
 write nukleus:begin.ext ${http:headers()
                               .item(":status", "200")
                               .item("content-length", "11")
+                              .item("content-type", "text/plain")
                               .item("date", response1Date)
                               .item("surrogate-control", "max-age=1+100, x-protected")
                               .item("etag", etag)
@@ -69,6 +71,7 @@ read nukleus:begin.ext ${http:headers()
                              .item(":scheme", "http")
                              .item(":method", "GET")
                              .item(":path", "/data")
+                             .item("accept", "text/plain")
                              .item(":authority", "localhost:8080")
                              .build()}
 
@@ -79,6 +82,7 @@ read closed
 write nukleus:begin.ext ${http:headers()
                               .item(":status", "200")
                               .item("content-length", "11")
+                              .item("content-type", "text/plain")
                               .item("date", response2Date)
                               .item("surrogate-control", "max-age=2+100, x-protected")
                               .item("etag", etag)
