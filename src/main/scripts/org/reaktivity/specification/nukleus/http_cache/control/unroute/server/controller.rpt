@@ -18,7 +18,7 @@ property newServerRouteId ${nukleus:newServerRouteId("http-cache#0", "target#0")
 
 property nukleiUR020101C ${nuklei:directory("target/nukleus-itests").controlCapacity(1024, 1024)}
 
-property controlUR020101C ${nukleiUR020101C.control("http-cache")}
+property controlUR020101C ${nukleiUR020101C.control()}
 
 property routeAuthorization 0x0000_000000000000L # external
 

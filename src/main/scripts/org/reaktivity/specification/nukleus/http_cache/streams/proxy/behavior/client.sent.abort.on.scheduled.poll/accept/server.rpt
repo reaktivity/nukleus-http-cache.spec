@@ -21,8 +21,6 @@ accept await ROUTED_PROXY
 
 accepted
 
-connected
-
 read nukleus:begin.ext ${http:headers()
                              .item(":scheme", "http")
                              .item(":method", "GET")
@@ -33,5 +31,7 @@ read nukleus:begin.ext ${http:headers()
                              .item("cache-control", "no-cache")
                              .item("x-http-cache-sync", "always")
                              .build()}
+
+connected
 
 read aborted

@@ -113,7 +113,8 @@ public class ProxyAcceptExceptionsIT
 
     @Test
     @Specification({
-        "${streams}/client.sent.abort.on.scheduled.poll/accept/client"
+        "${streams}/client.sent.abort.on.scheduled.poll/accept/client",
+        "${streams}/client.sent.abort.on.scheduled.poll/accept/server"
     })
     public void shouldClientSentAbortOnScheduledPoll() throws Exception
     {
