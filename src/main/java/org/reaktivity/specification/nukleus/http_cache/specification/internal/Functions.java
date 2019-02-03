@@ -97,6 +97,12 @@ public final class Functions
     }
 
     @Function
+    public static String fixedStrongEtag(String value)
+    {
+        return "\"" + value + "\"";
+    }
+
+    @Function
     public static String weakEtag()
     {
         return "W/" + strongEtag();
