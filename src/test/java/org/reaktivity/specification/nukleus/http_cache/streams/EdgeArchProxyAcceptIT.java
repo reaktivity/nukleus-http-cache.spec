@@ -424,4 +424,16 @@ public class EdgeArchProxyAcceptIT
         k3po.notifyBarrier("ROUTED_PROXY");
         k3po.finish();
     }
+
+    @Test
+    @Specification({
+        "${streams}/update.cache.when.200.response.doesnot.have.etag/accept/client",
+        "${streams}/update.cache.when.200.response.doesnot.have.etag/accept/server",
+    })
+    public void shouldCacheWhen200ResponseDoesnotHaveEtag() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_PROXY");
+        k3po.finish();
+    }
 }
