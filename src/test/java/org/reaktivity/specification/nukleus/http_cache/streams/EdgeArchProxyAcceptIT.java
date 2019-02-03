@@ -415,10 +415,10 @@ public class EdgeArchProxyAcceptIT
 
     @Test
     @Specification({
-        "${streams}/update.cache.when.200.response.has.different.etag/accept/client",
-        "${streams}/update.cache.when.200.response.has.different.etag/accept/server",
+        "${streams}/update.cache.when.200.response.doesnot.have.etag/accept/client",
+        "${streams}/update.cache.when.200.response.doesnot.have.etag/accept/server",
     })
-    public void shouldUpdateCacheWhen200ResponseHasDifferentEtag() throws Exception
+    public void shouldCacheWhen200ResponseDoesnotHaveEtag() throws Exception
     {
         k3po.start();
         k3po.notifyBarrier("ROUTED_PROXY");
