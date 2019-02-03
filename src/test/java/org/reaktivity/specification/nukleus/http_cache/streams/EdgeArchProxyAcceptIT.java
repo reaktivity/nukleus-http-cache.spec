@@ -415,8 +415,8 @@ public class EdgeArchProxyAcceptIT
 
     @Test
     @Specification({
-            "${streams}/update.cache.when.200.response.has.different.etag/accept/client",
-            "${streams}/update.cache.when.200.response.has.different.etag/accept/server",
+        "${streams}/update.cache.when.200.response.has.different.etag/accept/client",
+        "${streams}/update.cache.when.200.response.has.different.etag/accept/server",
     })
     public void shouldUpdateCacheWhen200ResponseHasDifferentEtag() throws Exception
     {
