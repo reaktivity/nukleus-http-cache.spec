@@ -436,4 +436,16 @@ public class EdgeArchProxyAcceptIT
         k3po.notifyBarrier("ROUTED_PROXY");
         k3po.finish();
     }
+
+    @Test
+    @Specification({
+        "${streams}/does.not.serve.from.cache.if.no.subscribers/accept/client",
+        "${streams}/does.not.serve.from.cache.if.no.subscribers/accept/server",
+    })
+    public void shouldBypassCacheIfEntryIsStaleAndNotRefreshing() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_PROXY");
+        k3po.finish();
+    }
 }
