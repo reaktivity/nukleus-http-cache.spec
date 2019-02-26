@@ -17,6 +17,8 @@
 property statusCode ${http_cache:randomCacheableByDefaultStatusCode()} # shared property
 property lastModified ${http_cache:date()} # shared property
 property currentTime ${http_cache:datePlus(50)} # shared property
+property etag ${http_cache:strongEtag()} #shared
+property etag2 ${http_cache:strongEtag()} #shared
 
 accept await ROUTED_PROXY
         "nukleus://streams/http-cache#0"
@@ -40,6 +42,7 @@ write nukleus:begin.ext ${http:headers()
                               .item("content-length", "11")
                               .item("last-modified", lastModified)
                               .item("date", currentTime)
+                              .item("etag", etag)
                               .build()}
 write "hello world"
 
@@ -63,6 +66,7 @@ write nukleus:begin.ext ${http:headers()
                               .item("content-length", "11")
                               .item("last-modified", lastModified)
                               .item("date", currentTime)
+                              .item("etag", etag)
                               .build()}
 
 write "hello world"

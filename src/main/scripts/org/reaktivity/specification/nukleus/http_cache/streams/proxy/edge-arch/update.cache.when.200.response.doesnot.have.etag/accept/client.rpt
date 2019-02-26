@@ -41,56 +41,9 @@ read nukleus:begin.ext ${http:headers()
                              .item("date", response1Date)
                              .item("surrogate-control", "max-age=1+100, x-protected")
                              .item("cache-control", "stale-while-revalidate=100")
-                             .item("etag", etag1)
                              .build()}
-
-read nukleus:data.ext ${http:headers()
-                            .item(":scheme", "http")
-                            .item(":method", "GET")
-                            .item(":path", "/data")
-                            .item(":authority", "localhost:8080")
-                            .item("cache-control", "no-cache")
-                            .item("prefer", "wait=100")
-                            .item("if-none-match", etag1)
-                            .build()}
 
 read "response #1"
 
-read closed
-
-read notify REQUEST_ONE_COMPLETE
-
-connect await REQUEST_ONE_COMPLETE
-        "nukleus://streams/http-cache#0"
-        option nukleus:window 8192
-        option nukleus:transmission "half-duplex"
-        option nukleus:authorization 0x0001_000000_000000L
-
-write nukleus:begin.ext ${http:headers()
-                              .item(":scheme", "http")
-                              .item(":method", "GET")
-                              .item(":path", "/data")
-                              .item(":authority", "localhost:8080")
-                              .item("cache-control", "no-cache")
-                              .item("prefer", "wait=100")
-                              .item("if-none-match", etag1)
-                              .build()}
-connected
-
-write close
-
-write notify REQUEST_TWO_PENDING
-
-read nukleus:begin.ext ${http:headers()
-                             .item(":status", "200")
-                             .item("content-length", "11")
-                             .item("date", response2Date)
-                             .item("surrogate-control", "max-age=1+100, x-protected")
-                             .item("cache-control", "private, stale-while-revalidate=100")
-                             .item("etag", etag2)
-                             .build()}
-
-read "response #2"
 
 read closed
-

@@ -14,6 +14,8 @@
 # under the License.
 #
 
+property etag ${http_cache:strongEtag()} #shared
+
 accept await ROUTED_PROXY
         "nukleus://streams/target#0"
         option nukleus:window 8192
@@ -36,6 +38,7 @@ write nukleus:begin.ext ${http:headers()
                               .item(":status", "200")
                               .item("content-length", "11")
                               .item("cache-control", "max-age=10")
+                              .item("etag", etag)
                               .build()}
 
 write flush

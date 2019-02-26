@@ -17,6 +17,8 @@
 property date ${http_cache:date()} # shared property
 property largePayload ${http_cache:largePayload(1048576)} # shared property
 property payloadSize 1048576 # shared property
+property etag ${http_cache:strongEtag()} #shared
+property etag2 ${http_cache:strongEtag()} #shared
 
 connect await ROUTED_PROXY
         "nukleus://streams/http-cache#0"
@@ -40,6 +42,7 @@ read nukleus:begin.ext ${http:headers()
                              .item("cache-control", "max-age=150")
                              .item("date", date)
                              .item("last-modified", date)
+                             .item("etag", etag)
                              .build()}
 
 read ${largePayload}
@@ -71,6 +74,7 @@ read nukleus:begin.ext ${http:headers()
                              .item("cache-control", "max-age=150")
                              .item("date", date)
                              .item("last-modified", date)
+                             .item("etag", etag)
                              .build()}
 
 read ${largePayload}
