@@ -16,7 +16,8 @@
 
 property response1Date ${http_cache:date()} # sharedProperty
 property response2Date ${http_cache:datePlus(1)} # sharedProperty
-property etag1 ${http_cache:fixedStrongEtag("99999a0")}
+property etag1 ${http_cache:fixedStrongEtag("99999>|<1")}
+property etag2 ${http_cache:fixedStrongEtag("99999>|<2")}
 
 accept await ROUTED_PROXY
         "nukleus://streams/target#0"
@@ -39,7 +40,7 @@ write nukleus:begin.ext ${http:headers()
                               .item(":status", "200")
                               .item("content-length", "11")
                               .item("date", response1Date)
-                              .item("surrogate-control", "max-age=1+100, x-protected")
+                              .item("surrogate-control", "max-age=1+100")
                               .build()}
 
 write "response #1"
@@ -49,4 +50,35 @@ write nukleus:end.ext ${http:headers()
                             .build()}
 
 write close
+
+accepted
+
+read nukleus:begin.ext ${http:headers()
+                             .item(":scheme", "http")
+                             .item(":method", "GET")
+                             .item(":path", "/data")
+                             .item(":authority", "localhost:8080")
+                             .build()}
+
+connected
+
+read closed
+
+write nukleus:begin.ext ${http:headers()
+                              .item(":status", "200")
+                              .item("content-length", "11")
+                              .item("date", response2Date)
+                              .item("surrogate-control", "max-age=100+100")
+                              .build()}
+
+write "response #2"
+
+write nukleus:end.ext ${http:headers()
+                            .item("etag", etag2)
+                            .build()}
+
+write close
+
+write notify CACHE_UPDATE_SENT # Need to relay barrier due to race on write notify and nukleus process
+
 

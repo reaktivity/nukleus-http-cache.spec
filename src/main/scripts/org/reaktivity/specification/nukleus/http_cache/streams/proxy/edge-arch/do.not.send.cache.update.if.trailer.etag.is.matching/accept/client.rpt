@@ -16,14 +16,13 @@
 
 property response1Date ${http_cache:date()} # sharedProperty
 property response2Date ${http_cache:datePlus(1)} # sharedProperty
-property etag1 ${http_cache:fixedStrongEtag("99999a0")}
-property etag2 ${http_cache:fixedStrongEtag("99999a2")}
+property etag1 ${http_cache:fixedStrongEtag("99999>|<1")}
+property etag2 ${http_cache:fixedStrongEtag("99999>|<2")}
 
 connect await ROUTED_PROXY
         "nukleus://streams/http-cache#0"
         option nukleus:window 8192
         option nukleus:transmission "half-duplex"
-        option nukleus:authorization 0x0001_000000_000000L
 
 write nukleus:begin.ext ${http:headers()
                               .item(":scheme", "http")
@@ -39,11 +38,46 @@ read nukleus:begin.ext ${http:headers()
                              .item(":status", "200")
                              .item("content-length", "11")
                              .item("date", response1Date)
-                             .item("surrogate-control", "max-age=1+100, x-protected")
+                             .item("surrogate-control", "max-age=1+100")
                              .item("cache-control", "stale-while-revalidate=100")
                              .build()}
 
 read "response #1"
 
+read nukleus:data.ext ${http:headers()
+                            .item(":scheme", "http")
+                            .item(":method", "GET")
+                            .item(":path", "/data")
+                            .item(":authority", "localhost:8080")
+                            .item("cache-control", "no-cache")
+                            .item("prefer", "wait=100")
+                            .item("if-none-match", etag1)
+                            .build()}
+read nukleus:data.null
 
+read nukleus:end.ext ${http:headers()
+                            .item("etag", etag1)
+                            .build()}
 read closed
+
+read notify REQUEST_ONE_COMPLETE
+
+connect await REQUEST_ONE_COMPLETE
+        "nukleus://streams/http-cache#0"
+        option nukleus:window 8192
+        option nukleus:transmission "half-duplex"
+
+write nukleus:begin.ext ${http:headers()
+                              .item(":scheme", "http")
+                              .item(":method", "GET")
+                              .item(":path", "/data")
+                              .item(":authority", "localhost:8080")
+                              .item("cache-control", "no-cache")
+                              .item("prefer", "wait=100")
+                              .item("if-none-match", etag1)
+                              .build()}
+connected
+
+write close
+
+write await CACHE_UPDATE_RECEIVED
