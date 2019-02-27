@@ -47,6 +47,8 @@ write nukleus:begin.ext ${http:headers()
 
 write flush
 
+write "hello world"
+
 write nukleus:data.ext ${http:headers()
                              .item(":scheme", "http")
                              .item(":method", "GET")
@@ -57,7 +59,7 @@ write nukleus:data.ext ${http:headers()
                              .item("if-none-match", etag)
                              .build()}
 
-write "hello world"
+write flush
 
 write close
 

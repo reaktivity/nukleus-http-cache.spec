@@ -46,6 +46,8 @@ read nukleus:begin.ext ${http:headers()
                              .item("cache-control", "stale-while-revalidate=100")
                              .build()}
 
+read "response #1"
+
 read nukleus:data.ext ${http:headers()
                             .item(":scheme", "http")
                             .item(":method", "GET")
@@ -56,7 +58,7 @@ read nukleus:data.ext ${http:headers()
                             .item("if-none-match", etag)
                             .build()}
 
-read "response #1"
+read nukleus:data.null
 
 read closed
 
@@ -85,5 +87,17 @@ read nukleus:begin.ext ${http:headers()
                              .build()}
 
 read "response #3"
+
+read nukleus:data.ext ${http:headers()
+                            .item(":scheme", "http")
+                            .item(":method", "GET")
+                            .item(":path", "/data")
+                            .item(":authority", "localhost:8080")
+                            .item("cache-control", "no-cache")
+                            .item("prefer", "wait=100")
+                            .item("if-none-match", etag3)
+                            .build()}
+
+read nukleus:data.null
 
 read closed

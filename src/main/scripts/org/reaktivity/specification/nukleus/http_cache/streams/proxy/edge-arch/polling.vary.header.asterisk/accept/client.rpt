@@ -47,6 +47,17 @@ read nukleus:begin.ext ${http:headers()
 
 read "response #1"
 
+read nukleus:data.ext ${http:headers()
+                            .item(":scheme", "http")
+                            .item(":method", "GET")
+                            .item(":path", "/data")
+                            .item(":authority", "localhost:8080")
+                            .item("cache-control", "no-cache")
+                            .item("prefer", "wait=100")
+                            .item("if-none-match", etag)
+                            .build()}
+read nukleus:data.null
+
 read closed
 
 read notify REQUEST_ONE_COMPLETE

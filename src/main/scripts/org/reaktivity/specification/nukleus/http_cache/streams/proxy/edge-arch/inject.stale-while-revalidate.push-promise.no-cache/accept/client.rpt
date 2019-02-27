@@ -39,6 +39,8 @@ read nukleus:begin.ext ${http:headers()
                              .item("etag", etag)
                              .build()}
 
+read "hello world"
+
 read nukleus:data.ext ${http:headers()
                             .item(":scheme", "http")
                             .item(":method", "GET")
@@ -49,6 +51,6 @@ read nukleus:data.ext ${http:headers()
                             .item("if-none-match", etag)
                             .build()}
 
-read "hello world"
+read nukleus:data.null
 
 read closed

@@ -48,6 +48,8 @@ read nukleus:begin.ext ${http:headers()
                              .item("cache-control", "stale-while-revalidate=10")
                              .build()}
 
+read "response #1"
+
 read nukleus:data.ext ${http:headers()
                             .item(":scheme", "http")
                             .item(":method", "GET")
@@ -58,7 +60,7 @@ read nukleus:data.ext ${http:headers()
                             .item("if-none-match", etag)
                             .build()}
 
-read "response #1"
+read nukleus:data.null
 
 read closed
 

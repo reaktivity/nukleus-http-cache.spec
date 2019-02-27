@@ -47,16 +47,6 @@ write nukleus:begin.ext ${http:headers()
 
 write flush
 
-write nukleus:data.ext ${http:headers()
-                             .item(":scheme", "http")
-                             .item(":method", "GET")
-                             .item(":path", "/path")
-                             .item(":authority", "localhost:8080")
-                             .item("cache-control", "no-cache")
-                             .item("prefer", "wait=10")
-                             .item("if-none-match", etag)
-                             .build()}
-
 write "hello world"
 
 write close

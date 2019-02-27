@@ -45,16 +45,6 @@ read nukleus:begin.ext ${http:headers()
                              .item("cache-control", "stale-while-revalidate=10")
                              .build()}
 
-read nukleus:data.ext ${http:headers()
-                            .item(":scheme", "http")
-                            .item(":method", "GET")
-                            .item(":path", "/path")
-                            .item(":authority", "localhost:8080")
-                            .item("cache-control", "no-cache")
-                            .item("prefer", "wait=10")
-                            .item("if-none-match", etag)
-                            .build()}
-
 read "hello world"
 
 read closed

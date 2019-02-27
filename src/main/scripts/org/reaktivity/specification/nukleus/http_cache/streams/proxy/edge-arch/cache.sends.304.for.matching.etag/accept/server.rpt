@@ -43,6 +43,17 @@ write nukleus:begin.ext ${http:headers()
                              .item("cache-control", "stale-while-revalidate=100")
                              .build()}
 write "response #1"
+
+write nukleus:begin.ext ${http:headers()
+                             .item(":status", "200")
+                             .item("content-length", "11")
+                             .item("date", response1Date)
+                             .item("surrogate-control", "max-age=1+100")
+                             .item("etag", etag)
+                             .item("cache-control", "stale-while-revalidate=100")
+                             .build()}
+write flush
+
 write close
 
 

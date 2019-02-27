@@ -49,6 +49,8 @@ write nukleus:begin.ext ${http:headers()
 
 write flush
 
+write "response #1"
+
 write nukleus:data.ext ${http:headers()
                              .item(":scheme", "http")
                              .item(":method", "GET")
@@ -59,7 +61,7 @@ write nukleus:data.ext ${http:headers()
                              .item("if-none-match", etag)
                              .build()}
 
-write "response #1"
+write flush
 
 write close
 
@@ -93,6 +95,9 @@ write nukleus:begin.ext ${http:headers()
                               .build()}
 
 write flush
+
+write "response #2"
+
 write nukleus:data.ext ${http:headers()
                              .item(":scheme", "http")
                              .item(":method", "GET")
@@ -102,7 +107,6 @@ write nukleus:data.ext ${http:headers()
                              .item("prefer", "wait=10")
                              .item("if-none-match", etag2)
                              .build()}
-
-write "response #2"
+write flush
 
 write close

@@ -43,6 +43,10 @@ read nukleus:begin.ext ${http:headers()
                              .item("cache-control", "stale-while-revalidate=100")
                              .build()}
 
+read notify REQUEST_ONE_COMPLETE
+
+read "response #1"
+
 read nukleus:data.ext ${http:headers()
                             .item(":scheme", "http")
                             .item(":method", "GET")
@@ -52,10 +56,7 @@ read nukleus:data.ext ${http:headers()
                             .item("prefer", "wait=100")
                             .item("if-none-match", etag)
                             .build()}
-
-read notify REQUEST_ONE_COMPLETE
-
-read "response #1"
+read nukleus:data.null
 
 read closed
 
