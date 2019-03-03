@@ -57,6 +57,7 @@ read nukleus:begin.ext ${http:headers()
                              .item(":path", "/path")
                              .item(":authority", "localhost:8080")
                              .item("cache-control", "max-stale=15")
+                             .item("etag", etag)
                              .build()}
 
 connected

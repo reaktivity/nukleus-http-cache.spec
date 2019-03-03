@@ -49,7 +49,7 @@ write nukleus:begin.ext ${http:headers()
 
 write "response #1"
 
-writeread nukleus:data.ext ${http:headers()
+write nukleus:data.ext ${http:headers()
                             .item(":scheme", "http")
                             .item(":method", "GET")
                             .item(":path", "/data")

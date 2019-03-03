@@ -367,8 +367,8 @@ public class EdgeArchProxyAcceptIT
 
     @Test
     @Specification({
-            "${streams}/polling.vary.header.asterisk/accept/client",
-            "${streams}/polling.vary.header.asterisk/accept/server",
+        "${streams}/polling.vary.header.asterisk/accept/client",
+        "${streams}/polling.vary.header.asterisk/accept/server",
     })
     public void pollingVaryHeaderAsterisk() throws Exception
     {

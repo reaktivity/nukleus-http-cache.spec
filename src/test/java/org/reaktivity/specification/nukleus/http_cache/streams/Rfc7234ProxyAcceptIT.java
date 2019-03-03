@@ -189,8 +189,8 @@ public class Rfc7234ProxyAcceptIT
 
     @Test
     @Specification({
-            "${streams}/cache.max-stale.with.value/accept/client",
-            "${streams}/cache.max-stale.with.value/accept/server",
+        "${streams}/cache.max-stale.with.value/accept/client",
+        "${streams}/cache.max-stale.with.value/accept/server",
     })
     public void shouldCacheMaxStaleWithValue() throws Exception
     {
