@@ -57,6 +57,7 @@ read nukleus:begin.ext ${http:headers()
                              .item(":method", "GET")
                              .item(":path", "/data")
                              .item(":authority", "localhost:8080")
+                             .item("if-none-match", etag1)
                              .build()}
 
 connected
