@@ -425,4 +425,16 @@ public class EdgeArchProxyConnectIT
         k3po.notifyBarrier("ROUTED_PROXY");
         k3po.finish();
     }
+
+    @Test
+    @Specification({
+        "${streams}/use.etag.from.trailer.on.200.response.after.cache.full/connect/client",
+        "${streams}/use.etag.from.trailer.on.200.response.after.cache.full/connect/server",
+    })
+    public void shouldUseEtagFromTrailerOn200ResponseAfterCacheFull() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_PROXY");
+        k3po.finish();
+    }
 }
