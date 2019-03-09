@@ -41,7 +41,6 @@ write nukleus:begin.ext ${http:headers()
                               .item("content-length", "18")
                               .item("date", date)
                               .item("last-modified", date)
-                              .item("etag", etag)
                               .build()}
 
 write "response content 1"
@@ -68,7 +67,6 @@ write nukleus:begin.ext ${http:headers()
                               .item("cache-control", "max-age=15")
                               .item("date", date)
                               .item("last-modified", date)
-                              .item("etag", etag)
                               .build()}
 
 write "response content 2"

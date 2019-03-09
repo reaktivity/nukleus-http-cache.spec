@@ -41,7 +41,6 @@ read nukleus:begin.ext ${http:headers()
                              .item("content-length", "18")
                              .item("date", date)
                              .item("last-modified", date)
-                             .item("etag", etag)
                              .build()}
 
 read "response content 1"
@@ -71,7 +70,6 @@ read nukleus:begin.ext ${http:headers()
                              .item("cache-control", "max-age=15")
                              .item("date", date)
                              .item("last-modified", date)
-                             .item("etag", etag)
                              .build()}
 read "response content 2"
 

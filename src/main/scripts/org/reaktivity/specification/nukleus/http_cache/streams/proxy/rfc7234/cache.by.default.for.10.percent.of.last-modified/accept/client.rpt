@@ -41,7 +41,6 @@ read nukleus:begin.ext ${http:headers()
                              .item("content-length", "11")
                              .item("last-modified", lastModified)
                              .item("date", currentTime)
-                             .item("etag", etag)
                              .build()}
 
 read "hello world"
@@ -72,7 +71,6 @@ read nukleus:begin.ext ${http:headers()
                              .item("content-length", "11")
                              .item("last-modified", lastModified)
                              .item("date", currentTime)
-                             .item("etag", etag)
                              .build()}
 
 read "hello world"

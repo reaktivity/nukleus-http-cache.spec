@@ -112,7 +112,6 @@ write nukleus:begin.ext ${http:headers()
                               .item("cache-control", "max-age=15")
                               .item("date", date)
                               .item("last-modified", date)
-                              .item("etag", etag)
                               .build()}
 
 write "hello world"
