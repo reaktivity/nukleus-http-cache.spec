@@ -14,7 +14,6 @@
 # under the License.
 #
 
-property etag ${http_cache:strongEtag()} #shared
 
 accept await ROUTED_PROXY
         "nukleus://streams/http-cache#0"
