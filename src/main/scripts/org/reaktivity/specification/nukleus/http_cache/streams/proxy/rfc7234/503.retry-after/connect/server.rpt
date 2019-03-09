@@ -17,8 +17,6 @@
 property date ${http_cache:date()} # shared property
 #property date2 ${http_cache:datePlus(2)} # shared property
 property retryAfter ${http_cache:datePlus(3)} # shared property
-property etag ${http_cache:strongEtag()} #shared
-property etag2 ${http_cache:strongEtag()} #shared
 
 accept await ROUTED_PROXY
         "nukleus://streams/target#0"

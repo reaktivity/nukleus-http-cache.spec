@@ -17,8 +17,6 @@
 property statusCode ${http_cache:randomCacheableByDefaultStatusCode()} # shared property
 property lastModified ${http_cache:date()} # shared property
 property currentTime ${http_cache:datePlus(50)} # shared property
-property etag ${http_cache:strongEtag()} #shared
-property etag2 ${http_cache:strongEtag()} #shared
 
 accept await ROUTED_PROXY
         "nukleus://streams/target#0"
