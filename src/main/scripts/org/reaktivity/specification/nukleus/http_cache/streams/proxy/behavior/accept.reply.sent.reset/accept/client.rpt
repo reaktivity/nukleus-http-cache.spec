@@ -35,7 +35,6 @@ write close
 read nukleus:begin.ext ${http:headers()
                              .item(":status", "200")
                              .item("content-length", "11")
-                             .item("etag", etag)
                              .build()}
 
 read aborted

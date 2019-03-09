@@ -14,7 +14,6 @@
 # under the License.
 #
 
-property etag ${http_cache:strongEtag()} #shared
 
 connect await ROUTED_PROXY
         "nukleus://streams/target#0"
@@ -36,7 +35,6 @@ read nukleus:begin.ext ${http:headers()
                              .item(":status", "200")
                              .item("content-length", "11")
                              .item("cache-control", "max-age=10")
-                             .item("etag", etag)
                              .build()}
 
 read aborted

@@ -38,7 +38,6 @@ write nukleus:begin.ext ${http:headers()
                               .item(":status", "200")
                               .item("content-length", "11")
                               .item("cache-control", "max-age=10")
-                              .item("etag", etag)
                               .build()}
 
 write flush

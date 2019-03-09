@@ -14,7 +14,6 @@
 # under the License.
 #
 
-property etag ${http_cache:strongEtag()} #shared
 
 accept await ROUTED_PROXY
         "nukleus://streams/target#0"
@@ -36,7 +35,6 @@ read closed
 write nukleus:begin.ext ${http:headers()
                               .item(":status", "200")
                               .item("content-length", "11")
-                              .item("etag", etag)
                               .build()}
 
 write "hello world"
