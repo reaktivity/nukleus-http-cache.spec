@@ -26,7 +26,6 @@ write nukleus:begin.ext ${http:headers()
                               .item(":method", "GET")
                               .item(":path", "/path")
                               .item(":authority", "localhost:8080")
-                              .item("etag", etag)
                               .build()}
 
 connected
