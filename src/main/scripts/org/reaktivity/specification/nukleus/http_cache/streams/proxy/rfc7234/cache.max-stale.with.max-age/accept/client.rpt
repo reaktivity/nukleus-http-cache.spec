@@ -70,7 +70,6 @@ read nukleus:begin.ext ${http:headers()
                              .item("cache-control", "max-age=1")
                              .item("date", date)
                              .item("last-modified", date)
-                             .item("etag", etag)
                              .item("warning", "110 - \"Response is Stale\"")
                              .build()}
 
