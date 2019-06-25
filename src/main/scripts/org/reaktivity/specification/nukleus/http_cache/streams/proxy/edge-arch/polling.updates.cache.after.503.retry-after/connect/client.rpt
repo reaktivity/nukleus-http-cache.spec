@@ -25,23 +25,25 @@ connect await ROUTED_PROXY
         option nukleus:transmission "half-duplex"
 
 
-write nukleus:begin.ext ${http:headers()
-                              .item(":scheme", "http")
-                              .item(":method", "GET")
-                              .item(":path", "/data")
-                              .item(":authority", "localhost:8080")
+write nukleus:begin.ext ${http:beginEx()
+                              .typeId(nukleus:id("http"))
+                              .header(":scheme", "http")
+                              .header(":method", "GET")
+                              .header(":path", "/data")
+                              .header(":authority", "localhost:8080")
                               .build()}
 
 connected
 
 write close
 
-read nukleus:begin.ext ${http:headers()
-                             .item(":status", "200")
-                             .item("content-length", "11")
-                             .item("date", response1Date)
-                             .item("surrogate-control", "max-age=1+100")
-                             .item("etag", etag)
+read nukleus:begin.ext ${http:beginEx()
+                             .typeId(nukleus:id("http"))
+                             .header(":status", "200")
+                             .header("content-length", "11")
+                             .header("date", response1Date)
+                             .header("surrogate-control", "max-age=1+100")
+                             .header("etag", etag)
                              .build()}
 
 read "response #1"
@@ -60,21 +62,23 @@ connect await INITIAL_REQUEST_COMPLETE
         option nukleus:transmission "half-duplex"
 
 
-write nukleus:begin.ext ${http:headers()
-                              .item(":scheme", "http")
-                              .item(":method", "GET")
-                              .item(":path", "/data")
-                              .item(":authority", "localhost:8080")
-                              .item("if-none-match", etag)
+write nukleus:begin.ext ${http:beginEx()
+                              .typeId(nukleus:id("http"))
+                              .header(":scheme", "http")
+                              .header(":method", "GET")
+                              .header(":path", "/data")
+                              .header(":authority", "localhost:8080")
+                              .header("if-none-match", etag)
                               .build()}
 
 connected
 
 write close
 
-read nukleus:begin.ext ${http:headers()
-                             .item(":status", "503")
-                             .item("retry-after", "1")
+read nukleus:begin.ext ${http:beginEx()
+                             .typeId(nukleus:id("http"))
+                             .header(":status", "503")
+                             .header("retry-after", "1")
                              .build()}
 
 read closed
@@ -92,25 +96,27 @@ connect await REFRESH_REQUEST_COMPLETE
         option nukleus:transmission "half-duplex"
 
 
-write nukleus:begin.ext ${http:headers()
-                              .item(":scheme", "http")
-                              .item(":method", "GET")
-                              .item(":path", "/data")
-                              .item(":authority", "localhost:8080")
-                              .item("if-none-match", etag)
+write nukleus:begin.ext ${http:beginEx()
+                              .typeId(nukleus:id("http"))
+                              .header(":scheme", "http")
+                              .header(":method", "GET")
+                              .header(":path", "/data")
+                              .header(":authority", "localhost:8080")
+                              .header("if-none-match", etag)
                               .build()}
 
 connected
 
 write close
 
-read nukleus:begin.ext ${http:headers()
-                              .item(":status", "200")
-                              .item("content-length", "11")
-                              .item("date", response2Date)
-                              .item("surrogate-control", "max-age=100+100")
-                              .item("etag", etag2)
-                              .build()}
+read nukleus:begin.ext ${http:beginEx()
+                             .typeId(nukleus:id("http"))
+                             .header(":status", "200")
+                             .header("content-length", "11")
+                             .header("date", response2Date)
+                             .header("surrogate-control", "max-age=100+100")
+                             .header("etag", etag2)
+                             .build()}
 
 read "response #2"
 
@@ -127,12 +133,13 @@ read notify RETRY_REFRESH_REQUEST_COMPLETE
 #        option nukleus:transmission "half-duplex"
 #
 #
-#write nukleus:begin.ext ${http:headers()
-#                              .item(":scheme", "http")
-#                              .item(":method", "GET")
-#                              .item(":path", "/data")
-#                              .item(":authority", "localhost:8080")
-#                              .item("if-none-match", etag2)
+#write nukleus:begin.ext ${http:beginEx()
+#                              .typeId(nukleus:id("http"))
+#                              .header(":scheme", "http")
+#                              .header(":method", "GET")
+#                              .header(":path", "/data")
+#                              .header(":authority", "localhost:8080")
+#                              .header("if-none-match", etag2)
 #                              .build()}
 #
 #connected

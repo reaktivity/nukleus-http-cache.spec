@@ -22,21 +22,23 @@ connect await ROUTED_PROXY
         option nukleus:transmission "half-duplex"
 
 
-write nukleus:begin.ext ${http:headers()
-                              .item(":scheme", "http")
-                              .item(":method", "GET")
-                              .item(":path", "/path")
-                              .item(":authority", "localhost:8080")
-                              .item("etag", etag)
+write nukleus:begin.ext ${http:beginEx()
+                              .typeId(nukleus:id("http"))
+                              .header(":scheme", "http")
+                              .header(":method", "GET")
+                              .header(":path", "/path")
+                              .header(":authority", "localhost:8080")
+                              .header("etag", etag)
                               .build()}
 
 connected
 
 write close
 
-read nukleus:begin.ext ${http:headers()
-                             .item(":status", "304")
-                             .item("etag", etag)
+read nukleus:begin.ext ${http:beginEx()
+                             .typeId(nukleus:id("http"))
+                             .header(":status", "304")
+                             .header("etag", etag)
                              .build()}
 
 read closed

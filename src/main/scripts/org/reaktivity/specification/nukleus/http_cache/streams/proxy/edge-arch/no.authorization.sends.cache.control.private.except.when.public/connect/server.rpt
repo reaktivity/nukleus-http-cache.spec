@@ -25,24 +25,26 @@ accept await ROUTED_PROXY
         option nukleus:transmission "half-duplex"
 accepted
 
-read nukleus:begin.ext ${http:headers()
-                             .item(":scheme", "http")
-                             .item(":method", "GET")
-                             .item(":path", "/data")
-                             .item(":authority", "localhost:8080")
-                             .item("authorization", "some-authorization-value")
+read nukleus:begin.ext ${http:beginEx()
+                             .typeId(nukleus:id("http"))
+                             .header(":scheme", "http")
+                             .header(":method", "GET")
+                             .header(":path", "/data")
+                             .header(":authority", "localhost:8080")
+                             .header("authorization", "some-authorization-value")
                              .build()}
 
 connected
 
 read closed
 
-write nukleus:begin.ext ${http:headers()
-                              .item(":status", "200")
-                              .item("content-length", "11")
-                              .item("date", response1Date)
-                              .item("surrogate-control", "max-age=1+100")
-                              .item("etag", etag)
+write nukleus:begin.ext ${http:beginEx()
+                              .typeId(nukleus:id("http"))
+                              .header(":status", "200")
+                              .header("content-length", "11")
+                              .header("date", response1Date)
+                              .header("surrogate-control", "max-age=1+100")
+                              .header("etag", etag)
                               .build()}
 
 write "response #1"
@@ -51,13 +53,14 @@ write close
 
 accepted
 
-read nukleus:begin.ext ${http:headers()
-                             .item(":scheme", "http")
-                             .item(":method", "GET")
-                             .item(":path", "/data")
-                             .item(":authority", "localhost:8080")
-                             .item("authorization", "some-authorization-value")
-                             .item("if-none-match", etag)
+read nukleus:begin.ext ${http:beginEx()
+                             .typeId(nukleus:id("http"))
+                             .header(":scheme", "http")
+                             .header(":method", "GET")
+                             .header(":path", "/data")
+                             .header(":authority", "localhost:8080")
+                             .header("authorization", "some-authorization-value")
+                             .header("if-none-match", etag)
                              .build()}
 
 connected
@@ -66,13 +69,14 @@ read closed
 
 write await REQUEST_TWO_PENDING
 
-write nukleus:begin.ext ${http:headers()
-                              .item(":status", "200")
-                              .item("content-length", "11")
-                              .item("date", response2Date)
-                              .item("surrogate-control", "max-age=1+100")
-                              .item("etag", etag2)
-                              .item("cache-control", "public")
+write nukleus:begin.ext ${http:beginEx()
+                              .typeId(nukleus:id("http"))
+                              .header(":status", "200")
+                              .header("content-length", "11")
+                              .header("date", response2Date)
+                              .header("surrogate-control", "max-age=1+100")
+                              .header("etag", etag2)
+                              .header("cache-control", "public")
                               .build()}
 
 write "response #2"
@@ -81,13 +85,14 @@ write close
 
 accepted
 
-read nukleus:begin.ext ${http:headers()
-                             .item(":scheme", "http")
-                             .item(":method", "GET")
-                             .item(":path", "/data")
-                             .item(":authority", "localhost:8080")
-                             .item("authorization", "some-authorization-value")
-                             .item("if-none-match", etag2)
+read nukleus:begin.ext ${http:beginEx()
+                             .typeId(nukleus:id("http"))
+                             .header(":scheme", "http")
+                             .header(":method", "GET")
+                             .header(":path", "/data")
+                             .header(":authority", "localhost:8080")
+                             .header("authorization", "some-authorization-value")
+                             .header("if-none-match", etag2)
                              .build()}
 
 connected

@@ -24,33 +24,36 @@ connect await ROUTED_PROXY
         option nukleus:window 8192
         option nukleus:transmission "half-duplex"
 
-write nukleus:begin.ext ${http:headers()
-                              .item(":scheme", "http")
-                              .item(":method", "GET")
-                              .item(":path", "/data")
-                              .item(":authority", "localhost:8080")
+write nukleus:begin.ext ${http:beginEx()
+                              .typeId(nukleus:id("http"))
+                              .header(":scheme", "http")
+                              .header(":method", "GET")
+                              .header(":path", "/data")
+                              .header(":authority", "localhost:8080")
                               .build()}
 connected
 
 write close
 
-read nukleus:begin.ext ${http:headers()
-                             .item(":status", "200")
-                             .item("content-length", "11")
-                             .item("date", response1Date)
-                             .item("surrogate-control", "max-age=5+100")
-                             .item("etag", etag)
-                             .item("cache-control", "stale-while-revalidate=100")
+read nukleus:begin.ext ${http:beginEx()
+                             .typeId(nukleus:id("http"))
+                             .header(":status", "200")
+                             .header("content-length", "11")
+                             .header("date", response1Date)
+                             .header("surrogate-control", "max-age=5+100")
+                             .header("etag", etag)
+                             .header("cache-control", "stale-while-revalidate=100")
                              .build()}
 
-read nukleus:data.ext ${http:headers()
-                            .item(":scheme", "http")
-                            .item(":method", "GET")
-                            .item(":path", "/data")
-                            .item(":authority", "localhost:8080")
-                            .item("cache-control", "no-cache")
-                            .item("prefer", "wait=100")
-                            .item("if-none-match", etag)
+read nukleus:data.ext ${http:dataEx()
+                            .typeId(nukleus:id("http"))
+                            .promise(":scheme", "http")
+                            .promise(":method", "GET")
+                            .promise(":path", "/data")
+                            .promise(":authority", "localhost:8080")
+                            .promise("cache-control", "no-cache")
+                            .promise("prefer", "wait=100")
+                            .promise("if-none-match", etag)
                             .build()}
 
 read "response #1"
@@ -62,23 +65,25 @@ connect await CACHE_UPDATE_RECEIVED # Need to relay barrier due to race on write
         option nukleus:window 8192
         option nukleus:transmission "half-duplex"
 
-write nukleus:begin.ext ${http:headers()
-                              .item(":scheme", "http")
-                              .item(":method", "GET")
-                              .item(":path", "/data")
-                              .item(":authority", "localhost:8080")
+write nukleus:begin.ext ${http:beginEx()
+                              .typeId(nukleus:id("http"))
+                              .header(":scheme", "http")
+                              .header(":method", "GET")
+                              .header(":path", "/data")
+                              .header(":authority", "localhost:8080")
                               .build()}
 connected
 
 write close
 
-read nukleus:begin.ext ${http:headers()
-                             .item(":status", "200")
-                             .item("content-length", "11")
-                             .item("date", response2Date)
-                             .item("surrogate-control", "max-age=5+100")
-                             .item("etag", etag2)
-                             .item("cache-control", "stale-while-revalidate=100")
+read nukleus:begin.ext ${http:beginEx()
+                             .typeId(nukleus:id("http"))
+                             .header(":status", "200")
+                             .header("content-length", "11")
+                             .header("date", response2Date)
+                             .header("surrogate-control", "max-age=5+100")
+                             .header("etag", etag2)
+                             .header("cache-control", "stale-while-revalidate=100")
                              .build()}
 
 read "response #2"

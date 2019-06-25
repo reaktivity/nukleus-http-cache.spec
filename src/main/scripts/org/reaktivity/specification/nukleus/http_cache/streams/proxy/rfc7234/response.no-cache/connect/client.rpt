@@ -23,12 +23,13 @@ connect await ROUTED_PROXY
         option nukleus:window 8192
         option nukleus:transmission "half-duplex"
 
-write nukleus:begin.ext ${http:headers()
-                              .item(":scheme", "http")
-                              .item(":method", "GET")
-                              .item(":path", "/path")
-                              .item("cache-control", "max-age=15")
-                              .item(":authority", "localhost:8080")
+write nukleus:begin.ext ${http:beginEx()
+                              .typeId(nukleus:id("http"))
+                              .header(":scheme", "http")
+                              .header(":method", "GET")
+                              .header(":path", "/path")
+                              .header("cache-control", "max-age=15")
+                              .header(":authority", "localhost:8080")
                               .build()}
 
 
@@ -36,12 +37,13 @@ connected
 
 write close
 
-read nukleus:begin.ext ${http:headers()
-                             .item(":status", "200")
-                             .item("content-length", "11")
-                             .item("cache-control", "no-cache")
-                             .item("date", date)
-                             .item("etag", etag)
+read nukleus:begin.ext ${http:beginEx()
+                             .typeId(nukleus:id("http"))
+                             .header(":status", "200")
+                             .header("content-length", "11")
+                             .header("cache-control", "no-cache")
+                             .header("date", date)
+                             .header("etag", etag)
                              .build()}
 read "hello world"
 
@@ -52,12 +54,13 @@ connect await ROUTED_PROXY
         option nukleus:window 8192
         option nukleus:transmission "half-duplex"
 
-write nukleus:begin.ext ${http:headers()
-                              .item(":scheme", "http")
-                              .item(":method", "GET")
-                              .item(":path", "/path")
-                              .item(":authority", "localhost:8080")
-                              .item("if-none-match", etag)
+write nukleus:begin.ext ${http:beginEx()
+                              .typeId(nukleus:id("http"))
+                              .header(":scheme", "http")
+                              .header(":method", "GET")
+                              .header(":path", "/path")
+                              .header(":authority", "localhost:8080")
+                              .header("if-none-match", etag)
                               .build()}
 
 
@@ -65,9 +68,10 @@ connected
 
 write close
 
-read nukleus:begin.ext ${http:headers()
-                             .item(":status", "304 Not Modified")
-                             .item("date", date2)
+read nukleus:begin.ext ${http:beginEx()
+                             .typeId(nukleus:id("http"))
+                             .header(":status", "304 Not Modified")
+                             .header("date", date2)
                              .build()}
 
 read closed
