@@ -25,34 +25,37 @@ connect await ROUTED_PROXY
         option nukleus:transmission "half-duplex"
         option nukleus:authorization 0x0001_000000_000000L
 
-write nukleus:begin.ext ${http:headers()
-                              .item(":scheme", "http")
-                              .item(":method", "GET")
-                              .item(":path", "/data")
-                              .item(":authority", "localhost:8080")
-                              .item("authorization", "some-authorization-value")
+write nukleus:begin.ext ${http:beginEx()
+                              .typeId(nukleus:id("http"))
+                              .header(":scheme", "http")
+                              .header(":method", "GET")
+                              .header(":path", "/data")
+                              .header(":authority", "localhost:8080")
+                              .header("authorization", "some-authorization-value")
                               .build()}
 connected
 
 write close
 
-read nukleus:begin.ext ${http:headers()
-                             .item(":status", "200")
-                             .item("content-length", "11")
-                             .item("date", response1Date)
-                             .item("surrogate-control", "max-age=1+100, x-protected")
-                             .item("etag", etag)
-                             .item("cache-control", "stale-while-revalidate=100")
+read nukleus:begin.ext ${http:beginEx()
+                             .typeId(nukleus:id("http"))
+                             .header(":status", "200")
+                             .header("content-length", "11")
+                             .header("date", response1Date)
+                             .header("surrogate-control", "max-age=1+100, x-protected")
+                             .header("etag", etag)
+                             .header("cache-control", "stale-while-revalidate=100")
                              .build()}
 
-read nukleus:data.ext ${http:headers()
-                            .item(":scheme", "http")
-                            .item(":method", "GET")
-                            .item(":path", "/data")
-                            .item(":authority", "localhost:8080")
-                            .item("cache-control", "no-cache")
-                            .item("prefer", "wait=100")
-                            .item("if-none-match", etag)
+read nukleus:data.ext ${http:dataEx()
+                            .typeId(nukleus:id("http"))
+                            .promise(":scheme", "http")
+                            .promise(":method", "GET")
+                            .promise(":path", "/data")
+                            .promise(":authority", "localhost:8080")
+                            .promise("cache-control", "no-cache")
+                            .promise("prefer", "wait=100")
+                            .promise("if-none-match", etag)
                             .build()}
 
 read "response #1"
@@ -67,15 +70,16 @@ connect await REQUEST_ONE_COMPLETE
         option nukleus:transmission "half-duplex"
         option nukleus:authorization 0x0001_000000_000000L
 
-write nukleus:begin.ext ${http:headers()
-                              .item(":scheme", "http")
-                              .item(":method", "GET")
-                              .item(":path", "/data")
-                              .item(":authority", "localhost:8080")
-                              .item("authorization", "some-authorization-value")
-                              .item("cache-control", "no-cache")
-                              .item("prefer", "wait=100")
-                              .item("if-none-match", etag)
+write nukleus:begin.ext ${http:beginEx()
+                              .typeId(nukleus:id("http"))
+                              .header(":scheme", "http")
+                              .header(":method", "GET")
+                              .header(":path", "/data")
+                              .header(":authority", "localhost:8080")
+                              .header("authorization", "some-authorization-value")
+                              .header("cache-control", "no-cache")
+                              .header("prefer", "wait=100")
+                              .header("if-none-match", etag)
                               .build()}
 
 connected
@@ -84,8 +88,9 @@ write close
 
 write notify REQUEST_TWO_PENDING
 
-read nukleus:begin.ext ${http:headers()
-                             .item(":status", "503")
+read nukleus:begin.ext ${http:beginEx()
+                             .typeId(nukleus:id("http"))
+                             .header(":status", "503")
                              .build()}
 
 read aborted

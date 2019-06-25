@@ -22,26 +22,28 @@ accept await ROUTED_PROXY
         option nukleus:transmission "half-duplex"
 accepted
 
-read nukleus:begin.ext ${http:headers()
-                             .item(":scheme", "http")
-                             .item(":method", "GET")
-                             .item(":path", "/path")
-                             .item(":authority", "localhost:8080")
-                             .item("user-agent", "user-agent-1")
-                             .item("accept-encoding", "gzip, deflate, br")
+read nukleus:begin.ext ${http:beginEx()
+                             .typeId(nukleus:id("http"))
+                             .header(":scheme", "http")
+                             .header(":method", "GET")
+                             .header(":path", "/path")
+                             .header(":authority", "localhost:8080")
+                             .header("user-agent", "user-agent-1")
+                             .header("accept-encoding", "gzip, deflate, br")
                              .build()}
 
 connected
 
 read closed
 
-write nukleus:begin.ext ${http:headers()
-                              .item(":status", "200")
-                              .item("content-length", "11")
-                              .item("cache-control", "max-age=15")
-                              .item("date", date)
-                              .item("last-modified", date)
-                              .item("vary", "user-agent,Accept-Encoding")
+write nukleus:begin.ext ${http:beginEx()
+                              .typeId(nukleus:id("http"))
+                              .header(":status", "200")
+                              .header("content-length", "11")
+                              .header("cache-control", "max-age=15")
+                              .header("date", date)
+                              .header("last-modified", date)
+                              .header("vary", "user-agent,Accept-Encoding")
                               .build()}
 write "hello world"
 
@@ -49,26 +51,28 @@ write close
 
 accepted
 
-read nukleus:begin.ext ${http:headers()
-                             .item(":scheme", "http")
-                             .item(":method", "GET")
-                             .item(":path", "/path")
-                             .item(":authority", "localhost:8080")
-                             .item("user-agent", "user-agent-1")
-                             .item("accept-encoding", "gzip")
+read nukleus:begin.ext ${http:beginEx()
+                             .typeId(nukleus:id("http"))
+                             .header(":scheme", "http")
+                             .header(":method", "GET")
+                             .header(":path", "/path")
+                             .header(":authority", "localhost:8080")
+                             .header("user-agent", "user-agent-1")
+                             .header("accept-encoding", "gzip")
                              .build()}
 
 connected
 
 read closed
 
-write nukleus:begin.ext ${http:headers()
-                              .item(":status", "200")
-                              .item("content-length", "11")
-                              .item("cache-control", "max-age=15")
-                              .item("date", date)
-                              .item("last-modified", date)
-                              .item("vary", "user-agent,Accept-Encoding")
+write nukleus:begin.ext ${http:beginEx()
+                              .typeId(nukleus:id("http"))
+                              .header(":status", "200")
+                              .header("content-length", "11")
+                              .header("cache-control", "max-age=15")
+                              .header("date", date)
+                              .header("last-modified", date)
+                              .header("vary", "user-agent,Accept-Encoding")
                               .build()}
 write "hello world"
 
