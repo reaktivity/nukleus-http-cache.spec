@@ -25,41 +25,44 @@ accept await ROUTED_PROXY
         option nukleus:transmission "half-duplex"
 accepted
 
-read nukleus:begin.ext ${http:headers()
-                             .item(":scheme", "http")
-                             .item(":method", "GET")
-                             .item(":path", "/data")
-                             .item(":authority", "localhost:8080")
-                             .item("user-agent", "user-agent-1")
+read nukleus:begin.ext ${http:beginEx()
+                             .typeId(nukleus:id("http"))
+                             .header(":scheme", "http")
+                             .header(":method", "GET")
+                             .header(":path", "/data")
+                             .header(":authority", "localhost:8080")
+                             .header("user-agent", "user-agent-1")
                              .build()}
 
 connected
 
 read closed
 
-write nukleus:begin.ext ${http:headers()
-                              .item(":status", "200")
-                              .item("content-length", "11")
-                              .item("date", response1Date)
-                              .item("surrogate-control", "max-age=1+100")
-                              .item("etag", etag)
-                              .item("vary", "user-agent")
-                              .item("cache-control", "stale-while-revalidate=100")
+write nukleus:begin.ext ${http:beginEx()
+                              .typeId(nukleus:id("http"))
+                              .header(":status", "200")
+                              .header("content-length", "11")
+                              .header("date", response1Date)
+                              .header("surrogate-control", "max-age=1+100")
+                              .header("etag", etag)
+                              .header("vary", "user-agent")
+                              .header("cache-control", "stale-while-revalidate=100")
                               .build()}
 
 write flush
 
 write "response #1"
 
-write nukleus:data.ext ${http:headers()
-                             .item(":scheme", "http")
-                             .item(":method", "GET")
-                             .item(":path", "/data")
-                             .item(":authority", "localhost:8080")
-                             .item("user-agent", "user-agent-1")
-                             .item("cache-control", "no-cache")
-                             .item("prefer", "wait=100")
-                             .item("if-none-match", etag)
+write nukleus:data.ext ${http:dataEx()
+                             .typeId(nukleus:id("http"))
+                             .promise(":scheme", "http")
+                             .promise(":method", "GET")
+                             .promise(":path", "/data")
+                             .promise(":authority", "localhost:8080")
+                             .promise("user-agent", "user-agent-1")
+                             .promise("cache-control", "no-cache")
+                             .promise("prefer", "wait=100")
+                             .promise("if-none-match", etag)
                              .build()}
 write flush
 
@@ -69,23 +72,25 @@ write notify CACHE_UPDATED #Assumed
 
 accepted
 
-read nukleus:begin.ext ${http:headers()
-                             .item(":scheme", "http")
-                             .item(":method", "GET")
-                             .item(":path", "/data")
-                             .item(":authority", "localhost:8080")
-                             .item("cache-control", "no-cache")
-                             .item("prefer", "wait=100")
-                             .item("if-none-match", etag)
-                             .item("user-agent", "user-agent-1")
+read nukleus:begin.ext ${http:beginEx()
+                             .typeId(nukleus:id("http"))
+                             .header(":scheme", "http")
+                             .header(":method", "GET")
+                             .header(":path", "/data")
+                             .header(":authority", "localhost:8080")
+                             .header("cache-control", "no-cache")
+                             .header("prefer", "wait=100")
+                             .header("if-none-match", etag)
+                             .header("user-agent", "user-agent-1")
                              .build()}
 
 connected
 
 read closed
 
-write nukleus:begin.ext ${http:headers()
-                              .item(":status", "503")
+write nukleus:begin.ext ${http:beginEx()
+                              .typeId(nukleus:id("http"))
+                              .header(":status", "503")
                               .build()}
 
 write flush

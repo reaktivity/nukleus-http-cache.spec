@@ -21,12 +21,13 @@ connect await ROUTED_PROXY
         option nukleus:window 8192
         option nukleus:transmission "half-duplex"
 
-write nukleus:begin.ext ${http:headers()
-                              .item(":scheme", "http")
-                              .item(":method", "GET")
-                              .item(":path", "/path")
-                              .item(":authority", "localhost:8080")
-                              .item("cache-control", "max-age=15")
+write nukleus:begin.ext ${http:beginEx()
+                              .typeId(nukleus:id("http"))
+                              .header(":scheme", "http")
+                              .header(":method", "GET")
+                              .header(":path", "/path")
+                              .header(":authority", "localhost:8080")
+                              .header("cache-control", "max-age=15")
                               .build()}
 
 
@@ -34,11 +35,12 @@ connected
 
 write close
 
-read nukleus:begin.ext ${http:headers()
-                             .item(":status", "200")
-                             .item("content-length", "18")
-                             .item("cache-control", "no-store")
-                             .item("date", date)
+read nukleus:begin.ext ${http:beginEx()
+                             .typeId(nukleus:id("http"))
+                             .header(":status", "200")
+                             .header("content-length", "18")
+                             .header("cache-control", "no-store")
+                             .header("date", date)
                              .build()}
 
 read "response content 1"
@@ -50,11 +52,12 @@ connect await ROUTED_PROXY
         option nukleus:window 8192
         option nukleus:transmission "half-duplex"
 
-write nukleus:begin.ext ${http:headers()
-                              .item(":scheme", "http")
-                              .item(":method", "GET")
-                              .item(":path", "/path")
-                              .item(":authority", "localhost:8080")
+write nukleus:begin.ext ${http:beginEx()
+                              .typeId(nukleus:id("http"))
+                              .header(":scheme", "http")
+                              .header(":method", "GET")
+                              .header(":path", "/path")
+                              .header(":authority", "localhost:8080")
                               .build()}
 
 
@@ -62,11 +65,12 @@ connected
 
 write close
 
-read nukleus:begin.ext ${http:headers()
-                             .item(":status", "200")
-                             .item("content-length", "18")
-                             .item("cache-control", "max-age=15")
-                             .item("date", date)
+read nukleus:begin.ext ${http:beginEx()
+                             .typeId(nukleus:id("http"))
+                             .header(":status", "200")
+                             .header("content-length", "18")
+                             .header("cache-control", "max-age=15")
+                             .header("date", date)
                              .build()}
 
 read "response content 2"

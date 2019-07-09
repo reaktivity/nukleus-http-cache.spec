@@ -25,23 +25,25 @@ connect await ROUTED_PROXY
         option nukleus:window 8192
         option nukleus:transmission "half-duplex"
 
-write nukleus:begin.ext ${http:headers()
-                              .item(":scheme", "http")
-                              .item(":method", "GET")
-                              .item(":path", "/path")
-                              .item(":authority", "localhost:8080")
+write nukleus:begin.ext ${http:beginEx()
+                              .typeId(nukleus:id("http"))
+                              .header(":scheme", "http")
+                              .header(":method", "GET")
+                              .header(":path", "/path")
+                              .header(":authority", "localhost:8080")
                               .build()}
 
 connected
 
 write close
 
-read nukleus:begin.ext ${http:headers()
-                             .item(":status", statusCode)
-                             .item("content-length", "11")
-                             .item("last-modified", lastModified)
-                             .item("date", currentTime)
-                             .item("etag", etag)
+read nukleus:begin.ext ${http:beginEx()
+                             .typeId(nukleus:id("http"))
+                             .header(":status", statusCode)
+                             .header("content-length", "11")
+                             .header("last-modified", lastModified)
+                             .header("date", currentTime)
+                             .header("etag", etag)
                              .build()}
 read "hello world"
 
@@ -52,21 +54,23 @@ connect await ROUTED_PROXY
         option nukleus:window 8192
         option nukleus:transmission "half-duplex"
 
-write nukleus:begin.ext ${http:headers()
-                              .item(":scheme", "http")
-                              .item(":method", "GET")
-                              .item(":path", "/path")
-                              .item(":authority", "localhost:8080")
+write nukleus:begin.ext ${http:beginEx()
+                              .typeId(nukleus:id("http"))
+                              .header(":scheme", "http")
+                              .header(":method", "GET")
+                              .header(":path", "/path")
+                              .header(":authority", "localhost:8080")
                               .build()}
 
 connected
 
 write close
 
-read nukleus:begin.ext ${http:headers()
-                             .item(":status", statusCode)
-                             .item("content-length", "11")
-                             .item("etag", etag2)
+read nukleus:begin.ext ${http:beginEx()
+                             .typeId(nukleus:id("http"))
+                             .header(":status", statusCode)
+                             .header("content-length", "11")
+                             .header("etag", etag2)
                              .build()}
 read "hello alien"
 

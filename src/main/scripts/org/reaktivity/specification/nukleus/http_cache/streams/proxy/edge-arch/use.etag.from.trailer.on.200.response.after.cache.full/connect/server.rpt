@@ -28,29 +28,33 @@ accept await ROUTED_PROXY
         option nukleus:transmission "half-duplex"
 accepted
 
-read nukleus:begin.ext ${http:headers()
-                             .item(":scheme", "http")
-                             .item(":method", "GET")
-                             .item(":path", "/data")
-                             .item(":authority", "localhost:8080")
-                             .build()}
+read nukleus:begin.ext ${http:beginEx()
+                              .typeId(nukleus:id("http"))
+                              .header(":scheme", "http")
+                              .header(":method", "GET")
+                              .header(":path", "/data")
+                              .header(":authority", "localhost:8080")
+                              .build()}
 
 connected
 
 read closed
 
-write nukleus:begin.ext ${http:headers()
-                              .item(":status", "200")
-                              .item("content-length", "11")
-                              .item("date", response1Date)
-                              .item("surrogate-control", "max-age=1+100")
+write nukleus:begin.ext ${http:beginEx()
+                              .typeId(nukleus:id("http"))
+                              .header(":status", "200")
+                              .header("content-length", "11")
+                              .header("date", response1Date)
+                              .header("surrogate-control", "max-age=1+100")
                               .build()}
 
 write "response #1"
 
-write nukleus:end.ext ${http:headers()
-                            .item("etag", etag)
-                            .build()}
+write nukleus:end.ext ${http:endEx()
+                              .typeId(nukleus:id("http"))
+                              .trailer("etag", etag)
+                              .build()}
+
 
 write close
 
@@ -59,29 +63,32 @@ write close
 #
 accepted
 
-read nukleus:begin.ext ${http:headers()
-                             .item(":scheme", "http")
-                             .item(":method", "GET")
-                             .item(":path", "/data")
-                             .item(":authority", "localhost:8080")
-                             .item("if-none-match", etag)
-                             .build()}
+read nukleus:begin.ext ${http:beginEx()
+                              .typeId(nukleus:id("http"))
+                              .header(":scheme", "http")
+                              .header(":method", "GET")
+                              .header(":path", "/data")
+                              .header(":authority", "localhost:8080")
+                              .header("if-none-match", etag)
+                              .build()}
 
 connected
 
 read closed
 
-write nukleus:begin.ext ${http:headers()
-                              .item(":status", "200")
-                              .item("content-length", "11")
-                              .item("date", response2Date)
-                              .item("surrogate-control", "max-age=100+100")
+write nukleus:begin.ext ${http:beginEx()
+                              .typeId(nukleus:id("http"))
+                              .header(":status", "200")
+                              .header("content-length", "11")
+                              .header("date", response2Date)
+                              .header("surrogate-control", "max-age=100+100")
                               .build()}
 
 write "response #2"
 
-write nukleus:end.ext ${http:headers()
-                            .item("etag", etag2)
+write nukleus:end.ext ${http:endEx()
+                            .typeId(nukleus:id("http"))
+                            .trailer("etag", etag2)
                             .build()}
 
 write close
@@ -94,28 +101,31 @@ write notify CACHE_UPDATE_SENT # Need to relay barrier due to race on write noti
 #
 accepted
 
-read nukleus:begin.ext ${http:headers()
-                             .item(":scheme", "http")
-                             .item(":method", "GET")
-                             .item(":path", "/data")
-                             .item(":authority", "localhost:8080")
-                             .build()}
+read nukleus:begin.ext ${http:beginEx()
+                              .typeId(nukleus:id("http"))
+                              .header(":scheme", "http")
+                              .header(":method", "GET")
+                              .header(":path", "/data")
+                              .header(":authority", "localhost:8080")
+                              .build()}
 
 connected
 
 read closed
 
-write nukleus:begin.ext ${http:headers()
-                              .item(":status", "200")
-                              .item("content-length", "11")
-                              .item("date", response3Date)
-                              .item("surrogate-control", "max-age=100+100")
+write nukleus:begin.ext ${http:beginEx()
+                              .typeId(nukleus:id("http"))
+                              .header(":status", "200")
+                              .header("content-length", "11")
+                              .header("date", response3Date)
+                              .header("surrogate-control", "max-age=100+100")
                               .build()}
 
 write "response #3"
 
-write nukleus:end.ext ${http:headers()
-                            .item("etag", etag3)
-                            .build()}
+write nukleus:end.ext ${http:endEx()
+                              .typeId(nukleus:id("http"))
+                              .trailer("etag", etag3)
+                              .build()}
 
 write close

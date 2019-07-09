@@ -19,23 +19,25 @@ connect await ROUTED_PROXY
         option nukleus:window 8192
         option nukleus:transmission "half-duplex"
 
-write nukleus:begin.ext ${http:headers()
-                              .item(":scheme", "http")
-                              .item(":method", "GET")
-                              .item(":path", "/data")
-                              .item(":authority", "localhost:8080")
-                              .item("x-retry-after", "2")
-                              .item("x-poll-injected", "x-http-cache-sync, no-cache")
-                              .item("cache-control", "no-cache")
-                              .item("x-http-cache-sync", "always")
+write nukleus:begin.ext ${http:beginEx()
+                              .typeId(nukleus:id("http"))
+                              .header(":scheme", "http")
+                              .header(":method", "GET")
+                              .header(":path", "/data")
+                              .header(":authority", "localhost:8080")
+                              .header("x-retry-after", "2")
+                              .header("x-poll-injected", "x-http-cache-sync, no-cache")
+                              .header("cache-control", "no-cache")
+                              .header("x-http-cache-sync", "always")
                               .build()}
 
 connected
 
 write close
 
-read nukleus:begin.ext ${http:headers()
-                             .item(":status", "503")
+read nukleus:begin.ext ${http:beginEx()
+                             .typeId(nukleus:id("http"))
+                             .header(":status", "503")
                              .build()}
 
 read aborted
