@@ -320,8 +320,8 @@ public class EdgeArchProxyConnectIT
 
     @Test
     @Specification({
-        "${streams}/no.authorization.sends.cache.control.private/accept/client",
-        "${streams}/no.authorization.sends.cache.control.private/accept/server",
+        "${streams}/no.authorization.sends.cache.control.private/connect/client",
+        "${streams}/no.authorization.sends.cache.control.private/connect/server",
     })
     public void noAuthorizationSendsCacheControlPrivate() throws Exception
     {
@@ -332,8 +332,8 @@ public class EdgeArchProxyConnectIT
 
     @Test
     @Specification({
-        "${streams}/no.authorization.sends.cache.control.private.except.when.public/accept/client",
-        "${streams}/no.authorization.sends.cache.control.private.except.when.public/accept/server",
+        "${streams}/no.authorization.sends.cache.control.private.except.when.public/connect/client",
+        "${streams}/no.authorization.sends.cache.control.private.except.when.public/connect/server",
     })
     public void noAuthorizationSendsCacheControlPrivateExceptWhenPublic() throws Exception
     {
@@ -344,8 +344,8 @@ public class EdgeArchProxyConnectIT
 
     @Test
     @Specification({
-        "${streams}/polling.vary.header.mismatch/accept/client",
-        "${streams}/polling.vary.header.mismatch/accept/server",
+        "${streams}/polling.vary.header.mismatch/connect/client",
+        "${streams}/polling.vary.header.mismatch/connect/server",
     })
     public void pollingVaryHeaderMismatch() throws Exception
     {
@@ -356,8 +356,8 @@ public class EdgeArchProxyConnectIT
 
     @Test
     @Specification({
-        "${streams}/polling.vary.header.value.mismatch/accept/client",
-        "${streams}/polling.vary.header.value.mismatch/accept/server",
+        "${streams}/polling.vary.header.value.mismatch/connect/client",
+        "${streams}/polling.vary.header.value.mismatch/connect/server",
     })
     public void pollingVaryHeadeValuerMismatch() throws Exception
     {
@@ -368,8 +368,8 @@ public class EdgeArchProxyConnectIT
 
     @Test
     @Specification({
-        "${streams}/polling.vary.header.asterisk/accept/client",
-        "${streams}/polling.vary.header.asterisk/accept/server",
+        "${streams}/polling.vary.header.asterisk/connect/client",
+        "${streams}/polling.vary.header.asterisk/connect/server",
     })
     public void pollingVaryHeaderAsterisk() throws Exception
     {
@@ -404,8 +404,8 @@ public class EdgeArchProxyConnectIT
 
     @Test
     @Specification({
-        "${streams}/update.cache.when.200.response.has.different.etag/accept/client",
-        "${streams}/update.cache.when.200.response.has.different.etag/accept/server",
+        "${streams}/update.cache.when.200.response.has.different.etag/connect/client",
+        "${streams}/update.cache.when.200.response.has.different.etag/connect/server",
     })
     public void shouldUpdateCacheWhen200ResponseHasDifferentEtag() throws Exception
     {
@@ -432,6 +432,42 @@ public class EdgeArchProxyConnectIT
         "${streams}/does.not.serve.from.cache.if.no.subscribers/connect/server",
     })
     public void shouldBypassCacheIfEntryIsStaleAndNotRefreshing() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_PROXY");
+        k3po.finish();
+    }
+
+    @Test
+    @Specification({
+        "${streams}/send.304.on.prefer.wait.timeout/connect/client",
+        "${streams}/send.304.on.prefer.wait.timeout/connect/server",
+    })
+    public void shouldSend304OnPreferWaitTimeout() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_PROXY");
+        k3po.finish();
+    }
+
+    @Test
+    @Specification({
+        "${streams}/acknowledge.prefer.wait.header.in.response/connect/client",
+        "${streams}/acknowledge.prefer.wait.header.in.response/connect/server",
+    })
+    public void shouldAcknowledgePreferWaitHeaderInResponse() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_PROXY");
+        k3po.finish();
+    }
+
+    @Test
+    @Specification({
+        "${streams}/missing.preference.applied.header.on.prefer.wait/connect/client",
+        "${streams}/missing.preference.applied.header.on.prefer.wait/connect/server",
+    })
+    public void shouldHandleMissingPreferenceAppliedHeaderOnPreferWait() throws Exception
     {
         k3po.start();
         k3po.notifyBarrier("ROUTED_PROXY");

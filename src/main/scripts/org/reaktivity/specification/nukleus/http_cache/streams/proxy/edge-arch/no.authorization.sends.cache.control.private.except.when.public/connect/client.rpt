@@ -31,6 +31,7 @@ write nukleus:begin.ext ${http:beginEx()
                               .header(":method", "GET")
                               .header(":path", "/data")
                               .header(":authority", "localhost:8080")
+                              .header("authorization", "some-authorization-value")
                               .build()}
 
 connected
@@ -65,6 +66,7 @@ write nukleus:begin.ext ${http:beginEx()
                               .header(":method", "GET")
                               .header(":path", "/data")
                               .header(":authority", "localhost:8080")
+                              .header("authorization", "some-authorization-value")
                               .header("if-none-match", etag)
                               .build()}
 
@@ -79,6 +81,7 @@ read nukleus:begin.ext ${http:beginEx()
                              .header("date", response2Date)
                              .header("surrogate-control", "max-age=1+100")
                              .header("etag", etag2)
+                             .header("cache-control", "public")
                              .build()}
 
 read "response #2"
@@ -99,6 +102,7 @@ write nukleus:begin.ext ${http:beginEx()
                               .header(":method", "GET")
                               .header(":path", "/data")
                               .header(":authority", "localhost:8080")
+                              .header("authorization", "some-authorization-value")
                               .header("if-none-match", etag2)
                               .build()}
 

@@ -57,6 +57,7 @@ write nukleus:data.ext ${http:dataEx()
                              .promise(":method", "GET")
                              .promise(":path", "/data")
                              .promise(":authority", "localhost:8080")
+                             .promise("authorization", "some-authorization-value")
                              .promise("cache-control", "no-cache")
                              .promise("prefer", "wait=100")
                              .promise("if-none-match", etag)
@@ -64,8 +65,6 @@ write nukleus:data.ext ${http:dataEx()
 write "response #1"
 
 write close
-
-write notify CACHE_UPDATED #Assumed
 
 accepted
 
@@ -78,6 +77,7 @@ read nukleus:begin.ext ${http:beginEx()
                              .header("cache-control", "no-cache")
                              .header("prefer", "wait=100")
                              .header("if-none-match", etag)
+                             .header("authorization", "some-authorization-value")
                              .build()}
 
 connected
@@ -85,27 +85,29 @@ connected
 read closed
 
 write nukleus:begin.ext ${http:beginEx()
-                              .typeId(nukleus:id("http"))
-                              .header(":status", "200")
-                              .header("content-length", "11")
-                              .header("date", response2Date)
-                              .header("surrogate-control", "max-age=1+100")
-                              .header("etag", etag2)
-                              .header("cache-control", "public, stale-while-revalidate=100")
-                              .build()}
+                             .typeId(nukleus:id("http"))
+                             .header(":status", "200")
+                             .header("content-length", "11")
+                             .header("date", response2Date)
+                             .header("surrogate-control", "max-age=1+100")
+                             .header("etag", etag2)
+                             .header("cache-control", "public, stale-while-revalidate=100")
+                             .build()}
 
 write flush
 
 write nukleus:data.ext ${http:dataEx()
-                             .typeId(nukleus:id("http"))
-                             .promise(":scheme", "http")
-                             .promise(":method", "GET")
-                             .promise(":path", "/data")
-                             .promise(":authority", "localhost:8080")
-                             .promise("cache-control", "no-cache")
-                             .promise("prefer", "wait=100")
-                             .promise("if-none-match", etag2)
-                             .build()}
+                            .typeId(nukleus:id("http"))
+                            .promise(":scheme", "http")
+                            .promise(":method", "GET")
+                            .promise(":path", "/data")
+                            .promise(":authority", "localhost:8080")
+                            .promise("authorization", "some-authorization-value")
+                            .promise("cache-control", "no-cache")
+                            .promise("prefer", "wait=100")
+                            .promise("if-none-match", etag2)
+                            .build()}
+
 
 write "response #2"
 
