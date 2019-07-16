@@ -47,17 +47,6 @@ read nukleus:begin.ext ${http:beginEx()
                              .header("preference-applied", "wait=5")
                              .build()}
 
-read nukleus:data.ext ${http:dataEx()
-                            .typeId(nukleus:id("http"))
-                            .promise(":scheme", "http")
-                            .promise(":method", "GET")
-                            .promise(":path", "/data")
-                            .promise(":authority", "localhost:8080")
-                            .promise("cache-control", "no-cache")
-                            .promise("prefer", "wait=5")
-                            .promise("if-none-match", etag)
-                            .build()}
-
 read "response #1"
 
 read closed
@@ -92,16 +81,6 @@ read nukleus:begin.ext ${http:beginEx()
                              .header("preference-applied", "wait=5")
                              .build()}
 
-read nukleus:data.ext ${http:dataEx()
-                            .typeId(nukleus:id("http"))
-                            .promise(":scheme", "http")
-                            .promise(":method", "GET")
-                            .promise(":path", "/data")
-                            .promise(":authority", "localhost:8080")
-                            .promise("cache-control", "no-cache")
-                            .promise("prefer", "wait=5")
-                            .promise("if-none-match", etag)
-                            .build()}
 
 read "response #1"
 
@@ -169,16 +148,6 @@ read nukleus:begin.ext ${http:beginEx()
                              .header("preference-applied", "wait=5")
                              .build()}
 
-read nukleus:data.ext ${http:dataEx()
-                            .typeId(nukleus:id("http"))
-                            .promise(":scheme", "http")
-                            .promise(":method", "GET")
-                            .promise(":path", "/data")
-                            .promise(":authority", "localhost:8080")
-                            .promise("cache-control", "no-cache")
-                            .promise("prefer", "wait=5")
-                            .promise("if-none-match", etag2)
-                            .build()}
 
 read "response #2"
 

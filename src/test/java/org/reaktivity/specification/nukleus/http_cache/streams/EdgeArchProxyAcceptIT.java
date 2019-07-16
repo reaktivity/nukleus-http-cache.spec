@@ -449,39 +449,4 @@ public class EdgeArchProxyAcceptIT
         k3po.finish();
     }
 
-    @Test
-    @Specification({
-        "${streams}/send.304.on.prefer.wait.timeout/accept/client",
-        "${streams}/send.304.on.prefer.wait.timeout/accept/server",
-    })
-    public void shouldSend304OnPreferWaitTimeout() throws Exception
-    {
-        k3po.start();
-        k3po.notifyBarrier("ROUTED_PROXY");
-        k3po.finish();
-    }
-
-    @Test
-    @Specification({
-        "${streams}/acknowledge.prefer.wait.header.in.response/accept/client",
-        "${streams}/acknowledge.prefer.wait.header.in.response/accept/server",
-    })
-    public void shouldAcknowledgePreferWaitHeaderInResponse() throws Exception
-    {
-        k3po.start();
-        k3po.notifyBarrier("ROUTED_PROXY");
-        k3po.finish();
-    }
-
-    @Test
-    @Specification({
-        "${streams}/missing.preference.applied.header.on.prefer.wait/accept/client",
-        "${streams}/missing.preference.applied.header.on.prefer.wait/accept/server",
-    })
-    public void shouldHandleMissingPreferenceAppliedHeaderOnPreferWait() throws Exception
-    {
-        k3po.start();
-        k3po.notifyBarrier("ROUTED_PROXY");
-        k3po.finish();
-    }
 }

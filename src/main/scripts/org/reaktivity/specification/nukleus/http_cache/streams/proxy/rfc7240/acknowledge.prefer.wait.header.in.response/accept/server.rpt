@@ -50,16 +50,6 @@ write nukleus:begin.ext ${http:beginEx()
 
 write flush
 
-write nukleus:data.ext ${http:dataEx()
-                             .typeId(nukleus:id("http"))
-                             .promise(":scheme", "http")
-                             .promise(":method", "GET")
-                             .promise(":path", "/data")
-                             .promise(":authority", "localhost:8080")
-                             .promise("cache-control", "no-cache")
-                             .promise("prefer", "wait=5")
-                             .promise("if-none-match", etag)
-                             .build()}
 write "response #1"
 
 write close
@@ -92,16 +82,6 @@ write nukleus:begin.ext ${http:beginEx()
 
 write flush
 
-write nukleus:data.ext ${http:dataEx()
-                             .typeId(nukleus:id("http"))
-                             .promise(":scheme", "http")
-                             .promise(":method", "GET")
-                             .promise(":path", "/data")
-                             .promise(":authority", "localhost:8080")
-                             .promise("cache-control", "no-cache")
-                             .promise("prefer", "wait=5")
-                             .promise("if-none-match", etag)
-                             .build()}
 write "response #1"
 
 write close
@@ -162,16 +142,6 @@ write nukleus:begin.ext ${http:beginEx()
 
 write flush
 
-write nukleus:data.ext ${http:dataEx()
-                             .typeId(nukleus:id("http"))
-                             .promise(":scheme", "http")
-                             .promise(":method", "GET")
-                             .promise(":path", "/data")
-                             .promise(":authority", "localhost:8080")
-                             .promise("cache-control", "no-cache")
-                             .promise("prefer", "wait=5")
-                             .promise("if-none-match", etag2)
-                             .build()}
 write "response #2"
 
 write close
