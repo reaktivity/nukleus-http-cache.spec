@@ -44,8 +44,8 @@ write nukleus:begin.ext ${http:beginEx()
                               .header("date", response1Date)
                               .header("surrogate-control", "max-age=4+5")
                               .header("etag", etag)
-                              .header("cache-control", "stale-while-revalidate=5")
                               .header("preference-applied", "wait=5")
+                              .header("cache-control", "stale-while-revalidate=5")
                               .build()}
 
 write flush
@@ -76,8 +76,8 @@ write nukleus:begin.ext ${http:beginEx()
                               .header("date", response1Date)
                               .header("surrogate-control", "max-age=4+5")
                               .header("etag", etag)
-                              .header("cache-control", "stale-while-revalidate=5")
                               .header("preference-applied", "wait=5")
+                              .header("cache-control", "stale-while-revalidate=5")
                               .build()}
 
 write flush
@@ -136,8 +136,8 @@ write nukleus:begin.ext ${http:beginEx()
                               .header("date", response2Date)
                               .header("surrogate-control", "max-age=4+5")
                               .header("etag", etag2)
-                              .header("cache-control", "stale-while-revalidate=5")
                               .header("preference-applied", "wait=5")
+                              .header("cache-control", "stale-while-revalidate=5")
                               .build()}
 
 write flush
