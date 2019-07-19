@@ -189,8 +189,8 @@ public class Rfc7234ProxyAcceptIT
 
     @Test
     @Specification({
-            "${streams}/cache.max-stale.with.value/accept/client",
-            "${streams}/cache.max-stale.with.value/accept/server",
+        "${streams}/cache.max-stale.with.value/accept/client",
+        "${streams}/cache.max-stale.with.value/accept/server",
     })
     public void shouldCacheMaxStaleWithValue() throws Exception
     {
@@ -201,8 +201,8 @@ public class Rfc7234ProxyAcceptIT
 
     @Test
     @Specification({
-            "${streams}/cache.max-stale.no.value/accept/client",
-            "${streams}/cache.max-stale.no.value/accept/server",
+        "${streams}/cache.max-stale.no.value/accept/client",
+        "${streams}/cache.max-stale.no.value/accept/server",
     })
     public void shouldCacheMaxStaleWithNoValue() throws Exception
     {
@@ -249,8 +249,8 @@ public class Rfc7234ProxyAcceptIT
 
     @Test
     @Specification({
-            "${streams}/request.cache.max-age=0.and.304/accept/client",
-            "${streams}/request.cache.max-age=0.and.304/accept/server",
+        "${streams}/request.cache.max-age=0.and.304/accept/client",
+        "${streams}/request.cache.max-age=0.and.304/accept/server",
     })
     public void shouldRequestCacheMaxAgeZeroAnd304() throws Exception
     {
@@ -261,8 +261,8 @@ public class Rfc7234ProxyAcceptIT
 
     @Test
     @Specification({
-            "${streams}/request.no-cache/accept/client",
-            "${streams}/request.no-cache/accept/server",
+        "${streams}/request.no-cache/accept/client",
+        "${streams}/request.no-cache/accept/server",
     })
     public void shouldRequestNoCache() throws Exception
     {
@@ -285,8 +285,8 @@ public class Rfc7234ProxyAcceptIT
 
     @Test
     @Specification({
-            "${streams}/request.only-if-cached.and.504/accept/client",
-            "${streams}/request.only-if-cached.and.504/accept/server",
+        "${streams}/request.only-if-cached.and.504/accept/client",
+        "${streams}/request.only-if-cached.and.504/accept/server",
     })
     public void shouldRequestOnlyIfCachedAnd504() throws Exception
     {
@@ -297,8 +297,8 @@ public class Rfc7234ProxyAcceptIT
 
     @Test
     @Specification({
-            "${streams}/request.expire.only-if-cached/accept/client",
-            "${streams}/request.expire.only-if-cached/accept/server",
+        "${streams}/request.expire.only-if-cached/accept/client",
+        "${streams}/request.expire.only-if-cached/accept/server",
     })
     public void shouldRequestExpireOnlyIfCached() throws Exception
     {
@@ -321,8 +321,8 @@ public class Rfc7234ProxyAcceptIT
 
     @Test
     @Specification({
-            "${streams}/cache.get.request.with.no-store/accept/client",
-            "${streams}/cache.get.request.with.no-store/accept/server",
+        "${streams}/cache.get.request.with.no-store/accept/client",
+        "${streams}/cache.get.request.with.no-store/accept/server",
     })
     public void shouldCacheGetRequestWithNoStore() throws Exception
     {
@@ -333,8 +333,8 @@ public class Rfc7234ProxyAcceptIT
 
     @Test
     @Specification({
-            "${streams}/cache.get.request.with.no-store.and.response.marked.cacheable/accept/client",
-            "${streams}/cache.get.request.with.no-store.and.response.marked.cacheable/accept/server",
+        "${streams}/cache.get.request.with.no-store.and.response.marked.cacheable/accept/client",
+        "${streams}/cache.get.request.with.no-store.and.response.marked.cacheable/accept/server",
     })
     public void shouldCacheGetRequestWithNoStoreAndResponeMarkedCacheable() throws Exception
     {
@@ -629,6 +629,18 @@ public class Rfc7234ProxyAcceptIT
         "${streams}/ignore.expires.if.response.contains.s-maxage/accept/server",
     })
     public void shouldOverrideExpireWithSMaxage() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_PROXY");
+        k3po.finish();
+    }
+
+    @Test
+    @Specification({
+        "${streams}/proxy.get.request.without.etag/accept/client",
+        "${streams}/proxy.get.request.without.etag/accept/server",
+    })
+    public void shouldProxyGetRequestWithoutEtag() throws Exception
     {
         k3po.start();
         k3po.notifyBarrier("ROUTED_PROXY");

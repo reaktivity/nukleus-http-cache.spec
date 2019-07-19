@@ -51,6 +51,8 @@ write nukleus:begin.ext ${http:beginEx()
 
 write flush
 
+write "response #1"
+
 write nukleus:data.ext ${http:dataEx()
                              .typeId(nukleus:id("http"))
                              .promise(":scheme", "http")
@@ -62,7 +64,7 @@ write nukleus:data.ext ${http:dataEx()
                              .promise("if-none-match", etag)
                              .build()}
 
-write "response #1"
+write flush
 
 write close
 
@@ -98,6 +100,9 @@ write nukleus:begin.ext ${http:beginEx()
                               .build()}
 
 write flush
+
+write "response #2"
+
 write nukleus:data.ext ${http:dataEx()
                              .typeId(nukleus:id("http"))
                              .promise(":scheme", "http")
@@ -108,7 +113,6 @@ write nukleus:data.ext ${http:dataEx()
                              .promise("prefer", "wait=10")
                              .promise("if-none-match", etag2)
                              .build()}
-
-write "response #2"
+write flush
 
 write close

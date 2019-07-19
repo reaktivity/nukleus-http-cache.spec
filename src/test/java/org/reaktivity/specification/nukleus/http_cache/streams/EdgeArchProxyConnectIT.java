@@ -416,10 +416,10 @@ public class EdgeArchProxyConnectIT
 
     @Test
     @Specification({
-        "${streams}/update.cache.when.200.response.doesnot.have.etag/connect/client",
-        "${streams}/update.cache.when.200.response.doesnot.have.etag/connect/server",
+        "${streams}/does.not.serve.from.cache.if.no.subscribers/connect/client",
+        "${streams}/does.not.serve.from.cache.if.no.subscribers/connect/server",
     })
-    public void shouldCacheWhen200ResponseDoesnotHaveEtag() throws Exception
+    public void shouldBypassCacheIfEntryIsStaleAndNotRefreshing() throws Exception
     {
         k3po.start();
         k3po.notifyBarrier("ROUTED_PROXY");
@@ -428,10 +428,10 @@ public class EdgeArchProxyConnectIT
 
     @Test
     @Specification({
-        "${streams}/does.not.serve.from.cache.if.no.subscribers/connect/client",
-        "${streams}/does.not.serve.from.cache.if.no.subscribers/connect/server",
+        "${streams}/use.etag.from.trailer.on.200.response.after.cache.full/connect/client",
+        "${streams}/use.etag.from.trailer.on.200.response.after.cache.full/connect/server",
     })
-    public void shouldBypassCacheIfEntryIsStaleAndNotRefreshing() throws Exception
+    public void shouldUseEtagFromTrailerOn200ResponseAfterCacheFull() throws Exception
     {
         k3po.start();
         k3po.notifyBarrier("ROUTED_PROXY");

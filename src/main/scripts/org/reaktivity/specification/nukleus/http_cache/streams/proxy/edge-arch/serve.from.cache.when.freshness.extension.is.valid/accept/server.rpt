@@ -49,6 +49,8 @@ write nukleus:begin.ext ${http:beginEx()
 
 write flush
 
+write "hello world"
+
 write nukleus:data.ext ${http:dataEx()
                              .typeId(nukleus:id("http"))
                              .promise(":scheme", "http")
@@ -60,7 +62,7 @@ write nukleus:data.ext ${http:dataEx()
                              .promise("if-none-match", etag)
                              .build()}
 
-write "hello world"
+write flush
 
 write close
 

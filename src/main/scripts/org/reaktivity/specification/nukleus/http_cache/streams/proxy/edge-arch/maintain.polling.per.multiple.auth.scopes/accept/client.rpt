@@ -49,6 +49,8 @@ read nukleus:begin.ext ${http:beginEx()
                              .header("cache-control", "stale-while-revalidate=10")
                              .build()}
 
+read "response 1a"
+
 read nukleus:data.ext ${http:dataEx()
                             .typeId(nukleus:id("http"))
                             .promise(":scheme", "http")
@@ -59,8 +61,7 @@ read nukleus:data.ext ${http:dataEx()
                             .promise("prefer", "wait=10")
                             .promise("if-none-match", etag)
                             .build()}
-
-read "response 1a"
+read nukleus:data.null
 
 read closed
 
@@ -93,6 +94,8 @@ read nukleus:begin.ext ${http:beginEx()
                              .header("cache-control", "stale-while-revalidate=10")
                              .build()}
 
+read "response 1b"
+
 read nukleus:data.ext ${http:dataEx()
                             .typeId(nukleus:id("http"))
                             .promise(":scheme", "http")
@@ -103,7 +106,6 @@ read nukleus:data.ext ${http:dataEx()
                             .promise("prefer", "wait=10")
                             .promise("if-none-match", etag2)
                             .build()}
-
-read "response 1b"
+read nukleus:data.null
 
 read closed

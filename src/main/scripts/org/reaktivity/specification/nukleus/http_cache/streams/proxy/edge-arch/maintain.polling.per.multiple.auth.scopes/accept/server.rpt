@@ -51,6 +51,8 @@ write nukleus:begin.ext ${http:beginEx()
 
 write flush
 
+write "response 1a"
+
 write nukleus:data.ext ${http:dataEx()
                              .typeId(nukleus:id("http"))
                              .promise(":scheme", "http")
@@ -61,8 +63,7 @@ write nukleus:data.ext ${http:dataEx()
                              .promise("prefer", "wait=10")
                              .promise("if-none-match", etag)
                              .build()}
-
-write "response 1a"
+write flush
 
 write close
 
@@ -97,9 +98,11 @@ write nukleus:begin.ext ${http:beginEx()
                               .header("surrogate-control", "max-age=1+10, x-protected")
                               .header("etag", etag2)
                               .header("cache-control", "stale-while-revalidate=10")
-                              .build()}
+                              .build()};
 
 write flush
+
+write "response 1b"
 
 write nukleus:data.ext ${http:dataEx()
                              .typeId(nukleus:id("http"))
@@ -110,8 +113,8 @@ write nukleus:data.ext ${http:dataEx()
                              .promise("cache-control", "no-cache")
                              .promise("prefer", "wait=10")
                              .promise("if-none-match", etag2)
-                             .build()}
+                             .build()};
 
-write "response 1b"
+write flush
 
 write close

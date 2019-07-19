@@ -15,15 +15,14 @@
 #
 
 property response1Date ${http_cache:date()} # sharedProperty
-property response2Date ${http_cache:datePlus(5)} # sharedProperty
-property etag ${http_cache:strongEtag()} # sharedProperty
-property etag2 ${http_cache:strongEtag()} # sharedProperty
+property response2Date ${http_cache:datePlus(1)} # sharedProperty
+property etag1 ${http_cache:fixedStrongEtag("99999>|<1")}
+property etag2 ${http_cache:fixedStrongEtag("99999>|<2")}
 
 connect await ROUTED_PROXY
-        "nukleus://streams/target#0"
+        "nukleus://streams/http-cache#0"
         option nukleus:window 8192
         option nukleus:transmission "half-duplex"
-
 
 write nukleus:begin.ext ${http:beginEx()
                               .typeId(nukleus:id("http"))
@@ -32,7 +31,6 @@ write nukleus:begin.ext ${http:beginEx()
                               .header(":path", "/data")
                               .header(":authority", "localhost:8080")
                               .build()}
-
 connected
 
 write close
@@ -42,20 +40,36 @@ read nukleus:begin.ext ${http:beginEx()
                              .header(":status", "200")
                              .header("content-length", "11")
                              .header("date", response1Date)
-                             .header("surrogate-control", "max-age=1+100, x-protected")
+                             .header("surrogate-control", "max-age=1+100")
+                             .header("cache-control", "stale-while-revalidate=100")
                              .build()}
 
 read "response #1"
 
+read nukleus:data.ext ${http:dataEx()
+                            .typeId(nukleus:id("http"))
+                            .promise(":scheme", "http")
+                            .promise(":method", "GET")
+                            .promise(":path", "/data")
+                            .promise(":authority", "localhost:8080")
+                            .promise("cache-control", "no-cache")
+                            .promise("prefer", "wait=100")
+                            .promise("if-none-match", etag1)
+                            .build()}
+read nukleus:data.null
+
+read nukleus:end.ext ${http:endEx()
+                            .typeId(nukleus:id("http"))
+                            .trailer("etag", etag1)
+                            .build()}
 read closed
 
-read notify INITIAL_REQUEST_COMPLETE
+read notify REQUEST_ONE_COMPLETE
 
-connect await INITIAL_REQUEST_COMPLETE
-        "nukleus://streams/target#0"
+connect await REQUEST_ONE_COMPLETE
+        "nukleus://streams/http-cache#0"
         option nukleus:window 8192
         option nukleus:transmission "half-duplex"
-
 
 write nukleus:begin.ext ${http:beginEx()
                               .typeId(nukleus:id("http"))
@@ -63,24 +77,37 @@ write nukleus:begin.ext ${http:beginEx()
                               .header(":method", "GET")
                               .header(":path", "/data")
                               .header(":authority", "localhost:8080")
+                              .header("cache-control", "no-cache")
+                              .header("prefer", "wait=100")
                               .header("if-none-match", etag1)
                               .build()}
-
 connected
 
 write close
 
-write notify REQUEST_TWO_PENDING
+write await CACHE_UPDATE_RECEIVED
 
 read nukleus:begin.ext ${http:beginEx()
                              .typeId(nukleus:id("http"))
                              .header(":status", "200")
                              .header("content-length", "11")
                              .header("date", response2Date)
-                             .header("surrogate-control", "max-age=1+100, x-protected")
+                             .header("surrogate-control", "max-age=100+100")
+                             .header("cache-control", "private, stale-while-revalidate=100")
+                             .header("etag", etag2)
+                             .build()}
+
+read nukleus:data.ext ${http:dataEx()
+                             .typeId(nukleus:id("http"))
+                             .promise(":scheme", "http")
+                             .promise(":method", "GET")
+                             .promise(":path", "/data")
+                             .promise(":authority", "localhost:8080")
+                             .promise("cache-control", "no-cache")
+                             .promise("prefer", "wait=100")
+                             .promise("if-none-match", etag2)
                              .build()}
 
 read "response #2"
 
 read closed
-
