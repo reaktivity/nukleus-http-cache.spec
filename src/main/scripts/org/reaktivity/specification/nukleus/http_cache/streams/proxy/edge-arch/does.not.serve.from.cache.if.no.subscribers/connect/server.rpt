@@ -88,7 +88,7 @@ write close
 write notify CACHE_UPDATE_SENT # Need to relay barrier due to race on write notify and nukleus process
 
 #
-# As there is no entry in cache, server receives a request
+# As there is no cacheEntry in cache, server receives a request
 #
 accepted
 

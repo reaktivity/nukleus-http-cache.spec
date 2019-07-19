@@ -41,16 +41,15 @@ read nukleus:begin.ext ${http:beginEx()
                              .header(":status", "200")
                              .header("content-length", "11")
                              .header("date", response1Date)
-                             .header("surrogate-control", "max-age=4+5")
+                             .header("cache-control", "max-age=100")
                              .header("etag", etag)
-                             .header("cache-control", "stale-while-revalidate=5")
                              .build()}
 
 read "response #1"
 
 read closed
 
-read notify FIRST_REQUEST_RECEIVED
+read notify FIRST_REQUEST_WAIT
 
 connect await FIRST_REQUEST_RECEIVED
         "nukleus://streams/http-cache#0"
@@ -74,14 +73,15 @@ read nukleus:begin.ext ${http:beginEx()
                              .header(":status", "200")
                              .header("content-length", "11")
                              .header("date", response1Date)
-                             .header("surrogate-control", "max-age=4+5")
+                             .header("cache-control", "max-age=100")
                              .header("etag", etag)
-                             .header("cache-control", "stale-while-revalidate=5")
                              .build()}
 
 read "response #1"
 
 read closed
+
+read notify SECOND_REQUEST_WAIT
 
 connect await SECOND_REQUEST_RECEIVED
         "nukleus://streams/http-cache#0"
@@ -106,10 +106,11 @@ read nukleus:begin.ext ${http:beginEx()
                              .typeId(nukleus:id("http"))
                              .header(":status", "304")
                              .header("etag", etag)
-                             .header("preference-applied", "wait=5")
                              .build()}
 
 read closed
+
+read notify THIRD_REQUEST_WAIT
 
 connect await THIRD_REQUEST_RECEIVED
         "nukleus://streams/http-cache#0"
@@ -135,9 +136,8 @@ read nukleus:begin.ext ${http:beginEx()
                              .header(":status", "200")
                              .header("content-length", "11")
                              .header("date", response2Date)
-                             .header("surrogate-control", "max-age=4+5")
+                             .header("cache-control", "max-age=100")
                              .header("etag", etag2)
-                             .header("cache-control", "stale-while-revalidate=5")
                              .build()}
 
 read "response #2"
