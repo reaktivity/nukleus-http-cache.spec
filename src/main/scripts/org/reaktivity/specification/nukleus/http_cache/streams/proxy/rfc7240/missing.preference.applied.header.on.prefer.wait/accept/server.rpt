@@ -45,6 +45,7 @@ write nukleus:begin.ext ${http:beginEx()
                               .header("surrogate-control", "max-age=100")
                               .header("cache-control", "max-age=1")
                               .header("etag", etag)
+                              .header("preference-applied", "wait=5")
                               .build()}
 
 write flush
@@ -52,8 +53,6 @@ write flush
 write "response #1"
 
 write close
-
-write notify FIRST_REQUEST_RECEIVED
 
 accepted
 
@@ -78,6 +77,7 @@ write nukleus:begin.ext ${http:beginEx()
                               .header("surrogate-control", "max-age=100")
                               .header("cache-control", "max-age=1")
                               .header("etag", etag)
+                              .header("preference-applied", "wait=5")
                               .build()}
 
 write flush
@@ -106,10 +106,17 @@ connected
 read closed
 
 write nukleus:begin.ext ${http:beginEx()
-                              .typeId(nukleus:id("http"))
-                              .header(":status", "304")
-                              .header("etag", etag)
-                              .build()}
+                             .typeId(nukleus:id("http"))
+                             .header(":status", "200")
+                             .header("content-length", "11")
+                             .header("date", response2Date)
+                             .header("surrogate-control", "max-age=100")
+                             .header("cache-control", "max-age=1")
+                             .header("etag", etag2)
+                             .header("preference-applied", "wait=5")
+                             .build()}
+
+write "response #2"
 
 write close
 
@@ -140,6 +147,7 @@ write nukleus:begin.ext ${http:beginEx()
                               .header("surrogate-control", "max-age=100")
                               .header("cache-control", "max-age=1")
                               .header("etag", etag2)
+                              .header("preference-applied", "wait=5")
                               .build()}
 
 write flush
