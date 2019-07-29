@@ -86,8 +86,6 @@ write "response #1"
 
 write close
 
-write notify SECOND_REQUEST_RECEIVED
-
 accepted
 
 read nukleus:begin.ext ${http:beginEx()
@@ -120,8 +118,6 @@ write "response #2"
 
 write close
 
-write notify THIRD_REQUEST_RECEIVED
-
 accepted
 
 read nukleus:begin.ext ${http:beginEx()
@@ -130,8 +126,6 @@ read nukleus:begin.ext ${http:beginEx()
                              .header(":method", "GET")
                              .header(":path", "/data")
                              .header(":authority", "localhost:8080")
-                             .header("cache-control", "no-cache")
-                             .header("if-none-match", etag)
                              .header("prefer", "wait=5")
                              .build()}
 

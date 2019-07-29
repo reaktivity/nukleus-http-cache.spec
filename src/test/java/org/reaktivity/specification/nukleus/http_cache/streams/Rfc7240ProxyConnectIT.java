@@ -66,8 +66,8 @@ public class Rfc7240ProxyConnectIT
 
     @Test
     @Specification({
-        "${streams}/missing.preference.applied.header.on.prefer.wait/accept/client",
-        "${streams}/missing.preference.applied.header.on.prefer.wait/accept/server",
+        "${streams}/missing.preference.applied.header.on.prefer.wait/connect/client",
+        "${streams}/missing.preference.applied.header.on.prefer.wait/connect/server",
     })
     public void shouldHandleMissingPreferenceAppliedHeaderOnPreferWait() throws Exception
     {
