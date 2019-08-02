@@ -38,6 +38,7 @@ connected
 
 read closed
 
+write notify RECEIVED_FIRST_REQUEST
 write await PREFER_WAIT_REQUEST_ONE_COMPLETED
 
 write nukleus:begin.ext ${http:beginEx()
@@ -72,6 +73,7 @@ connected
 
 read closed
 
+write notify RECEIVED_SECOND_REQUEST
 write await PREFER_WAIT_REQUEST_TWO_COMPLETED
 
 write nukleus:begin.ext ${http:beginEx()
@@ -101,6 +103,7 @@ connected
 
 read closed
 
+write notify RECEIVED_THIRD_REQUEST
 write await PREFER_WAIT_REQUEST_THREE_COMPLETED
 
 write nukleus:begin.ext ${http:beginEx()
@@ -117,4 +120,3 @@ write nukleus:begin.ext ${http:beginEx()
 write "response #2"
 
 write close
-
