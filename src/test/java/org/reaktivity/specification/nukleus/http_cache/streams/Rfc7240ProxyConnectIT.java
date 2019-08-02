@@ -42,8 +42,8 @@ public class Rfc7240ProxyConnectIT
 
     @Test
     @Specification({
-        "${streams}/send.304.on.prefer.wait.timeout/accept/client",
-        "${streams}/send.304.on.prefer.wait.timeout/accept/server",
+        "${streams}/send.304.on.prefer.wait.timeout/connect/client",
+        "${streams}/send.304.on.prefer.wait.timeout/connect/server",
     })
     public void shouldSend304OnPreferWaitTimeout() throws Exception
     {

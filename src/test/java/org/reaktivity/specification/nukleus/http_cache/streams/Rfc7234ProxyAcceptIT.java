@@ -647,5 +647,15 @@ public class Rfc7234ProxyAcceptIT
         k3po.finish();
     }
 
-    // TODO 304 on etags or last-modified
+    @Test
+    @Specification({
+        "${streams}/use.etag.from.trailer.on.200.response/accept/client",
+        "${streams}/use.etag.from.trailer.on.200.response/accept/server",
+    })
+    public void shouldUseEtagFromTrailerOn200Response() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_PROXY");
+        k3po.finish();
+    }
 }

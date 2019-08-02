@@ -47,4 +47,36 @@ read nukleus:begin.ext ${http:beginEx()
 read ${largePayload}
 
 read closed
+read notify REQUEST_CACHED
 
+
+# INPUT STREAM 2
+connect await REQUEST_CACHED
+        "nukleus://streams/http-cache#0"
+        option nukleus:window 50000
+        option nukleus:transmission "half-duplex"
+
+write nukleus:begin.ext ${http:beginEx()
+                              .typeId(nukleus:id("http"))
+                              .header(":scheme", "http")
+                              .header(":method", "GET")
+                              .header(":path", "/path")
+                              .header(":authority", "localhost:8080")
+                              .build()}
+
+connected
+
+write close
+
+read nukleus:begin.ext ${http:beginEx()
+                             .typeId(nukleus:id("http"))
+                             .header(":status", "200")
+                             .header("content-length", payloadSize)
+                             .header("cache-control", "max-age=150")
+                             .header("date", date)
+                             .header("last-modified", date)
+                             .build()}
+
+read ${largePayload}
+
+read closed
