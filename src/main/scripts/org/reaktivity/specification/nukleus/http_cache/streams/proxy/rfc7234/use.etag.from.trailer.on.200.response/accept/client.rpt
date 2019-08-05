@@ -111,7 +111,7 @@ read nukleus:begin.ext ${http:beginEx()
                               .header("content-length", "11")
                               .header("date", response2Date)
                               .header("surrogate-control", "max-age=101")
-                              .header("etag", etag)
+                              .header("etag", etag2)
                               .build()}
 
 
