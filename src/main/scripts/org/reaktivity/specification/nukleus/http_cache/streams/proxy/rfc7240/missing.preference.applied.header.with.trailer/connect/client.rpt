@@ -15,12 +15,52 @@
 #
 
 property response1Date ${http_cache:date()} # sharedProperty
-property response2Date ${http_cache:datePlus(1)} # sharedProperty
-property etag1 ${http_cache:fixedStrongEtag("99999>|<1")}
-property etag2 ${http_cache:fixedStrongEtag("99999>|<2")}
+property response2Date ${http_cache:datePlus(5)} # sharedProperty
+property etag ${http_cache:strongEtag()} #shared
+property etag2 ${http_cache:strongEtag()} #shared
 
 connect await ROUTED_PROXY
-        "nukleus://streams/http-cache#0"
+        "nukleus://streams/target#0"
+        option nukleus:window 8192
+        option nukleus:transmission "half-duplex"
+
+
+write nukleus:begin.ext ${http:beginEx()
+                              .typeId(nukleus:id("http"))
+                              .header(":scheme", "http")
+                              .header(":method", "GET")
+                              .header(":path", "/data")
+                              .header(":authority", "localhost:8080")
+                              .header("prefer", "wait=5")
+                              .build()}
+
+connected
+
+write close
+
+
+read nukleus:begin.ext ${http:beginEx()
+                             .typeId(nukleus:id("http"))
+                              .header(":status", "200")
+                              .header("content-length", "11")
+                              .header("date", response1Date)
+                              .header("surrogate-control", "max-age=100")
+                              .header("cache-control", "max-age=1")
+                              .build()}
+
+read "response #1"
+
+read nukleus:end.ext ${http:endEx()
+                           .typeId(nukleus:id("http"))
+                           .trailer("etag", etag)
+                           .build()}
+
+read closed
+
+read notify FIRST_REQUEST_RECEIVED
+
+connect await FIRST_REQUEST_RECEIVED
+        "nukleus://streams/target#0"
         option nukleus:window 8192
         option nukleus:transmission "half-duplex"
 
@@ -30,6 +70,9 @@ write nukleus:begin.ext ${http:beginEx()
                               .header(":method", "GET")
                               .header(":path", "/data")
                               .header(":authority", "localhost:8080")
+                              .header("cache-control", "no-cache")
+                              .header("if-none-match", etag)
+                              .header("prefer", "wait=5")
                               .build()}
 connected
 
@@ -41,20 +84,22 @@ read nukleus:begin.ext ${http:beginEx()
                               .header("content-length", "11")
                               .header("date", response1Date)
                               .header("surrogate-control", "max-age=100")
+                              .header("cache-control", "max-age=1")
                               .build()}
 
 read "response #1"
 
 read nukleus:end.ext ${http:endEx()
                             .typeId(nukleus:id("http"))
-                            .trailer("etag", etag1)
+                            .trailer("etag", etag)
                             .build()}
+
 read closed
 
-read notify CACHE_UPDATE_RECEIVED
+read notify SECOND_REQUEST_RECEIVED
 
-connect await CACHE_UPDATE_RECEIVED # Need to relay barrier due to race on write notify and nukleus process
-        "nukleus://streams/http-cache#0"
+connect await SECOND_REQUEST_RECEIVED
+        "nukleus://streams/target#0"
         option nukleus:window 8192
         option nukleus:transmission "half-duplex"
 
@@ -64,42 +109,9 @@ write nukleus:begin.ext ${http:beginEx()
                               .header(":method", "GET")
                               .header(":path", "/data")
                               .header(":authority", "localhost:8080")
-                              .build()}
-connected
-
-write close
-
-read nukleus:begin.ext ${http:beginEx()
-                              .typeId(nukleus:id("http"))
-                              .header(":status", "200")
-                              .header("content-length", "11")
-                              .header("date", response1Date)
-                              .header("surrogate-control", "max-age=100")
-                              .header("etag", etag1)
-                              .build()}
-
-
-read "response #1"
-
-read closed
-
-
-
-read notify SECOND_REQUEST_RESPONSE_COMPLETED
-
-connect await SECOND_REQUEST_RESPONSE_COMPLETED # Need to relay barrier due to race on write notify and nukleus process
-        "nukleus://streams/http-cache#0"
-        option nukleus:window 8192
-        option nukleus:transmission "half-duplex"
-
-write nukleus:begin.ext ${http:beginEx()
-                              .typeId(nukleus:id("http"))
-                              .header(":scheme", "http")
-                              .header(":method", "GET")
-                              .header(":path", "/data")
-                              .header(":authority", "localhost:8080")
-                              .header("if-none-match", etag1)
                               .header("cache-control", "no-cache")
+                              .header("if-none-match", etag)
+                              .header("prefer", "wait=5")
                               .build()}
 connected
 
@@ -110,11 +122,15 @@ read nukleus:begin.ext ${http:beginEx()
                               .header(":status", "200")
                               .header("content-length", "11")
                               .header("date", response2Date)
-                              .header("surrogate-control", "max-age=101")
-                              .header("etag", etag)
+                              .header("surrogate-control", "max-age=100")
+                              .header("cache-control", "max-age=1")
                               .build()}
 
-
 read "response #2"
+
+read nukleus:end.ext ${http:endEx()
+                           .typeId(nukleus:id("http"))
+                           .trailer("etag", etag2)
+                           .build()}
 
 read closed

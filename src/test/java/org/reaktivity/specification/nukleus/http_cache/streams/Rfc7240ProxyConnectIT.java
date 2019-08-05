@@ -75,4 +75,16 @@ public class Rfc7240ProxyConnectIT
         k3po.notifyBarrier("ROUTED_PROXY");
         k3po.finish();
     }
+
+    @Test
+    @Specification({
+        "${streams}/missing.preference.applied.header.with.trailer/connect/client",
+        "${streams}/missing.preference.applied.header.with.trailer/connect/server",
+    })
+    public void shouldHandleMissingPreferenceAppliedHeaderWithTrailer() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_PROXY");
+        k3po.finish();
+    }
 }
