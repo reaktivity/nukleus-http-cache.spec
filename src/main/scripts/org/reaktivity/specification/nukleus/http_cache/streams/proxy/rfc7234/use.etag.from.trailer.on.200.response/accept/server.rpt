@@ -43,14 +43,11 @@ write nukleus:begin.ext ${http:beginEx()
                               .header("content-length", "11")
                               .header("date", response1Date)
                               .header("surrogate-control", "max-age=100")
+                              .header("etag", etag1)
                               .build()}
 
 write "response #1"
 
-write nukleus:end.ext ${http:endEx()
-                            .typeId(nukleus:id("http"))
-                            .trailer("etag", etag1)
-                            .build()}
 
 write close
 

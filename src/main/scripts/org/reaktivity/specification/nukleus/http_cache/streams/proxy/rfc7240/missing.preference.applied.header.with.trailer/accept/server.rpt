@@ -45,16 +45,12 @@ write nukleus:begin.ext ${http:beginEx()
                               .header("surrogate-control", "max-age=100")
                               .header("cache-control", "max-age=1")
                               .header("preference-applied", "wait=5")
+                              .header("etag", etag)
                               .build()}
 
 write flush
 
 write "response #1"
-
-write nukleus:end.ext ${http:endEx()
-                            .typeId(nukleus:id("http"))
-                            .trailer("etag", etag)
-                            .build()}
 
 write close
 

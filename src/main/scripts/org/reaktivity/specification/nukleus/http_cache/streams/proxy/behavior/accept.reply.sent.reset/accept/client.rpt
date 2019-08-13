@@ -31,10 +31,4 @@ connected
 
 write close
 
-read nukleus:begin.ext ${http:beginEx()
-                             .typeId(nukleus:id("http"))
-                             .header(":status", "200")
-                             .header("content-length", "11")
-                             .build()}
-
-read aborted
+write aborted
