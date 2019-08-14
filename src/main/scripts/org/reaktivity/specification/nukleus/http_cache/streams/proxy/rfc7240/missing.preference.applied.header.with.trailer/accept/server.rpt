@@ -44,8 +44,8 @@ write nukleus:begin.ext ${http:beginEx()
                               .header("date", response1Date)
                               .header("surrogate-control", "max-age=100")
                               .header("cache-control", "max-age=1")
-                              .header("preference-applied", "wait=5")
                               .header("etag", etag)
+                              .header("preference-applied", "wait=5")
                               .build()}
 
 write flush
