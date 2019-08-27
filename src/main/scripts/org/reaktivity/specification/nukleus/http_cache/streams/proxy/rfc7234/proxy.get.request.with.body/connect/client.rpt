@@ -14,6 +14,10 @@
 # under the License.
 #
 
+property largePayload ${http_cache:largePayload(10485)} # shared property
+property payloadSize 10485 # shared property
+
+
 connect await ROUTED_PROXY
         "nukleus://streams/target#0"
         option nukleus:window 8192
@@ -25,12 +29,12 @@ write nukleus:begin.ext ${http:beginEx()
                               .header(":method", "GET")
                               .header(":path", "/path")
                               .header(":authority", "localhost:8080")
-                              .header("content-length", "9")
+                              .header("content-length", payloadSize)
                               .build()}
 
 connected
 
-write "say hello"
+write ${largePayload}
 
 write close
 
