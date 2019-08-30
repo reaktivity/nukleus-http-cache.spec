@@ -30,6 +30,7 @@ read nukleus:begin.ext ${http:beginEx()
                              .header(":method", "GET")
                              .header(":path", "/data")
                              .header(":authority", "localhost:8080")
+                             .header("prefer", "wait=5")
                              .build()}
 
 connected
@@ -44,20 +45,10 @@ write nukleus:begin.ext ${http:beginEx()
                               .header("surrogate-control", "max-age=4")
                               .header("cache-control", "max-age=4")
                               .header("etag", etag)
+                              .header("preference-applied", "wait=5")
+                              .header("access-control-expose-headers", "preference-applied")
                               .build()}
 
-write flush
-
-write nukleus:data.ext ${http:dataEx()
-                             .typeId(nukleus:id("http"))
-                             .promise(":scheme", "http")
-                             .promise(":method", "GET")
-                             .promise(":path", "/data")
-                             .promise(":authority", "localhost:8080")
-                             .promise("cache-control", "no-cache")
-                             .promise("prefer", "wait=5")
-                             .promise("if-none-match", etag)
-                             .build()}
 write "response #1"
 
 write close
@@ -70,7 +61,7 @@ read nukleus:begin.ext ${http:beginEx()
                              .header(":method", "GET")
                              .header(":path", "/data")
                              .header(":authority", "localhost:8080")
-                             .header("cache-control", "no-cache")
+                             .header("cache-control", "max-age=0")
                              .header("prefer", "wait=5")
                              .header("if-none-match", etag)
                              .build()}
@@ -84,5 +75,6 @@ write nukleus:begin.ext ${http:beginEx()
                               .header(":status", "304")
                               .header("etag", etag)
                               .header("preference-applied", "wait=5")
+                              .header("access-control-expose-headers", "preference-applied")
                               .build()}
 write close

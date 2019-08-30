@@ -38,7 +38,6 @@ read closed
 write nukleus:begin.ext ${http:beginEx()
                               .typeId(nukleus:id("http"))
                               .header(":status", "503")
-                              .header("retry-after", "0")
                               .build()}
 
-write close
+write abort

@@ -99,4 +99,16 @@ public class Rfc7240ProxyAcceptIT
         k3po.notifyBarrier("ROUTED_PROXY");
         k3po.finish();
     }
+
+    @Test
+    @Specification({
+        "${streams}/multiple.parallel.requests.with.prefer.wait.and.updated.authorization/accept/client",
+        "${streams}/multiple.parallel.requests.with.prefer.wait.and.updated.authorization/accept/server",
+    })
+    public void shouldHandleMultipleParallelRequestWithPreferWaitAndUpdatedAuthorization() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_PROXY");
+        k3po.finish();
+    }
 }
