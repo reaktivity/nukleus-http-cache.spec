@@ -78,4 +78,15 @@ write "response #2"
 
 write close
 
-write notify CACHE_UPDATE_SENT # Need to relay barrier due to race on write notify and nukleus process
+accepted
+
+read nukleus:begin.ext ${http:beginEx()
+                             .typeId(nukleus:id("http"))
+                             .header(":scheme", "http")
+                             .header(":method", "GET")
+                             .header(":path", "/data")
+                             .header(":authority", "localhost:8080")
+                             .header("if-none-match", etag2)
+                             .build()}
+
+connected
