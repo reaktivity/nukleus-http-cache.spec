@@ -15,11 +15,11 @@
 #
 
 property response1Date ${http_cache:date()} # sharedProperty
-property response2Date ${http_cache:datePlus(1)} # sharedProperty
-property etag1 ${http_cache:fixedStrongEtag("99999a0")}
+property response2Date ${http_cache:datePlus(5)} # sharedProperty
+property etag ${http_cache:strongEtag()} # sharedProperty
 
 accept await ROUTED_PROXY
-        "nukleus://streams/target#0"
+        "nukleus://streams/http-cache#0"
         option nukleus:window 8192
         option nukleus:transmission "half-duplex"
 accepted
@@ -30,6 +30,7 @@ read nukleus:begin.ext ${http:beginEx()
                              .header(":method", "GET")
                              .header(":path", "/data")
                              .header(":authority", "localhost:8080")
+                             .header("prefer", "wait=5")
                              .build()}
 
 connected
@@ -41,8 +42,14 @@ write nukleus:begin.ext ${http:beginEx()
                               .header(":status", "200")
                               .header("content-length", "11")
                               .header("date", response1Date)
-                              .header("surrogate-control", "max-age=1+100, x-protected")
+                              .header("surrogate-control", "max-age=100")
+                              .header("cache-control", "max-age=1")
+                              .header("etag", etag)
+                              .header("preference-applied", "wait=5")
+                              .header("access-control-expose-headers", "preference-applied")
                               .build()}
+
+write flush
 
 write "response #1"
 
@@ -51,27 +58,33 @@ write close
 accepted
 
 read nukleus:begin.ext ${http:beginEx()
-                             .typeId(nukleus:id("http"))
-                             .header(":scheme", "http")
-                             .header(":method", "GET")
-                             .header(":path", "/data")
-                             .header(":authority", "localhost:8080")
-                             .header("if-none-match", etag1)
+                              .typeId(nukleus:id("http"))
+                              .header(":scheme", "http")
+                              .header(":method", "GET")
+                              .header(":path", "/data")
+                              .header(":authority", "localhost:8080")
+                              .header("prefer", "wait=5")
+                              .header("cache-control", "max-age=0")
+                              .header("if-none-match", etag)
                              .build()}
 
 connected
 
 read closed
 
-write await REQUEST_TWO_PENDING
-
 write nukleus:begin.ext ${http:beginEx()
                               .typeId(nukleus:id("http"))
                               .header(":status", "200")
                               .header("content-length", "11")
                               .header("date", response2Date)
-                              .header("surrogate-control", "max-age=1+100, x-protected")
+                              .header("surrogate-control", "max-age=100")
+                              .header("cache-control", "max-age=1")
+                              .header("etag", etag2)
+                              .header("preference-applied", "wait=5")
+                              .header("access-control-expose-headers", "preference-applied")
                               .build()}
+
+write flush
 
 write "response #2"
 

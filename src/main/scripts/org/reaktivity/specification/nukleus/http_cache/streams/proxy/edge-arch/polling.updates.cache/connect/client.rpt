@@ -28,6 +28,7 @@ connect await ROUTED_PROXY
 write nukleus:begin.ext ${http:beginEx()
                               .typeId(nukleus:id("http"))
                               .header(":scheme", "http")
+                              .header("x-protocol-stack", "emulated")
                               .header(":method", "GET")
                               .header(":path", "/data")
                               .header(":authority", "localhost:8080")
@@ -61,6 +62,7 @@ connect await INITIAL_REQUEST_COMPLETE
 write nukleus:begin.ext ${http:beginEx()
                               .typeId(nukleus:id("http"))
                               .header(":scheme", "http")
+                              .header("x-protocol-stack", "emulated")
                               .header(":method", "GET")
                               .header(":path", "/data")
                               .header(":authority", "localhost:8080")
@@ -91,10 +93,10 @@ connect await SECOND_REQUEST_COMPLETE
         option nukleus:window 8192
         option nukleus:transmission "half-duplex"
 
-
 write nukleus:begin.ext ${http:beginEx()
                               .typeId(nukleus:id("http"))
                               .header(":scheme", "http")
+                              .header("x-protocol-stack", "emulated")
                               .header(":method", "GET")
                               .header(":path", "/data")
                               .header(":authority", "localhost:8080")

@@ -29,6 +29,7 @@ accepted
 read nukleus:begin.ext ${http:beginEx()
                              .typeId(nukleus:id("http"))
                              .header(":scheme", "http")
+                              .header("x-protocol-stack", "emulated")
                              .header(":method", "GET")
                              .header(":path", "/data")
                              .header(":authority", "localhost:8080")
@@ -51,6 +52,8 @@ write nukleus:begin.ext ${http:beginEx()
 
 write flush
 
+write "response #1"
+
 write nukleus:data.ext ${http:dataEx()
                              .typeId(nukleus:id("http"))
                              .promise(":scheme", "http")
@@ -61,23 +64,23 @@ write nukleus:data.ext ${http:dataEx()
                              .promise("prefer", "wait=100")
                              .promise("if-none-match", etag)
                              .build()}
-write "response #1"
+write flush
 
 write close
-
-write notify CACHE_UPDATED #Assumed
 
 accepted
 
 read nukleus:begin.ext ${http:beginEx()
                              .typeId(nukleus:id("http"))
                              .header(":scheme", "http")
+                              .header("x-protocol-stack", "emulated")
                              .header(":method", "GET")
                              .header(":path", "/data")
                              .header(":authority", "localhost:8080")
                              .header("cache-control", "no-cache")
                              .header("prefer", "wait=100")
                              .header("if-none-match", etag)
+                             .header("authorization", "some-authorization-value")
                              .build()}
 
 connected
@@ -106,6 +109,7 @@ write nukleus:data.ext ${http:dataEx()
                              .promise("prefer", "wait=100")
                              .promise("if-none-match", etag2)
                              .build()}
+
 
 write "response #2"
 
