@@ -17,6 +17,7 @@
 property date ${http_cache:date()} # shared property
 property date2 ${http_cache:datePlus(2)} # shared property
 property etag ${http_cache:strongEtag()}
+property etag2 ${http_cache:strongEtag()}
 
 accept await ROUTED_PROXY
         "nukleus://streams/target#0"
@@ -72,7 +73,7 @@ write nukleus:begin.ext ${http:beginEx()
                               .header("cache-control", "max-age=15")
                               .header("date", date2)
                               .header("last-modified", date2)
-                              .header("etag", etag)
+                              .header("etag", etag2)
                               .build()}
 
 write "hello alien"

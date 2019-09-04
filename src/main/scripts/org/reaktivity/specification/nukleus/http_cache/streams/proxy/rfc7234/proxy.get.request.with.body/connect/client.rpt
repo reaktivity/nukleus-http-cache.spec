@@ -14,6 +14,7 @@
 # under the License.
 #
 
+
 connect await ROUTED_PROXY
         "nukleus://streams/target#0"
         option nukleus:window 8192
@@ -25,12 +26,9 @@ write nukleus:begin.ext ${http:beginEx()
                               .header(":method", "GET")
                               .header(":path", "/path")
                               .header(":authority", "localhost:8080")
-                              .header("content-length", "9")
                               .build()}
 
 connected
-
-write "say hello"
 
 write close
 

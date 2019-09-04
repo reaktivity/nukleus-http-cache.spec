@@ -25,6 +25,7 @@ accepted
 read nukleus:begin.ext ${http:beginEx()
                              .typeId(nukleus:id("http"))
                              .header(":scheme", "http")
+                              .header("x-protocol-stack", "emulated")
                              .header(":method", "GET")
                              .header(":path", "/data")
                              .header(":authority", "localhost:8080")
@@ -45,6 +46,8 @@ write nukleus:begin.ext ${http:beginEx()
 
 write flush
 
+write "hello world"
+
 write nukleus:data.ext ${http:dataEx()
                              .typeId(nukleus:id("http"))
                              .promise(":scheme", "http")
@@ -55,6 +58,6 @@ write nukleus:data.ext ${http:dataEx()
                              .promise("prefer", "wait=100")
                              .promise("if-none-match", etag)
                              .build()}
-write "hello world"
+write flush
 
 write close

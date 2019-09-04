@@ -584,4 +584,28 @@ public class Rfc7234ProxyConnectIT
         k3po.notifyBarrier("ROUTED_PROXY");
         k3po.finish();
     }
+
+    @Test
+    @Specification({
+        "${streams}/proxy.get.request.without.etag/connect/client",
+        "${streams}/proxy.get.request.without.etag/connect/server",
+    })
+    public void shouldProxyGetRequestWithoutEtag() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_PROXY");
+        k3po.finish();
+    }
+
+    @Test
+    @Specification({
+        "${streams}/use.etag.from.trailer.on.200.response/connect/client",
+        "${streams}/use.etag.from.trailer.on.200.response/connect/server",
+    })
+    public void shouldUseEtagFromTrailerOn200Response() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_PROXY");
+        k3po.finish();
+    }
 }

@@ -27,6 +27,7 @@ connect await ROUTED_PROXY
 write nukleus:begin.ext ${http:beginEx()
                               .typeId(nukleus:id("http"))
                               .header(":scheme", "http")
+                              .header("x-protocol-stack", "emulated")
                               .header(":method", "GET")
                               .header(":path", "/data")
                               .header(":authority", "localhost:8080")
@@ -49,6 +50,18 @@ read nukleus:begin.ext ${http:beginEx()
 
 read "response #1"
 
+read nukleus:data.ext ${http:dataEx()
+                            .typeId(nukleus:id("http"))
+                            .promise(":scheme", "http")
+                            .promise(":method", "GET")
+                            .promise(":path", "/data")
+                            .promise(":authority", "localhost:8080")
+                            .promise("cache-control", "no-cache")
+                            .promise("prefer", "wait=100")
+                            .promise("if-none-match", etag)
+                            .build()}
+read nukleus:data.null
+
 read closed
 
 read notify REQUEST_ONE_COMPLETE
@@ -61,6 +74,7 @@ connect await REQUEST_ONE_COMPLETE
 write nukleus:begin.ext ${http:beginEx()
                               .typeId(nukleus:id("http"))
                               .header(":scheme", "http")
+                              .header("x-protocol-stack", "emulated")
                               .header(":method", "GET")
                               .header(":path", "/data")
                               .header(":authority", "localhost:8080")

@@ -28,6 +28,7 @@ connect await ROUTED_PROXY
 write nukleus:begin.ext ${http:beginEx()
                               .typeId(nukleus:id("http"))
                               .header(":scheme", "http")
+                              .header("x-protocol-stack", "emulated")
                               .header(":method", "GET")
                               .header(":path", "/data")
                               .header(":authority", "localhost:8080")
@@ -61,6 +62,7 @@ connect await INITIAL_REQUEST_COMPLETE
 write nukleus:begin.ext ${http:beginEx()
                               .typeId(nukleus:id("http"))
                               .header(":scheme", "http")
+                              .header("x-protocol-stack", "emulated")
                               .header(":method", "GET")
                               .header(":path", "/data")
                               .header(":authority", "localhost:8080")
@@ -72,37 +74,6 @@ connected
 write close
 
 write notify REQUEST_TWO_PENDING
-
-read nukleus:begin.ext ${http:beginEx()
-                             .typeId(nukleus:id("http"))
-                             .header(":status", "304")
-                             .header("content-length", "11")
-                             .header("date", response1Date)
-                             .header("surrogate-control", "max-age=1+100, x-protected")
-                             .header("etag", etag)
-                             .build()}
-
-read closed
-
-read notify SECOND_REQUEST_COMPLETE
-
-connect await SECOND_REQUEST_COMPLETE
-        "nukleus://streams/target#0"
-        option nukleus:window 8192
-        option nukleus:transmission "half-duplex"
-
-
-write nukleus:begin.ext ${http:beginEx()
-                              .typeId(nukleus:id("http"))
-                              .header(":scheme", "http")
-                              .header(":method", "GET")
-                              .header(":path", "/data")
-                              .header(":authority", "localhost:8080")
-                              .header("if-none-match", etag)
-                              .build()}
-connected
-
-write close
 
 read nukleus:begin.ext ${http:beginEx()
                              .typeId(nukleus:id("http"))

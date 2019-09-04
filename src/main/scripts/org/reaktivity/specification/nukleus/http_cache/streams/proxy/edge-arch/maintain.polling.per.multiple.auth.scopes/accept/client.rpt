@@ -29,6 +29,7 @@ connect await ROUTED_PROXY
 write nukleus:begin.ext ${http:beginEx()
                               .typeId(nukleus:id("http"))
                               .header(":scheme", "http")
+                              .header("x-protocol-stack", "emulated")
                               .header(":method", "GET")
                               .header(":path", "/path")
                               .header(":authority", "localhost:8080")
@@ -49,6 +50,8 @@ read nukleus:begin.ext ${http:beginEx()
                              .header("cache-control", "stale-while-revalidate=10")
                              .build()}
 
+read "response 1a"
+
 read nukleus:data.ext ${http:dataEx()
                             .typeId(nukleus:id("http"))
                             .promise(":scheme", "http")
@@ -59,8 +62,7 @@ read nukleus:data.ext ${http:dataEx()
                             .promise("prefer", "wait=10")
                             .promise("if-none-match", etag)
                             .build()}
-
-read "response 1a"
+read nukleus:data.null
 
 read closed
 
@@ -73,6 +75,7 @@ connect await POLLING_ON_1
 write nukleus:begin.ext ${http:beginEx()
                               .typeId(nukleus:id("http"))
                               .header(":scheme", "http")
+                              .header("x-protocol-stack", "emulated")
                               .header(":method", "GET")
                               .header(":path", "/path")
                               .header(":authority", "localhost:8080")
@@ -93,6 +96,8 @@ read nukleus:begin.ext ${http:beginEx()
                              .header("cache-control", "stale-while-revalidate=10")
                              .build()}
 
+read "response 1b"
+
 read nukleus:data.ext ${http:dataEx()
                             .typeId(nukleus:id("http"))
                             .promise(":scheme", "http")
@@ -103,7 +108,6 @@ read nukleus:data.ext ${http:dataEx()
                             .promise("prefer", "wait=10")
                             .promise("if-none-match", etag2)
                             .build()}
-
-read "response 1b"
+read nukleus:data.null
 
 read closed

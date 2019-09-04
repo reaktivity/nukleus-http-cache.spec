@@ -367,8 +367,8 @@ public class EdgeArchProxyAcceptIT
 
     @Test
     @Specification({
-            "${streams}/polling.vary.header.asterisk/accept/client",
-            "${streams}/polling.vary.header.asterisk/accept/server",
+        "${streams}/polling.vary.header.asterisk/accept/client",
+        "${streams}/polling.vary.header.asterisk/accept/server",
     })
     public void pollingVaryHeaderAsterisk() throws Exception
     {
@@ -425,17 +425,6 @@ public class EdgeArchProxyAcceptIT
         k3po.finish();
     }
 
-    @Test
-    @Specification({
-        "${streams}/update.cache.when.200.response.doesnot.have.etag/accept/client",
-        "${streams}/update.cache.when.200.response.doesnot.have.etag/accept/server",
-    })
-    public void shouldCacheWhen200ResponseDoesnotHaveEtag() throws Exception
-    {
-        k3po.start();
-        k3po.notifyBarrier("ROUTED_PROXY");
-        k3po.finish();
-    }
 
     @Test
     @Specification({
@@ -448,4 +437,17 @@ public class EdgeArchProxyAcceptIT
         k3po.notifyBarrier("ROUTED_PROXY");
         k3po.finish();
     }
+
+    @Test
+    @Specification({
+        "${streams}/use.etag.from.trailer.on.200.response.after.cache.full/accept/client",
+        "${streams}/use.etag.from.trailer.on.200.response.after.cache.full/accept/server",
+    })
+    public void shouldUseEtagFromTrailerOn200ResponseAfterCacheFull() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_PROXY");
+        k3po.finish();
+    }
+
 }

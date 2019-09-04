@@ -15,6 +15,8 @@
 #
 
 property statusCode ${http_cache:randomCacheableByDefaultStatusCode()} # shared property
+property etag ${http_cache:strongEtag()} #shared
+property etag2 ${http_cache:strongEtag()} #shared
 
 connect await ROUTED_PROXY
         "nukleus://streams/target#0"
@@ -37,6 +39,7 @@ read nukleus:begin.ext ${http:beginEx()
                              .typeId(nukleus:id("http"))
                              .header(":status", statusCode)
                              .header("content-length", "11")
+                             .header("etag", etag)
                              .build()}
 read "hello world"
 
@@ -63,6 +66,7 @@ read nukleus:begin.ext ${http:beginEx()
                              .typeId(nukleus:id("http"))
                              .header(":status", statusCode)
                              .header("content-length", "11")
+                             .header("etag", etag2)
                              .build()}
 read "hello alien"
 
