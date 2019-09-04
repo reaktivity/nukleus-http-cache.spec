@@ -100,7 +100,7 @@ write nukleus:begin.ext ${http:beginEx()
                               .header("surrogate-control", "max-age=1+10, x-protected")
                               .header("etag", etag2)
                               .header("cache-control", "stale-while-revalidate=10")
-                              .build()};
+                              .build()}
 
 write flush
 
@@ -115,7 +115,7 @@ write nukleus:data.ext ${http:dataEx()
                              .promise("cache-control", "no-cache")
                              .promise("prefer", "wait=10")
                              .promise("if-none-match", etag2)
-                             .build()};
+                             .build()}
 
 write flush
 
