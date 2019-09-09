@@ -135,9 +135,8 @@ public final class Functions
         }
     }
 
-    private static int randomCharBytesUTF8(byte[] bytes, int index, int width)
+    private static int randomCharBytesUTF8(byte[] bytes, int offset, int width)
     {
-        int offset = index;
         Random random = ThreadLocalRandom.current();
         switch (width)
         {
