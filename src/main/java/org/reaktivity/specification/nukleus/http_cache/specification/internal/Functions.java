@@ -140,26 +140,26 @@ public final class Functions
         Random random = ThreadLocalRandom.current();
         switch (width)
         {
-            case 1:
-                bytes[offset++] = (byte) random.nextInt(0x80);
-                break;
-            case 2:
-                bytes[offset++] = (byte) (0xc0 | random.nextInt(0x20) | 1 << (random.nextInt(4) + 1));
-                bytes[offset++] = (byte) (0x80 | random.nextInt(0x40));
-                break;
-            case 3:
-                // UTF-8 not legal for 0xD800 through 0xDFFF (see RFC 3269)
-                bytes[offset++] = (byte) (0xe0 | random.nextInt(0x08) | 1 << random.nextInt(3));
-                bytes[offset++] = (byte) (0x80 | random.nextInt(0x40));
-                bytes[offset++] = (byte) (0x80 | random.nextInt(0x40));
-                break;
-            case 4:
-                // UTF-8 ends at 0x10FFFF (see RFC 3269)
-                bytes[offset++] = (byte) (0xf0 | random.nextInt(0x04) | 1 << random.nextInt(2));
-                bytes[offset++] = (byte) (0x80 | random.nextInt(0x10));
-                bytes[offset++] = (byte) (0x80 | random.nextInt(0x40));
-                bytes[offset++] = (byte) (0x80 | random.nextInt(0x40));
-                break;
+        case 1:
+            bytes[offset++] = (byte) random.nextInt(0x80);
+            break;
+        case 2:
+            bytes[offset++] = (byte) (0xc0 | random.nextInt(0x20) | 1 << (random.nextInt(4) + 1));
+            bytes[offset++] = (byte) (0x80 | random.nextInt(0x40));
+            break;
+        case 3:
+            // UTF-8 not legal for 0xD800 through 0xDFFF (see RFC 3269)
+            bytes[offset++] = (byte) (0xe0 | random.nextInt(0x08) | 1 << random.nextInt(3));
+            bytes[offset++] = (byte) (0x80 | random.nextInt(0x40));
+            bytes[offset++] = (byte) (0x80 | random.nextInt(0x40));
+            break;
+        case 4:
+            // UTF-8 ends at 0x10FFFF (see RFC 3269)
+            bytes[offset++] = (byte) (0xf0 | random.nextInt(0x04) | 1 << random.nextInt(2));
+            bytes[offset++] = (byte) (0x80 | random.nextInt(0x10));
+            bytes[offset++] = (byte) (0x80 | random.nextInt(0x40));
+            bytes[offset++] = (byte) (0x80 | random.nextInt(0x40));
+            break;
         }
         return offset;
     }
