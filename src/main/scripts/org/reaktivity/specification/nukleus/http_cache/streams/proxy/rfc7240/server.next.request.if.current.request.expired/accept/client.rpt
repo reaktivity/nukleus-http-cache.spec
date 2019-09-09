@@ -72,10 +72,9 @@ connected
 
 write close
 
-read notify WAIT_CACHE_TO_EXPIRY
-read await REQUEST_EXPIRED
-read notify FIRST_REQUEST_RECEIVED
-read await SECOND_REQUEST_COMPLETED
+write notify SECOND_REQUEST_SENT
+read await CACHED_RESPONSE_EXPIRED
+read await THIRD_REQUEST_SENT
 
 read nukleus:begin.ext ${http:beginEx()
                              .typeId(nukleus:id("http"))
@@ -87,7 +86,7 @@ read nukleus:begin.ext ${http:beginEx()
 
 read closed
 
-connect await FIRST_REQUEST_RECEIVED
+connect await CACHED_RESPONSE_EXPIRED
         "nukleus://streams/http-cache#0"
         option nukleus:window 8192
         option nukleus:transmission "half-duplex"
@@ -104,7 +103,8 @@ connected
 
 write close
 
-read notify SECOND_REQUEST_COMPLETED
+read notify THIRD_REQUEST_SENT
+
 read nukleus:begin.ext ${http:beginEx()
                              .typeId(nukleus:id("http"))
                              .header(":status", "200")

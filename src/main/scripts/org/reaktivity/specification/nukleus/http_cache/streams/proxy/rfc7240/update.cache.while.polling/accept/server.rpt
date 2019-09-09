@@ -70,7 +70,7 @@ connected
 
 read closed
 
-write notify REQUEST_EXPIRED
+write notify CACHED_RESPONSE_EXPIRED
 
 write nukleus:begin.ext ${http:beginEx()
                              .typeId(nukleus:id("http"))
