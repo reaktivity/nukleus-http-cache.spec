@@ -15,6 +15,9 @@
  */
 package org.reaktivity.specification.nukleus.http_cache.streams;
 
+import static java.util.concurrent.TimeUnit.SECONDS;
+import static org.junit.rules.RuleChain.outerRule;
+
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.DisableOnDebug;
@@ -23,9 +26,6 @@ import org.junit.rules.Timeout;
 import org.kaazing.k3po.junit.annotation.Specification;
 import org.kaazing.k3po.junit.rules.K3poRule;
 import org.reaktivity.specification.nukleus.NukleusRule;
-
-import static java.util.concurrent.TimeUnit.SECONDS;
-import static org.junit.rules.RuleChain.outerRule;
 
 public class Rfc7240ProxyAcceptIT
 {
@@ -106,6 +106,30 @@ public class Rfc7240ProxyAcceptIT
         "${streams}/multiple.parallel.requests.with.prefer.wait.and.updated.authorization/accept/server",
     })
     public void shouldHandleMultipleParallelRequestWithPreferWaitAndUpdatedAuthorization() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_PROXY");
+        k3po.finish();
+    }
+
+    @Test
+    @Specification({
+        "${streams}/server.next.request.if.current.request.expired/accept/client",
+        "${streams}/server.next.request.if.current.request.expired/accept/server",
+    })
+    public void shouldServeNextRequestIfCurrentRequestExpired() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_PROXY");
+        k3po.finish();
+    }
+
+    @Test
+    @Specification({
+        "${streams}/update.cache.while.polling/accept/client",
+        "${streams}/update.cache.while.polling/accept/server",
+    })
+    public void shouldUpdateCacheWhilePolling() throws Exception
     {
         k3po.start();
         k3po.notifyBarrier("ROUTED_PROXY");
