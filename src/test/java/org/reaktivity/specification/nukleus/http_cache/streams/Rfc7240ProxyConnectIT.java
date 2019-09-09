@@ -117,7 +117,7 @@ public class Rfc7240ProxyConnectIT
         "${streams}/server.next.request.if.current.request.expired/connect/client",
         "${streams}/server.next.request.if.current.request.expired/connect/server",
     })
-    public void shouldServerNextRequestIfCurrentRequestExpired() throws Exception
+    public void shouldServeNextRequestIfCurrentRequestExpired() throws Exception
     {
         k3po.start();
         k3po.notifyBarrier("ROUTED_PROXY");
