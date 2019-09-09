@@ -111,4 +111,28 @@ public class Rfc7240ProxyConnectIT
         k3po.notifyBarrier("ROUTED_PROXY");
         k3po.finish();
     }
+
+    @Test
+    @Specification({
+        "${streams}/server.next.request.if.current.request.expired/connect/client",
+        "${streams}/server.next.request.if.current.request.expired/connect/server",
+    })
+    public void shouldServerNextRequestIfCurrentRequestExpired() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_PROXY");
+        k3po.finish();
+    }
+
+    @Test
+    @Specification({
+        "${streams}/update.cache.while.polling/connect/client",
+        "${streams}/update.cache.while.polling/connect/server",
+    })
+    public void shouldUpdateCacheWhilePolling() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_PROXY");
+        k3po.finish();
+    }
 }
