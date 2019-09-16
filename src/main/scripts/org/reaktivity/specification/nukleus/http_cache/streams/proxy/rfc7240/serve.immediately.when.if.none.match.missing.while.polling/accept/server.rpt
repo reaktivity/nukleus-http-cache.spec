@@ -71,6 +71,8 @@ connected
 
 read closed
 
+write notify SECOND_RESPONSE_SENT
+
 accepted
 
 read nukleus:begin.ext ${http:beginEx()
