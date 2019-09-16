@@ -138,8 +138,8 @@ public class Rfc7240ProxyAcceptIT
 
     @Test
     @Specification({
-        "${streams}/serve.immediately.when.if-none-match.missing.while.polling/accept/client",
-        "${streams}/serve.immediately.when.if-none-match.missing.while.polling/accept/server",
+        "${streams}/serve.immediately.when.if.none.match.missing.while.polling/accept/client",
+        "${streams}/serve.immediately.when.if.none.match.missing.while.polling/accept/server",
     })
     public void shouldServeImmediatelyWhenIfNoneMatchMissingWhilePolling() throws Exception
     {
