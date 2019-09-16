@@ -16,7 +16,7 @@
 
 property response1Date ${http_cache:date()} # sharedProperty
 property response2Date ${http_cache:datePlus(5)} # sharedProperty
-property etag ${http_cache:strongEtag()} # sharedProperty
+property etag ${http_cache:strongEtag()} #shared
 
 connect await ROUTED_PROXY
         "nukleus://streams/http-cache#0"
@@ -29,7 +29,7 @@ write nukleus:begin.ext ${http:beginEx()
                               .header(":method", "GET")
                               .header(":path", "/data")
                               .header(":authority", "localhost:8080")
-                              .header("prefer", "wait=5")
+                              .header("prefer", "wait=50")
                               .build()}
 connected
 
@@ -40,22 +40,21 @@ read nukleus:begin.ext ${http:beginEx()
                              .header(":status", "200")
                              .header("content-length", "11")
                              .header("date", response1Date)
-                             .header("surrogate-control", "max-age=4")
-                             .header("cache-control", "max-age=4")
+                             .header("surrogate-control", "max-age=10")
+                             .header("cache-control", "max-age=10")
                              .header("etag", etag)
-                             .header("preference-applied", "wait=5")
+                             .header("preference-applied", "wait=50")
                              .header("access-control-expose-headers", "preference-applied")
                              .header("access-control-expose-headers", "etag")
                              .build()}
-
 
 read "response #1"
 
 read closed
 
-read notify REQUEST_ONE_COMPLETE
+read notify FIRST_REQUEST_COMPLETED
 
-connect await REQUEST_ONE_COMPLETE
+connect await FIRST_REQUEST_COMPLETED
         "nukleus://streams/http-cache#0"
         option nukleus:window 8192
         option nukleus:transmission "half-duplex"
@@ -66,9 +65,29 @@ write nukleus:begin.ext ${http:beginEx()
                               .header(":method", "GET")
                               .header(":path", "/data")
                               .header(":authority", "localhost:8080")
+                              .header("prefer", "wait=50")
                               .header("cache-control", "max-age=0")
-                              .header("prefer", "wait=5")
                               .header("if-none-match", etag)
+                              .build()}
+connected
+
+write close
+
+read notify SECOND_REQUEST_SENT
+
+connect await SECOND_REQUEST_SENT
+        "nukleus://streams/http-cache#0"
+        option nukleus:window 8192
+        option nukleus:transmission "half-duplex"
+
+write nukleus:begin.ext ${http:beginEx()
+                              .typeId(nukleus:id("http"))
+                              .header(":scheme", "http")
+                              .header(":method", "GET")
+                              .header(":path", "/data")
+                              .header(":authority", "localhost:8080")
+                              .header("prefer", "wait=50")
+                              .header("cache-control", "max-age=0")
                               .build()}
 connected
 
@@ -76,10 +95,19 @@ write close
 
 read nukleus:begin.ext ${http:beginEx()
                              .typeId(nukleus:id("http"))
-                             .header(":status", "304")
+                             .header(":status", "200")
+                             .header("content-length", "11")
+                             .header("date", response2Date)
+                             .header("surrogate-control", "max-age=10")
+                             .header("cache-control", "max-age=10")
                              .header("etag", etag)
-                             .header("preference-applied", "wait=5")
+                             .header("preference-applied", "wait=50")
                              .header("access-control-expose-headers", "preference-applied")
                              .header("access-control-expose-headers", "etag")
                              .build()}
+
+
+read "response #1"
+
 read closed
+
