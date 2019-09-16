@@ -135,4 +135,16 @@ public class Rfc7240ProxyConnectIT
         k3po.notifyBarrier("ROUTED_PROXY");
         k3po.finish();
     }
+
+    @Test
+    @Specification({
+        "${streams}/serve.immediately.when.if-none-match.missing.while.polling/connect/client",
+        "${streams}/serve.immediately.when.if-none-match.missing.while.polling/connect/server",
+    })
+    public void shouldServeImmediatelyWhenIfNoneMatchMissingWhilePolling() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_PROXY");
+        k3po.finish();
+    }
 }
