@@ -45,6 +45,7 @@ read nukleus:begin.ext ${http:beginEx()
                              .header("etag", etag)
                              .header("preference-applied", "wait=5")
                              .header("access-control-expose-headers", "preference-applied")
+                             .header("access-control-expose-headers", "etag")
                              .build()}
 
 
@@ -79,5 +80,6 @@ read nukleus:begin.ext ${http:beginEx()
                              .header("etag", etag)
                              .header("preference-applied", "wait=5")
                              .header("access-control-expose-headers", "preference-applied")
+                             .header("access-control-expose-headers", "etag")
                              .build()}
 read closed
