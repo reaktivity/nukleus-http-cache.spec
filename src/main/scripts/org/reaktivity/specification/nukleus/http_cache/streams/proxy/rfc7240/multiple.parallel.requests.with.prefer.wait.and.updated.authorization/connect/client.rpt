@@ -15,7 +15,8 @@
 #
 
 property response1Date ${http_cache:date()} # sharedProperty
-property response2Date ${http_cache:datePlus(5)} # sharedProperty
+property response2Date ${http_cache:datePlus(3)} # sharedProperty
+property response3Date ${http_cache:datePlus(5)} # sharedProperty
 property etag ${http_cache:strongEtag()} #shared
 property etag2 ${http_cache:strongEtag()} #shared
 
@@ -84,6 +85,7 @@ read nukleus:begin.ext ${http:beginEx()
                              .typeId(nukleus:id("http"))
                              .header(":status", "304")
                              .header("etag", etag)
+                             .header("date", response2Date)
                              .build()}
 
 
@@ -115,7 +117,7 @@ read nukleus:begin.ext ${http:beginEx()
                               .typeId(nukleus:id("http"))
                               .header(":status", "200")
                               .header("content-length", "11")
-                              .header("date", response2Date)
+                              .header("date", response3Date)
                               .header("surrogate-control", "max-age=100")
                               .header("cache-control", "max-age=100")
                               .header("etag", etag2)
