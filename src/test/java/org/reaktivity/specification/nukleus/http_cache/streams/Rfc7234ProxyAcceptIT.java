@@ -158,7 +158,6 @@ public class Rfc7234ProxyAcceptIT
         k3po.start();
         k3po.notifyBarrier("ROUTED_PROXY");
         k3po.awaitBarrier("REQUEST_CACHED");
-//      sleep(1000);
         k3po.notifyBarrier("CACHE_WAIT_1_SEC");
         k3po.finish();
     }
@@ -647,5 +646,15 @@ public class Rfc7234ProxyAcceptIT
         k3po.finish();
     }
 
-    // TODO 304 on etags or last-modified
+    @Test
+    @Specification({
+        "${streams}/use.etag.from.trailer.on.200.response/accept/client",
+        "${streams}/use.etag.from.trailer.on.200.response/accept/server",
+    })
+    public void shouldUseEtagFromTrailerOn200Response() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_PROXY");
+        k3po.finish();
+    }
 }

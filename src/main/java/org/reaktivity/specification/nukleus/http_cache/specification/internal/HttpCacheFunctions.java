@@ -18,8 +18,7 @@ package org.reaktivity.specification.nukleus.http_cache.specification.internal;
 import static java.lang.System.currentTimeMillis;
 import static java.lang.System.nanoTime;
 
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Random;
@@ -29,40 +28,27 @@ import java.util.concurrent.ThreadLocalRandom;
 import org.kaazing.k3po.lang.el.Function;
 import org.kaazing.k3po.lang.el.spi.FunctionMapperSpi;
 
-public final class Functions
+public final class HttpCacheFunctions
 {
-    private static final MessageDigest MD5;
     private static final String[] CACHEABLE_BY_DEFAULT_STATUS_CODES =
         { "200", "203", "204", "206", "300", "301", "404", "405", "410", "414", "501" };
 
-    private static final ThreadLocal<SimpleDateFormat> DATE_FORMAT = new ThreadLocal<SimpleDateFormat>()
+    private static final ThreadLocal<DateFormat> DATE_FORMAT = new ThreadLocal<>()
     {
         @Override
-        protected SimpleDateFormat initialValue()
+        protected DateFormat initialValue()
         {
-            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss zzz");
-            simpleDateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
-            return simpleDateFormat;
+            DateFormat dateFormat = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss zzz");
+            dateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
+            return dateFormat;
         }
     };
-
-    static
-    {
-        try
-        {
-            MD5 = MessageDigest.getInstance("MD5");
-        }
-        catch (NoSuchAlgorithmException e)
-        {
-            throw new RuntimeException(e);
-        }
-    }
 
     public static class Mapper extends FunctionMapperSpi.Reflective
     {
         public Mapper()
         {
-            super(Functions.class);
+            super(HttpCacheFunctions.class);
         }
 
         @Override
@@ -72,7 +58,7 @@ public final class Functions
         }
     }
 
-    private Functions()
+    private HttpCacheFunctions()
     {
         // utility
     }
@@ -84,7 +70,8 @@ public final class Functions
     }
 
     @Function
-    public static String datePlus(int seconds)
+    public static String datePlus(
+        int seconds)
     {
         final Date date = new Date(currentTimeMillis() + (seconds * 1000));
         return DATE_FORMAT.get().format(date);
@@ -97,7 +84,8 @@ public final class Functions
     }
 
     @Function
-    public static String fixedStrongEtag(String value)
+    public static String fixedStrongEtag(
+        String value)
     {
         return "\"" + value + "\"";
     }
@@ -117,14 +105,18 @@ public final class Functions
     }
 
     @Function
-    public static byte[] largePayload(int length)
+    public static byte[] largePayload(
+        int length)
     {
         byte[] bytes = new byte[length];
         randomBytesUTF8(bytes, 0, length);
         return bytes;
     }
 
-    private static void randomBytesUTF8(byte[] bytes, int start, int end)
+    private static void randomBytesUTF8(
+        byte[] bytes,
+        int start,
+        int end)
     {
         for (int offset = start; offset < end;)
         {
@@ -135,31 +127,34 @@ public final class Functions
         }
     }
 
-    private static int randomCharBytesUTF8(byte[] bytes, int offset, int width)
+    private static int randomCharBytesUTF8(
+        byte[] bytes,
+        int offset,
+        int width)
     {
         Random random = ThreadLocalRandom.current();
         switch (width)
         {
-            case 1:
-                bytes[offset++] = (byte) random.nextInt(0x80);
-                break;
-            case 2:
-                bytes[offset++] = (byte) (0xc0 | random.nextInt(0x20) | 1 << (random.nextInt(4) + 1));
-                bytes[offset++] = (byte) (0x80 | random.nextInt(0x40));
-                break;
-            case 3:
-                // UTF-8 not legal for 0xD800 through 0xDFFF (see RFC 3269)
-                bytes[offset++] = (byte) (0xe0 | random.nextInt(0x08) | 1 << random.nextInt(3));
-                bytes[offset++] = (byte) (0x80 | random.nextInt(0x40));
-                bytes[offset++] = (byte) (0x80 | random.nextInt(0x40));
-                break;
-            case 4:
-                // UTF-8 ends at 0x10FFFF (see RFC 3269)
-                bytes[offset++] = (byte) (0xf0 | random.nextInt(0x04) | 1 << random.nextInt(2));
-                bytes[offset++] = (byte) (0x80 | random.nextInt(0x10));
-                bytes[offset++] = (byte) (0x80 | random.nextInt(0x40));
-                bytes[offset++] = (byte) (0x80 | random.nextInt(0x40));
-                break;
+        case 1:
+            bytes[offset++] = (byte) random.nextInt(0x80);
+            break;
+        case 2:
+            bytes[offset++] = (byte) (0xc0 | random.nextInt(0x20) | 1 << (random.nextInt(4) + 1));
+            bytes[offset++] = (byte) (0x80 | random.nextInt(0x40));
+            break;
+        case 3:
+            // UTF-8 not legal for 0xD800 through 0xDFFF (see RFC 3269)
+            bytes[offset++] = (byte) (0xe0 | random.nextInt(0x08) | 1 << random.nextInt(3));
+            bytes[offset++] = (byte) (0x80 | random.nextInt(0x40));
+            bytes[offset++] = (byte) (0x80 | random.nextInt(0x40));
+            break;
+        case 4:
+            // UTF-8 ends at 0x10FFFF (see RFC 3269)
+            bytes[offset++] = (byte) (0xf0 | random.nextInt(0x04) | 1 << random.nextInt(2));
+            bytes[offset++] = (byte) (0x80 | random.nextInt(0x10));
+            bytes[offset++] = (byte) (0x80 | random.nextInt(0x40));
+            bytes[offset++] = (byte) (0x80 | random.nextInt(0x40));
+            break;
         }
         return offset;
     }

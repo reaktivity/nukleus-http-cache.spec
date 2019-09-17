@@ -449,4 +449,5 @@ public class EdgeArchProxyAcceptIT
         k3po.notifyBarrier("ROUTED_PROXY");
         k3po.finish();
     }
+
 }
