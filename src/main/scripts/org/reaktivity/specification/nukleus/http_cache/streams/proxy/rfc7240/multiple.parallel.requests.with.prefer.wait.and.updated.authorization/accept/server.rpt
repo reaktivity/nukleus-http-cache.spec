@@ -93,6 +93,8 @@ write "response #2"
 
 write close
 
+write notify SECOND_RESPONSE_SENT
+
 accepted
 
 read nukleus:begin.ext ${http:beginEx()
