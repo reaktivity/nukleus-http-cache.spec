@@ -48,6 +48,7 @@ write nukleus:begin.ext ${http:beginEx()
                               .header("surrogate-control", "max-age=100")
                               .header("cache-control", "max-age=100")
                               .header("etag", etag)
+                              .header("retry-after", "1")
                               .build()}
 
 write "response #1"
@@ -77,6 +78,7 @@ write nukleus:begin.ext ${http:beginEx()
                               .header(":status", "304")
                               .header("etag", etag)
                               .header("date", response2Date)
+                              .header("retry-after", "1")
                               .build()}
 
 write close
@@ -107,6 +109,7 @@ write nukleus:begin.ext ${http:beginEx()
                               .header("surrogate-control", "max-age=100")
                               .header("cache-control", "max-age=100")
                               .header("etag", etag2)
+                              .header("retry-after", "1")
                               .build()}
 
 write "response #2"
