@@ -73,9 +73,7 @@ connected
 
 write close
 
-read notify SECOND_REQUEST_SENT
-
-connect await SECOND_REQUEST_SENT
+connect await SECOND_RESPONSE_SENT
         "nukleus://streams/http-cache#0"
         option nukleus:window 8192
         option nukleus:transmission "half-duplex"

@@ -77,7 +77,7 @@ connected
 
 write close
 
-read notify FIRST_REQUEST_RECEIVED
+read notify SECOND_REQUEST_SENT
 read await SECOND_REQUEST_COMPLETED
 read nukleus:begin.ext ${http:beginEx()
                              .typeId(nukleus:id("http"))
@@ -96,7 +96,7 @@ read "response #2"
 
 read closed
 
-connect await FIRST_REQUEST_RECEIVED
+connect await SECOND_REQUEST_SENT
         "nukleus://streams/http-cache#0"
         option nukleus:window 8192
         option nukleus:transmission "half-duplex"
@@ -114,7 +114,6 @@ connected
 
 write close
 
-read notify SECOND_REQUEST_COMPLETED
 read nukleus:begin.ext ${http:beginEx()
                              .typeId(nukleus:id("http"))
                              .header(":status", "200")
@@ -132,3 +131,5 @@ read nukleus:begin.ext ${http:beginEx()
 read "response #1"
 
 read closed
+
+read notify SECOND_REQUEST_COMPLETED

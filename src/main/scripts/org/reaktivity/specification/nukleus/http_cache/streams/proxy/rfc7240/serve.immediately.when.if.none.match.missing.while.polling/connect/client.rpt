@@ -45,7 +45,7 @@ read nukleus:begin.ext ${http:beginEx()
                               .header("surrogate-control", "max-age=10")
                               .header("cache-control", "max-age=10")
                               .header("etag", etag)
-                              .header("retry-after", "5")
+                              .header("retry-after", "50")
                               .build()}
 
 read "response #1"
@@ -83,7 +83,7 @@ read nukleus:begin.ext ${http:beginEx()
                               .header("surrogate-control", "max-age=10")
                               .header("cache-control", "max-age=10")
                               .header("etag", etag)
-                              .header("retry-after", "5")
+                              .header("retry-after", "50")
                               .build()}
 
 read "response #1"
