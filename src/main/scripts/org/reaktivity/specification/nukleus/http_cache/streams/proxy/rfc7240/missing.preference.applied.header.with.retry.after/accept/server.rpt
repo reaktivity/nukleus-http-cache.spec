@@ -47,6 +47,7 @@ write nukleus:begin.ext ${http:beginEx()
                               .header("etag", etag)
                               .header("preference-applied", "wait=5")
                               .header("access-control-expose-headers", "preference-applied")
+                              .header("access-control-expose-headers", "etag")
                               .build()}
 
 write flush
@@ -58,14 +59,14 @@ write close
 accepted
 
 read nukleus:begin.ext ${http:beginEx()
-                              .typeId(nukleus:id("http"))
-                              .header(":scheme", "http")
-                              .header(":method", "GET")
-                              .header(":path", "/data")
-                              .header(":authority", "localhost:8080")
-                              .header("prefer", "wait=5")
-                              .header("cache-control", "max-age=0")
-                              .header("if-none-match", etag)
+                             .typeId(nukleus:id("http"))
+                             .header(":scheme", "http")
+                             .header(":method", "GET")
+                             .header(":path", "/data")
+                             .header(":authority", "localhost:8080")
+                             .header("prefer", "wait=5")
+                             .header("cache-control", "max-age=0")
+                             .header("if-none-match", etag)
                              .build()}
 
 connected
@@ -82,6 +83,7 @@ write nukleus:begin.ext ${http:beginEx()
                               .header("etag", etag2)
                               .header("preference-applied", "wait=5")
                               .header("access-control-expose-headers", "preference-applied")
+                              .header("access-control-expose-headers", "etag")
                               .build()}
 
 write flush

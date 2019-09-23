@@ -15,7 +15,8 @@
 #
 
 property response1Date ${http_cache:date()} # sharedProperty
-property response2Date ${http_cache:datePlus(5)} # sharedProperty
+property response2Date ${http_cache:datePlus(3)} # sharedProperty
+property response3Date ${http_cache:datePlus(5)} # sharedProperty
 property etag ${http_cache:strongEtag()} #shared
 property etag2 ${http_cache:strongEtag()} #shared
 
@@ -47,6 +48,7 @@ read nukleus:begin.ext ${http:beginEx()
                              .header("etag", etag)
                              .header("preference-applied", "wait=5")
                              .header("access-control-expose-headers", "preference-applied")
+                             .header("access-control-expose-headers", "etag")
                              .build()}
 
 read "response #1"
@@ -75,25 +77,25 @@ connected
 
 write close
 
-read notify FIRST_REQUEST_RECEIVED
 read await SECOND_REQUEST_COMPLETED
 read nukleus:begin.ext ${http:beginEx()
                              .typeId(nukleus:id("http"))
                              .header(":status", "200")
                              .header("content-length", "11")
-                             .header("date", response2Date)
+                             .header("date", response3Date)
                              .header("surrogate-control", "max-age=100")
                              .header("cache-control", "max-age=100")
                              .header("etag", etag2)
                              .header("preference-applied", "wait=5")
                              .header("access-control-expose-headers", "preference-applied")
+                             .header("access-control-expose-headers", "etag")
                              .build()}
 
 read "response #2"
 
 read closed
 
-connect await FIRST_REQUEST_RECEIVED
+connect await SECOND_RESPONSE_SENT
         "nukleus://streams/http-cache#0"
         option nukleus:window 8192
         option nukleus:transmission "half-duplex"
@@ -111,7 +113,6 @@ connected
 
 write close
 
-read notify SECOND_REQUEST_COMPLETED
 read nukleus:begin.ext ${http:beginEx()
                              .typeId(nukleus:id("http"))
                              .header(":status", "200")
@@ -119,12 +120,15 @@ read nukleus:begin.ext ${http:beginEx()
                              .header("date", response2Date)
                              .header("surrogate-control", "max-age=100")
                              .header("cache-control", "max-age=100")
-                             .header("etag", etag2)
+                             .header("etag", etag)
                              .header("preference-applied", "wait=5")
                              .header("access-control-expose-headers", "preference-applied")
+                             .header("access-control-expose-headers", "etag")
                              .build()}
 
 
-read "response #2"
+read "response #1"
 
 read closed
+
+read notify SECOND_REQUEST_COMPLETED
