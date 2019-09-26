@@ -147,4 +147,40 @@ public class Rfc7240ProxyConnectIT
         k3po.notifyBarrier("ROUTED_PROXY");
         k3po.finish();
     }
+
+    @Test
+    @Specification({
+        "${streams}/poll.immediately.if.unsafe.request.invalidates.cache/connect/client",
+        "${streams}/poll.immediately.if.unsafe.request.invalidates.cache/connect/server",
+    })
+    public void shouldPollImmediatelyIfUnsafeRequestInvalidatesCache() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_PROXY");
+        k3po.finish();
+    }
+
+    @Test
+    @Specification({
+        "${streams}/poll.immediately.with.full.url.if.unsafe.request.invalidates.cache/connect/client",
+        "${streams}/poll.immediately.with.full.url.if.unsafe.request.invalidates.cache/connect/server",
+    })
+    public void shouldPollImmediatelyWithFullUrlIfUnsafeRequestInvalidatesCache() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_PROXY");
+        k3po.finish();
+    }
+
+    @Test
+    @Specification({
+        "${streams}/poll.immediately.with.wrong.url.if.unsafe.request.invalidates.cache/connect/client",
+        "${streams}/poll.immediately.with.wrong.url.if.unsafe.request.invalidates.cache/connect/server",
+    })
+    public void shouldPollImmediatelyWithWrongUrlIfUnsafeRequestInvalidatesCache() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_PROXY");
+        k3po.finish();
+    }
 }

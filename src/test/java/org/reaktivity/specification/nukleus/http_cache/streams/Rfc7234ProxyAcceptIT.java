@@ -657,4 +657,16 @@ public class Rfc7234ProxyAcceptIT
         k3po.notifyBarrier("ROUTED_PROXY");
         k3po.finish();
     }
+
+    @Test
+    @Specification({
+        "${streams}/invalidate.cache.for.unsafe.request/accept/client",
+        "${streams}/invalidate.cache.for.unsafe.request/accept/server",
+    })
+    public void shouldInvalidateCacheForUnsafeRequest() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_PROXY");
+        k3po.finish();
+    }
 }
