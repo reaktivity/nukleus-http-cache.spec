@@ -41,8 +41,7 @@ read nukleus:begin.ext ${http:beginEx()
                              .header(":status", "200")
                              .header("content-length", "11")
                              .header("date", response1Date)
-                             .header("surrogate-control", "max-age=100")
-                             .header("cache-control", "max-age=1")
+                             .header("cache-control", "max-age=100")
                              .header("etag", etag)
                              .header("preference-applied", "wait=5")
                              .header("access-control-expose-headers", "preference-applied")
@@ -53,9 +52,9 @@ read "response #1"
 
 read closed
 
-read notify FIRST_REQUEST_RECEIVED
+read notify FIRST_REQUEST_COMPLETED
 
-connect await FIRST_REQUEST_RECEIVED
+connect await FIRST_REQUEST_COMPLETED
         "nukleus://streams/http-cache#0"
         option nukleus:window 8192
         option nukleus:transmission "half-duplex"
@@ -79,8 +78,7 @@ read nukleus:begin.ext ${http:beginEx()
                              .header(":status", "200")
                              .header("content-length", "11")
                              .header("date", response2Date)
-                             .header("surrogate-control", "max-age=100")
-                             .header("cache-control", "max-age=1")
+                             .header("cache-control", "max-age=100")
                              .header("etag", etag2)
                              .header("preference-applied", "wait=5")
                              .header("access-control-expose-headers", "preference-applied")

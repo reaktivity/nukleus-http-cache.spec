@@ -183,4 +183,52 @@ public class Rfc7240ProxyAcceptIT
         k3po.notifyBarrier("ROUTED_PROXY");
         k3po.finish();
     }
+
+    @Test
+    @Specification({
+        "${streams}/long.polling.when.cache.is.empty.and.etag.is.latest/accept/client",
+        "${streams}/long.polling.when.cache.is.empty.and.etag.is.latest/accept/server",
+    })
+    public void shouldHandleLongPollingWhenCacheIsEmptyAndEtagIsLatest() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_PROXY");
+        k3po.finish();
+    }
+
+    @Test
+    @Specification({
+        "${streams}/long.polling.when.cache.is.empty.and.etag.is.not.latest/accept/client",
+        "${streams}/long.polling.when.cache.is.empty.and.etag.is.not.latest/accept/server",
+    })
+    public void shouldHandleLongPollingWhenCacheIsEmptyAndEtagIsNotLatest() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_PROXY");
+        k3po.finish();
+    }
+
+    @Test
+    @Specification({
+        "${streams}/long.polling.when.cache.is.empty.with.latest.etag.and.missing.etag.in.second.request/accept/client",
+        "${streams}/long.polling.when.cache.is.empty.with.latest.etag.and.missing.etag.in.second.request/accept/server",
+    })
+    public void shouldHandleLongPollingWhenCacheIsEmptyWithLatestEtagAndMissingEtagInSecondRequest() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_PROXY");
+        k3po.finish();
+    }
+
+    @Test
+    @Specification({
+        "${streams}/long.polling.when.cache.is.empty.with.old.etag.and.missing.etag.in.second.request/accept/client",
+        "${streams}/long.polling.when.cache.is.empty.with.old.etag.and.missing.etag.in.second.request/accept/server",
+    })
+    public void shouldHandleLongPollingWhenCacheIsEmptyWithOldEtagAndMissingEtagInSecondRequest() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_PROXY");
+        k3po.finish();
+    }
 }

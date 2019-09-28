@@ -43,8 +43,7 @@ write nukleus:begin.ext ${http:beginEx()
                               .header(":status", "200")
                               .header("content-length", "11")
                               .header("date", response1Date)
-                              .header("surrogate-control", "max-age=100")
-                              .header("cache-control", "max-age=1")
+                              .header("cache-control", "max-age=100")
                               .build()}
 
 write "response #1"
@@ -78,8 +77,7 @@ write nukleus:begin.ext ${http:beginEx()
                               .header(":status", "200")
                               .header("content-length", "11")
                               .header("date", response1Date)
-                              .header("surrogate-control", "max-age=100")
-                              .header("cache-control", "max-age=1")
+                              .header("cache-control", "max-age=100")
                               .build()}
 
 write "response #1"
@@ -113,8 +111,7 @@ write nukleus:begin.ext ${http:beginEx()
                               .header(":status", "200")
                               .header("content-length", "11")
                               .header("date", response2Date)
-                              .header("surrogate-control", "max-age=100")
-                              .header("cache-control", "max-age=1")
+                              .header("cache-control", "max-age=100")
                               .build()}
 
 write "response #2"

@@ -38,14 +38,12 @@ connected
 
 write close
 
-
 read nukleus:begin.ext ${http:beginEx()
                              .typeId(nukleus:id("http"))
                               .header(":status", "200")
                               .header("content-length", "11")
                               .header("date", response1Date)
-                              .header("surrogate-control", "max-age=100")
-                              .header("cache-control", "max-age=1")
+                              .header("cache-control", "max-age=100")
                               .build()}
 
 read "response #1"
@@ -83,8 +81,7 @@ read nukleus:begin.ext ${http:beginEx()
                               .header(":status", "200")
                               .header("content-length", "11")
                               .header("date", response1Date)
-                              .header("surrogate-control", "max-age=100")
-                              .header("cache-control", "max-age=1")
+                              .header("cache-control", "max-age=100")
                               .build()}
 
 read "response #1"
@@ -122,8 +119,7 @@ read nukleus:begin.ext ${http:beginEx()
                               .header(":status", "200")
                               .header("content-length", "11")
                               .header("date", response2Date)
-                              .header("surrogate-control", "max-age=100")
-                              .header("cache-control", "max-age=1")
+                              .header("cache-control", "max-age=100")
                               .build()}
 
 read "response #2"
