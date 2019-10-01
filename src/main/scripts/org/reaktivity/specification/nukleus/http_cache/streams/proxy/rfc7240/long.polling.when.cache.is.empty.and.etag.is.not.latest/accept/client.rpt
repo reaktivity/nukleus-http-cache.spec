@@ -54,8 +54,6 @@ read "response #2"
 
 read closed
 
-read notify FIRST_REQUEST_COMPLETED
-
 connect await FIRST_REQUEST_SENT
         "nukleus://streams/http-cache#0"
         option nukleus:window 8192
@@ -75,4 +73,10 @@ connected
 
 write close
 
-read await FIRST_REQUEST_COMPLETED
+read nukleus:begin.ext ${http:beginEx()
+                             .typeId(nukleus:id("http"))
+                             .header(":status", "304")
+                             .header("etag", etag2)
+                             .build()}
+
+read closed

@@ -39,18 +39,7 @@ connected
 
 read closed
 
-write nukleus:begin.ext ${http:beginEx()
-                              .typeId(nukleus:id("http"))
-                              .header(":status", "200")
-                              .header("content-length", "11")
-                              .header("date", responseDate)
-                              .header("cache-control", "max-age=10")
-                              .header("etag", etag2)
-                              .header("retry-after", "5")
-                              .build()}
-write "response #2"
-
-write close
+write aborted
 
 accepted
 
@@ -62,7 +51,6 @@ read nukleus:begin.ext ${http:beginEx()
                              .header(":authority", "localhost:8080")
                              .header("prefer", "wait=20")
                              .header("cache-control", "max-age=0")
-                             .header("if-none-match", etag2)
                              .build()}
 
 connected
@@ -71,9 +59,13 @@ read closed
 
 write nukleus:begin.ext ${http:beginEx()
                               .typeId(nukleus:id("http"))
-                              .header(":status", "304")
+                              .header(":status", "200")
+                              .header("content-length", "11")
+                              .header("date", responseDate)
+                              .header("cache-control", "max-age=10")
                               .header("etag", etag2)
                               .header("retry-after", "5")
                               .build()}
+write "response #2"
 
 write close

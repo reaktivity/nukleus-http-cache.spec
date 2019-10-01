@@ -73,4 +73,10 @@ connected
 
 read closed
 
-write notify FIRST_REQUEST_COMPLETED
+write nukleus:begin.ext ${http:beginEx()
+                              .typeId(nukleus:id("http"))
+                              .header(":status", "304")
+                              .header("etag", etag2)
+                              .build()}
+
+write close

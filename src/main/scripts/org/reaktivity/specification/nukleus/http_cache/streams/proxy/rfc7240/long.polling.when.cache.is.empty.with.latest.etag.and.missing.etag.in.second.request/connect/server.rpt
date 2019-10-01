@@ -39,15 +39,7 @@ connected
 
 read closed
 
-write nukleus:begin.ext ${http:beginEx()
-                              .typeId(nukleus:id("http"))
-                              .header(":status", "304")
-                              .header("etag", etag)
-                              .header("retry-after", "5")
-                              .build()}
-
-write close
-
+write aborted
 
 accepted
 

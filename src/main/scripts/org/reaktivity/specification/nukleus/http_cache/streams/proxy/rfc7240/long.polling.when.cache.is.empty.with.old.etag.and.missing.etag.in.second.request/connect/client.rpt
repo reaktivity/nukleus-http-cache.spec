@@ -36,18 +36,7 @@ connected
 
 write close
 
-read nukleus:begin.ext ${http:beginEx()
-                             .typeId(nukleus:id("http"))
-                             .header(":status", "200")
-                             .header("content-length", "11")
-                             .header("date", responseDate)
-                             .header("cache-control", "max-age=10")
-                             .header("etag", etag2)
-                             .build()}
-
-read "response #2"
-
-read closed
+read abort
 
 read notify FIRST_REQUEST_COMPLETED
 
