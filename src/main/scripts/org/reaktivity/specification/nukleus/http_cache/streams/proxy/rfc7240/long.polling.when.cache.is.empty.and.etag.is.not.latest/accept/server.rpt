@@ -73,20 +73,4 @@ connected
 
 read closed
 
-write nukleus:begin.ext ${http:beginEx()
-                              .typeId(nukleus:id("http"))
-                              .header(":status", "200")
-                              .header("content-length", "11")
-                              .header("date", responseDate)
-                              .header("cache-control", "max-age=10")
-                              .header("etag", etag2)
-                              .header("preference-applied", "wait=20")
-                              .header("access-control-expose-headers", "preference-applied")
-                              .header("access-control-expose-headers", "etag")
-                              .build()}
-
-write "response #2"
-
-write close
-
-
+write notify FIRST_REQUEST_COMPLETED

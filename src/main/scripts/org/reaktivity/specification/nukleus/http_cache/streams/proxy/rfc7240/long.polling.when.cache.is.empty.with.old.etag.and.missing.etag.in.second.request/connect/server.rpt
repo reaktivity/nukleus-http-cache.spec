@@ -51,3 +51,33 @@ write nukleus:begin.ext ${http:beginEx()
 write "response #2"
 
 write close
+
+accepted
+
+read nukleus:begin.ext ${http:beginEx()
+                              .typeId(nukleus:id("http"))
+                              .header(":scheme", "http")
+                              .header(":method", "GET")
+                              .header(":path", "/data")
+                              .header(":authority", "localhost:8080")
+                              .header("prefer", "wait=20")
+                              .build()}
+connected
+
+read closed
+
+write nukleus:begin.ext ${http:beginEx()
+                              .typeId(nukleus:id("http"))
+                              .header(":status", "200")
+                              .header("content-length", "11")
+                              .header("date", responseDate)
+                              .header("cache-control", "max-age=10")
+                              .header("etag", etag2)
+                              .header("preference-applied", "wait=20")
+                              .header("access-control-expose-headers", "preference-applied")
+                              .header("access-control-expose-headers", "etag")
+                              .build()}
+
+write "response #2"
+
+write close

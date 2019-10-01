@@ -16,6 +16,7 @@
 
 property responseDate ${http_cache:date()} # sharedProperty
 property etag ${http_cache:strongEtag()} # sharedProperty
+property etag2 ${http_cache:strongEtag()} # sharedProperty
 
 accept await ROUTED_PROXY
         "nukleus://streams/http-cache#0"
@@ -60,13 +61,13 @@ write nukleus:begin.ext ${http:beginEx()
                               .header("content-length", "11")
                               .header("date", responseDate)
                               .header("cache-control", "max-age=10")
-                              .header("etag", etag)
+                              .header("etag", etag2)
                               .header("preference-applied", "wait=20")
                               .header("access-control-expose-headers", "preference-applied")
                               .header("access-control-expose-headers", "etag")
                               .build()}
 
-write "response #1"
+write "response #2"
 
 write close
 
