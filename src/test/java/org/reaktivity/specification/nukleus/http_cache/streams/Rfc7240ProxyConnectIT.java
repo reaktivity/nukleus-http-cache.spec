@@ -54,8 +54,8 @@ public class Rfc7240ProxyConnectIT
 
     @Test
     @Specification({
-        "${streams}/acknowledge.prefer.wait.header.in.response/accept/client",
-        "${streams}/acknowledge.prefer.wait.header.in.response/accept/server",
+        "${streams}/acknowledge.prefer.wait.header.in.response/connect/client",
+        "${streams}/acknowledge.prefer.wait.header.in.response/connect/server",
     })
     public void shouldAcknowledgePreferWaitHeaderInResponse() throws Exception
     {

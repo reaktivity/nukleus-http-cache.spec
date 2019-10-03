@@ -16,8 +16,6 @@
 
 property response1Date ${http_cache:date()} # sharedProperty
 property response2Date ${http_cache:datePlus(5)} # sharedProperty
-property etag ${http_cache:strongEtag()} #shared
-property etag2 ${http_cache:strongEtag()} #shared
 
 connect await ROUTED_PROXY
         "nukleus://streams/target#0"
@@ -47,7 +45,7 @@ read nukleus:begin.ext ${http:beginEx()
                               .header("content-length", "11")
                               .header("date", response1Date)
                               .header("cache-control", "max-age=100")
-                              .header("etag", etag)
+                              .header("etag", "one")
                               .header("preference-applied", "wait=5")
                               .build()}
 
@@ -69,7 +67,7 @@ write nukleus:begin.ext ${http:beginEx()
                               .header(":path", "/data")
                               .header(":authority", "localhost:8080")
                               .header("cache-control", "no-cache")
-                              .header("if-none-match", etag)
+                              .header("if-none-match", "one")
                               .header("prefer", "wait=5")
                               .build()}
 connected
@@ -82,7 +80,7 @@ read notify PREFER_WAIT_REQUEST_TWO_COMPLETED
 read nukleus:begin.ext ${http:beginEx()
                               .typeId(nukleus:id("http"))
                               .header(":status", "304")
-                              .header("etag", etag)
+                              .header("etag", "one")
                               .header("preference-applied", "wait=5")
                               .build()}
 
@@ -102,7 +100,7 @@ write nukleus:begin.ext ${http:beginEx()
                               .header(":path", "/data")
                               .header(":authority", "localhost:8080")
                               .header("cache-control", "no-cache")
-                              .header("if-none-match", etag)
+                              .header("if-none-match", "one")
                               .header("prefer", "wait=5")
                               .build()}
 connected
@@ -118,7 +116,7 @@ read nukleus:begin.ext ${http:beginEx()
                               .header("content-length", "11")
                               .header("date", response2Date)
                               .header("cache-control", "max-age=100")
-                              .header("etag", etag2)
+                              .header("etag", "two")
                               .header("preference-applied", "wait=5")
                               .build()}
 

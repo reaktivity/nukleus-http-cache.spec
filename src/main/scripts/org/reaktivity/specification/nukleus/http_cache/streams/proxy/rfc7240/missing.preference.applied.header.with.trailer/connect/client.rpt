@@ -16,8 +16,6 @@
 
 property response1Date ${http_cache:date()} # sharedProperty
 property response2Date ${http_cache:datePlus(5)} # sharedProperty
-property etag ${http_cache:strongEtag()} #shared
-property etag2 ${http_cache:strongEtag()} #shared
 
 connect await ROUTED_PROXY
         "nukleus://streams/target#0"
@@ -50,7 +48,7 @@ read "response #1"
 
 read nukleus:end.ext ${http:endEx()
                            .typeId(nukleus:id("http"))
-                           .trailer("etag", etag)
+                           .trailer("etag", "one")
                            .build()}
 
 read closed
@@ -69,7 +67,7 @@ write nukleus:begin.ext ${http:beginEx()
                               .header(":path", "/data")
                               .header(":authority", "localhost:8080")
                               .header("cache-control", "max-age=0")
-                              .header("if-none-match", etag)
+                              .header("if-none-match", "one")
                               .header("prefer", "wait=5")
                               .build()}
 connected
@@ -88,7 +86,7 @@ read "response #1"
 
 read nukleus:end.ext ${http:endEx()
                             .typeId(nukleus:id("http"))
-                            .trailer("etag", etag)
+                            .trailer("etag", "one")
                             .build()}
 
 read closed
@@ -107,7 +105,7 @@ write nukleus:begin.ext ${http:beginEx()
                               .header(":path", "/data")
                               .header(":authority", "localhost:8080")
                               .header("cache-control", "max-age=0")
-                              .header("if-none-match", etag)
+                              .header("if-none-match", "one")
                               .header("prefer", "wait=5")
                               .build()}
 connected
@@ -126,7 +124,7 @@ read "response #2"
 
 read nukleus:end.ext ${http:endEx()
                            .typeId(nukleus:id("http"))
-                           .trailer("etag", etag2)
+                           .trailer("etag", "two")
                            .build()}
 
 read closed
