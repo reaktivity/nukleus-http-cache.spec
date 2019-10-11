@@ -17,8 +17,6 @@
 property response1Date ${http_cache:date()} # sharedProperty
 property response2Date ${http_cache:datePlus(3)} # sharedProperty
 property response3Date ${http_cache:datePlus(5)} # sharedProperty
-property etag ${http_cache:strongEtag()} #shared
-property etag2 ${http_cache:strongEtag()} #shared
 
 accept await ROUTED_PROXY
         "nukleus://streams/target#0"
@@ -46,7 +44,7 @@ write nukleus:begin.ext ${http:beginEx()
                               .header("content-length", "11")
                               .header("date", response1Date)
                               .header("cache-control", "max-age=100")
-                              .header("etag", etag)
+                              .header("etag", "one")
                               .header("retry-after", "1")
                               .build()}
 
@@ -64,8 +62,8 @@ read nukleus:begin.ext ${http:beginEx()
                              .header(":authority", "localhost:8080")
                              .header("prefer", "wait=5")
                              .header("cache-control", "max-age=0")
-                             .header("if-none-match", etag)
                              .header("authorization", "SECOND_TOKEN")
+                             .header("if-none-match", "one")
                              .build()}
 
 connected
@@ -75,7 +73,7 @@ read closed
 write nukleus:begin.ext ${http:beginEx()
                               .typeId(nukleus:id("http"))
                               .header(":status", "304")
-                              .header("etag", etag)
+                              .header("etag", "one")
                               .header("date", response2Date)
                               .header("retry-after", "1")
                               .build()}
@@ -93,8 +91,6 @@ read nukleus:begin.ext ${http:beginEx()
                              .header(":path", "/data")
                              .header(":authority", "localhost:8080")
                              .header("prefer", "wait=5")
-                             .header("cache-control", "max-age=0")
-                             .header("if-none-match", etag)
                              .header("authorization", "THIRD_TOKEN")
                              .build()}
 
@@ -108,7 +104,7 @@ write nukleus:begin.ext ${http:beginEx()
                               .header("content-length", "11")
                               .header("date", response3Date)
                               .header("cache-control", "max-age=100")
-                              .header("etag", etag2)
+                              .header("etag", "two")
                               .header("retry-after", "1")
                               .build()}
 

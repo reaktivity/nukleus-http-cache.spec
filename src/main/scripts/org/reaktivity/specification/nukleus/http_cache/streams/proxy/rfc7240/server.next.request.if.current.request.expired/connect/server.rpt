@@ -17,7 +17,6 @@
 property response1Date ${http_cache:date()} # sharedProperty
 property response2Date ${http_cache:datePlus(1)} # sharedProperty
 property response3Date ${http_cache:datePlus(2)} # sharedProperty
-property etag ${http_cache:strongEtag()} #shared
 
 accept await ROUTED_PROXY
         "nukleus://streams/target#0"
@@ -44,7 +43,7 @@ write nukleus:begin.ext ${http:beginEx()
                               .header("content-length", "11")
                               .header("date", response1Date)
                               .header("cache-control", "max-age=1")
-                              .header("etag", etag)
+                              .header("etag", "one")
                               .header("retry-after", "5")
                               .build()}
 
@@ -62,7 +61,7 @@ read nukleus:begin.ext ${http:beginEx()
                              .header(":authority", "localhost:8080")
                              .header("prefer", "wait=2")
                              .header("cache-control", "max-age=0")
-                             .header("if-none-match", etag)
+                             .header("if-none-match", "one")
                              .build()}
 
 connected
@@ -75,7 +74,7 @@ write nukleus:begin.ext ${http:beginEx()
                               .header("content-length", "11")
                               .header("date", response2Date)
                               .header("cache-control", "max-age=1")
-                              .header("etag", etag)
+                              .header("etag", "one")
                               .header("retry-after", "5")
                               .build()}
 
@@ -104,7 +103,7 @@ write nukleus:begin.ext ${http:beginEx()
                               .header("content-length", "11")
                               .header("date", response3Date)
                               .header("cache-control", "max-age=1")
-                              .header("etag", etag)
+                              .header("etag", "one")
                               .header("retry-after", "5")
                               .build()}
 

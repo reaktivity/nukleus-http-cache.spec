@@ -17,8 +17,6 @@
 property response1Date ${http_cache:date()} # sharedProperty
 property response2Date ${http_cache:datePlus(3)} # sharedProperty
 property response3Date ${http_cache:datePlus(5)} # sharedProperty
-property etag ${http_cache:strongEtag()} #shared
-property etag2 ${http_cache:strongEtag()} #shared
 
 connect await ROUTED_PROXY
         "nukleus://streams/http-cache#0"
@@ -83,7 +81,7 @@ read nukleus:begin.ext ${http:beginEx()
                              .header("content-length", "11")
                              .header("date", response3Date)
                              .header("cache-control", "max-age=100")
-                             .header("etag", etag2)
+                             .header("etag", "two")
                              .header("preference-applied", "wait=5")
                              .header("access-control-expose-headers", "preference-applied")
                              .header("access-control-expose-headers", "etag")
@@ -117,7 +115,7 @@ read nukleus:begin.ext ${http:beginEx()
                              .header("content-length", "11")
                              .header("date", response2Date)
                              .header("cache-control", "max-age=100")
-                             .header("etag", etag)
+                             .header("etag", "two")
                              .header("preference-applied", "wait=5")
                              .header("access-control-expose-headers", "preference-applied")
                              .header("access-control-expose-headers", "etag")
