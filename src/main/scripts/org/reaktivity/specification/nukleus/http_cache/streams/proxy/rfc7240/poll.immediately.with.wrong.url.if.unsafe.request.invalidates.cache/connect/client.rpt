@@ -75,7 +75,7 @@ read nukleus:begin.ext ${http:beginEx()
                               .header(":status", "200")
                               .header("content-length", "11")
                               .header("date", response2Date)
-                              .header("link", "<http://wronghost.org:8080/items>; rel=\"collection\"")
+                              .header("link", "<http://example.com:8080/items>; rel=\"collection\"")
                               .build()}
 
 
