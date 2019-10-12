@@ -42,7 +42,7 @@ read nukleus:begin.ext ${http:beginEx()
                              .header("content-length", "11")
                              .header("date", response1Date)
                              .header("cache-control", "max-age=100")
-                             .header("etag", etag)
+                             .header("etag", "one")
                              .header("preference-applied", "wait=5")
                              .header("access-control-expose-headers", "preference-applied")
                              .header("access-control-expose-headers", "etag")
@@ -67,7 +67,7 @@ write nukleus:begin.ext ${http:beginEx()
                               .header(":authority", "localhost:8080")
                               .header("prefer", "wait=5")
                               .header("cache-control", "max-age=0")
-                              .header("if-none-match", etag)
+                              .header("if-none-match", "one")
                               .header("authorization", "SECOND_TOKEN")
                               .build()}
 connected
@@ -113,7 +113,7 @@ read nukleus:begin.ext ${http:beginEx()
                              .typeId(nukleus:id("http"))
                              .header(":status", "200")
                              .header("content-length", "11")
-                             .header("date", response2Date)
+                             .header("date", response3Date)
                              .header("cache-control", "max-age=100")
                              .header("etag", "two")
                              .header("preference-applied", "wait=5")
@@ -122,7 +122,7 @@ read nukleus:begin.ext ${http:beginEx()
                              .build()}
 
 
-read "response #1"
+read "response #2"
 
 read closed
 

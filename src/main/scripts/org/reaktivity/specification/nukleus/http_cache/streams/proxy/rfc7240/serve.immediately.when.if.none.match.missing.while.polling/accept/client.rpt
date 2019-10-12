@@ -71,6 +71,17 @@ connected
 
 write close
 
+read nukleus:begin.ext ${http:beginEx()
+                             .typeId(nukleus:id("http"))
+                             .header(":status", "304")
+                             .header("etag", "one")
+                             .header("preference-applied", "wait=50")
+                             .header("access-control-expose-headers", "preference-applied")
+                             .header("access-control-expose-headers", "etag")
+                             .build()}
+
+read closed
+
 connect await SECOND_RESPONSE_SENT
         "nukleus://streams/http-cache#0"
         option nukleus:window 8192

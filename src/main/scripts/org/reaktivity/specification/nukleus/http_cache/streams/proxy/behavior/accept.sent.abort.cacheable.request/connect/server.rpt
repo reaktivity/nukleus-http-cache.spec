@@ -30,5 +30,7 @@ read nukleus:begin.ext ${http:beginEx()
 
 connected
 
-# valid to do an abort, but cache optimistically tries to cache on start of request
-read aborted
+# reading closed instead of abort
+read closed
+
+write aborted

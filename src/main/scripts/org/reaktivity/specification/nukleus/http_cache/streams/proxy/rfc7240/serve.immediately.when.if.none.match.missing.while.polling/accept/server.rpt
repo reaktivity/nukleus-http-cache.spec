@@ -69,6 +69,18 @@ connected
 
 read closed
 
+write nukleus:begin.ext ${http:beginEx()
+                              .typeId(nukleus:id("http"))
+                              .header(":status", "304")
+                              .header("etag", "one")
+                              .header("preference-applied", "wait=50")
+                              .header("access-control-expose-headers", "preference-applied")
+                              .header("access-control-expose-headers", "etag")
+                              .build()}
+
+write close
+
+
 write notify SECOND_RESPONSE_SENT
 
 accepted

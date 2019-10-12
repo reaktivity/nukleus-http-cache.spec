@@ -35,8 +35,6 @@ connected
 
 write close
 
-read notify FIRST_REQUEST_SENT
-
 read nukleus:begin.ext ${http:beginEx()
                              .typeId(nukleus:id("http"))
                              .header(":status", "304")
@@ -48,7 +46,7 @@ read nukleus:begin.ext ${http:beginEx()
 
 read closed
 
-connect await FIRST_REQUEST_SENT
+connect await FIRST_REQUEST_RECEIVED
         "nukleus://streams/http-cache#0"
         option nukleus:window 8192
         option nukleus:transmission "half-duplex"

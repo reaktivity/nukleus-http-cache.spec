@@ -38,9 +38,6 @@ connected
 
 write close
 
-read await RECEIVED_FIRST_REQUEST
-read notify PREFER_WAIT_REQUEST_ONE_COMPLETED
-
 read nukleus:begin.ext ${http:beginEx()
                              .typeId(nukleus:id("http"))
                               .header(":status", "200")
@@ -104,8 +101,6 @@ write nukleus:begin.ext ${http:beginEx()
                               .header(":path", "/data")
                               .header(":authority", "localhost:8080")
                               .header("prefer", "wait=5")
-                              .header("cache-control", "max-age=0")
-                              .header("if-none-match", etag)
                               .header("authorization", "THIRD_TOKEN")
                               .build()}
 connected
@@ -122,6 +117,6 @@ read nukleus:begin.ext ${http:beginEx()
                               .header("retry-after", "1")
                               .build()}
 
-write "response #2"
+read "response #2"
 
 read closed

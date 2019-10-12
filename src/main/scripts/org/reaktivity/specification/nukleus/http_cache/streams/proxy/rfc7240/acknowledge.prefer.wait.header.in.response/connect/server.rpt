@@ -46,6 +46,7 @@ write nukleus:begin.ext ${http:beginEx()
                               .header("date", response1Date)
                               .header("cache-control", "max-age=100")
                               .header("etag", "one")
+                              .header("preference-applied", "wait=5")
                               .build()}
 
 write "response #1"

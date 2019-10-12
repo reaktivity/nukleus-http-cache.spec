@@ -49,6 +49,8 @@ write nukleus:begin.ext ${http:beginEx()
 
 write close
 
+write notify FIRST_REQUEST_RECEIVED
+
 accepted
 
 read nukleus:begin.ext ${http:beginEx()

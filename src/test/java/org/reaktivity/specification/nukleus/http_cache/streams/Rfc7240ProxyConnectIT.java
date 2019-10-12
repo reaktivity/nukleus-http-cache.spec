@@ -102,8 +102,8 @@ public class Rfc7240ProxyConnectIT
 
     @Test
     @Specification({
-        "${streams}/multiple.parallel.requests.with.prefer.wait.and.updated.authorization/accept/client",
-        "${streams}/multiple.parallel.requests.with.prefer.wait.and.updated.authorization/accept/server",
+        "${streams}/multiple.parallel.requests.with.prefer.wait.and.updated.authorization/connect/client",
+        "${streams}/multiple.parallel.requests.with.prefer.wait.and.updated.authorization/connect/server",
     })
     public void shouldHandleMultipleParallelRequestWithPreferWaitAndUpdatedAuthorization() throws Exception
     {
