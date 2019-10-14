@@ -16,14 +16,11 @@
 
 property response1Date ${http_cache:date()} # sharedProperty
 property response2Date ${http_cache:datePlus(5)} # sharedProperty
-property etag ${http_cache:strongEtag()} #shared
-property etag2 ${http_cache:strongEtag()} #shared
 
 accept await ROUTED_PROXY
         "nukleus://streams/target#0"
         option nukleus:window 8192
         option nukleus:transmission "half-duplex"
-
 accepted
 
 read nukleus:begin.ext ${http:beginEx()
@@ -32,9 +29,6 @@ read nukleus:begin.ext ${http:beginEx()
                              .header(":method", "GET")
                              .header(":path", "/items/1")
                              .header(":authority", "localhost:8080")
-                             .header("prefer", "wait=50")
-                             .header("cache-control", "max-age=0")
-                             .header("if-none-match", etag)
                              .build()}
 
 connected
@@ -43,14 +37,16 @@ read closed
 
 write nukleus:begin.ext ${http:beginEx()
                               .typeId(nukleus:id("http"))
-                              .header(":status", "304")
-                              .header("etag", etag)
-                              .header("retry-after", "50")
+                              .header(":status", "200")
+                              .header("content-length", "11")
+                              .header("date", response1Date)
+                              .header("cache-control", "max-age=10")
+                              .header("etag", "one")
                               .build()}
 
-write close
+write "response #1"
 
-write notify SECOND_RESPONSE_SENT
+write close
 
 accepted
 
@@ -58,7 +54,7 @@ read nukleus:begin.ext ${http:beginEx()
                              .typeId(nukleus:id("http"))
                              .header(":scheme", "http")
                              .header(":method", "POST")
-                             .header(":path", "/items/1")
+                             .header(":path", "/items/2")
                              .header(":authority", "localhost:8080")
                              .header("content-length", "9")
                              .build()}
