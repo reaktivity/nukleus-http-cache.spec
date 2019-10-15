@@ -48,7 +48,7 @@ read "response #1"
 
 read nukleus:end.ext ${http:endEx()
                            .typeId(nukleus:id("http"))
-                           .trailer("etag", "one")
+                           .trailer("etag", "first")
                            .build()}
 
 read closed
@@ -68,7 +68,7 @@ write nukleus:begin.ext ${http:beginEx()
                               .header(":authority", "localhost:8080")
                               .header("cache-control", "max-age=0")
                               .header("prefer", "wait=5")
-                              .header("if-none-match", "one")
+                              .header("if-none-match", "first")
                               .build()}
 connected
 
@@ -86,7 +86,7 @@ read "response #1"
 
 read nukleus:end.ext ${http:endEx()
                             .typeId(nukleus:id("http"))
-                            .trailer("etag", "one")
+                            .trailer("etag", "first")
                             .build()}
 
 read closed
@@ -106,7 +106,7 @@ write nukleus:begin.ext ${http:beginEx()
                               .header(":authority", "localhost:8080")
                               .header("cache-control", "max-age=0")
                               .header("prefer", "wait=5")
-                              .header("if-none-match", "one")
+                              .header("if-none-match", "first")
                               .build()}
 connected
 
@@ -124,7 +124,7 @@ read "response #2"
 
 read nukleus:end.ext ${http:endEx()
                            .typeId(nukleus:id("http"))
-                           .trailer("etag", "two")
+                           .trailer("etag", "second")
                            .build()}
 
 read closed

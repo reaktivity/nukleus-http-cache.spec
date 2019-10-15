@@ -27,10 +27,10 @@ import org.kaazing.k3po.junit.annotation.Specification;
 import org.kaazing.k3po.junit.rules.K3poRule;
 import org.reaktivity.specification.nukleus.NukleusRule;
 
-public class Rfc8288ProxyConnectIT
+public class Rfc6573ProxyConnectIT
 {
     private final K3poRule k3po = new K3poRule()
-        .addScriptRoot("streams", "org/reaktivity/specification/nukleus/http_cache/streams/proxy/rfc8288");
+        .addScriptRoot("streams", "org/reaktivity/specification/nukleus/http_cache/streams/proxy/rfc6573");
 
     private final TestRule timeout = new DisableOnDebug(new Timeout(5, SECONDS));
 
@@ -42,10 +42,10 @@ public class Rfc8288ProxyConnectIT
 
     @Test
     @Specification({
-        "${streams}/invalidate.cache.for.matching.link.path/connect/client",
-        "${streams}/invalidate.cache.for.matching.link.path/connect/server",
+        "${streams}/invalidate.cache.when.collection.relative.path/connect/client",
+        "${streams}/invalidate.cache.when.collection.relative.path/connect/server",
     })
-    public void shouldInvalidateCacheForMatchingLinkPath() throws Exception
+    public void shouldInvalidateCacheWhenCollectionRelativePath() throws Exception
     {
         k3po.start();
         k3po.notifyBarrier("ROUTED_PROXY");
@@ -54,10 +54,10 @@ public class Rfc8288ProxyConnectIT
 
     @Test
     @Specification({
-        "${streams}/invalidate.cache.for.matching.link.full.url/connect/client",
-        "${streams}/invalidate.cache.for.matching.link.full.url/connect/server",
+        "${streams}/invalidate.cache.when.collection.same.origin/connect/client",
+        "${streams}/invalidate.cache.when.collection.same.origin/connect/server",
     })
-    public void shouldInvalidateCacheForMatchingLinkFullUrl() throws Exception
+    public void shouldInvalidateCacheWhenCollectionSameOrigin() throws Exception
     {
         k3po.start();
         k3po.notifyBarrier("ROUTED_PROXY");
@@ -66,10 +66,10 @@ public class Rfc8288ProxyConnectIT
 
     @Test
     @Specification({
-        "${streams}/do.not.invalidate.cache.for.cross.origin.link.url/connect/client",
-        "${streams}/do.not.invalidate.cache.for.cross.origin.link.url/connect/server",
+        "${streams}/ignore.link.when.collection.cross.origin/connect/client",
+        "${streams}/ignore.link.when.collection.cross.origin/connect/server",
     })
-    public void shouldNotInvalidateCacheForCrossOriginLinkUrl() throws Exception
+    public void shouldIgnoreLinkWhenCollectionCrossOrigin() throws Exception
     {
         k3po.start();
         k3po.notifyBarrier("ROUTED_PROXY");

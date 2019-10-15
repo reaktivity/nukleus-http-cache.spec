@@ -14,41 +14,12 @@
 # under the License.
 #
 
-property response1Date ${http_cache:date()} # sharedProperty
-property response2Date ${http_cache:datePlus(5)} # sharedProperty
+property responseDate ${http_cache:date()} # sharedProperty
 
 accept await ROUTED_PROXY
-        "nukleus://streams/target#0"
+        "nukleus://streams/http-cache#0"
         option nukleus:window 8192
         option nukleus:transmission "half-duplex"
-accepted
-
-read nukleus:begin.ext ${http:beginEx()
-                             .typeId(nukleus:id("http"))
-                             .header(":scheme", "http")
-                             .header(":method", "GET")
-                             .header(":path", "/data")
-                             .header(":authority", "localhost:8080")
-                             .header("prefer", "wait=5")
-                             .build()}
-
-connected
-
-read closed
-
-write nukleus:begin.ext ${http:beginEx()
-                              .typeId(nukleus:id("http"))
-                              .header(":status", "200")
-                              .header("content-length", "11")
-                              .header("date", response1Date)
-                              .header("cache-control", "max-age=10")
-                              .header("etag", "first")
-                              .header("retry-after", "1")
-                              .build()}
-
-write "response #1"
-
-write close
 
 accepted
 
@@ -58,9 +29,9 @@ read nukleus:begin.ext ${http:beginEx()
                              .header(":method", "GET")
                              .header(":path", "/data")
                              .header(":authority", "localhost:8080")
-                             .header("prefer", "wait=5")
+                             .header("prefer", "wait=20")
                              .header("cache-control", "max-age=0")
-                             .header("if-none-match", "first")
+                             .header("if-none-match", "second")
                              .build()}
 
 connected
@@ -68,13 +39,17 @@ connected
 read closed
 
 write nukleus:begin.ext ${http:beginEx()
-                              .typeId(nukleus:id("http"))
-                              .header(":status", "304")
-                              .header("etag", "first")
-                              .header("retry-after", "1")
-                              .build()}
+                             .typeId(nukleus:id("http"))
+                             .header(":status", "304")
+                             .header("etag", "second")
+                             .header("preference-applied", "wait=20")
+                             .header("access-control-expose-headers", "preference-applied")
+                             .header("access-control-expose-headers", "etag")
+                             .build()}
 
 write close
+
+write notify FIRST_REQUEST_RECEIVED
 
 accepted
 
@@ -84,7 +59,7 @@ read nukleus:begin.ext ${http:beginEx()
                              .header(":method", "GET")
                              .header(":path", "/data")
                              .header(":authority", "localhost:8080")
-                             .header("prefer", "wait=5")
+                             .header("prefer", "wait=20")
                              .header("cache-control", "max-age=0")
                              .header("if-none-match", "first")
                              .build()}
@@ -97,13 +72,17 @@ write nukleus:begin.ext ${http:beginEx()
                               .typeId(nukleus:id("http"))
                               .header(":status", "200")
                               .header("content-length", "11")
-                              .header("date", response2Date)
+                              .header("date", responseDate)
                               .header("cache-control", "max-age=10")
                               .header("etag", "second")
-                              .header("retry-after", "1")
+                              .header("preference-applied", "wait=20")
+                              .header("access-control-expose-headers", "preference-applied")
+                              .header("access-control-expose-headers", "etag")
                               .build()}
+
 
 write "response #2"
 
 write close
+
 

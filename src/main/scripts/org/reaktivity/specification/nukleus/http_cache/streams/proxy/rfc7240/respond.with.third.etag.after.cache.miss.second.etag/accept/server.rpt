@@ -31,7 +31,7 @@ read nukleus:begin.ext ${http:beginEx()
                              .header(":authority", "localhost:8080")
                              .header("prefer", "wait=20")
                              .header("cache-control", "max-age=0")
-                             .header("if-none-match", "one")
+                             .header("if-none-match", "first")
                              .build()}
 
 connected
@@ -44,13 +44,13 @@ write nukleus:begin.ext ${http:beginEx()
                               .header("content-length", "11")
                               .header("date", responseDate)
                               .header("cache-control", "max-age=10")
-                              .header("etag", "two")
+                              .header("etag", "third")
                               .header("preference-applied", "wait=20")
                               .header("access-control-expose-headers", "preference-applied")
                               .header("access-control-expose-headers", "etag")
                               .build()}
 
-write "response #2"
+write "response #3"
 
 write close
 
@@ -64,7 +64,7 @@ read nukleus:begin.ext ${http:beginEx()
                              .header(":authority", "localhost:8080")
                              .header("prefer", "wait=20")
                              .header("cache-control", "max-age=0")
-                             .header("if-none-match", "two")
+                             .header("if-none-match", "second")
                              .build()}
 
 connected
@@ -73,11 +73,15 @@ read closed
 
 write nukleus:begin.ext ${http:beginEx()
                               .typeId(nukleus:id("http"))
-                              .header(":status", "304")
-                              .header("etag", "two")
+                              .header(":status", "200")
+                              .header("content-length", "11")
+                              .header("date", responseDate)
+                              .header("cache-control", "max-age=10")
+                              .header("etag", "third")
                               .header("preference-applied", "wait=20")
                               .header("access-control-expose-headers", "preference-applied")
                               .header("access-control-expose-headers", "etag")
                               .build()}
+write "response #3"
 
 write close

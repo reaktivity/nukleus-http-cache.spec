@@ -42,7 +42,7 @@ write nukleus:begin.ext ${http:beginEx()
                               .header("content-length", "11")
                               .header("date", response1Date)
                               .header("cache-control", "max-age=100")
-                              .header("etag", "one")
+                              .header("etag", "first")
                               .build()}
 
 write "response #1"
@@ -59,7 +59,7 @@ read nukleus:begin.ext ${http:beginEx()
                              .header(":authority", "localhost:8080")
                              .header("cache-control", "max-age=0")
                              .header("prefer", "wait=5")
-                             .header("if-none-match", "one")
+                             .header("if-none-match", "first")
                              .build()}
 
 connected
@@ -69,7 +69,7 @@ read closed
 write nukleus:begin.ext ${http:beginEx()
                               .typeId(nukleus:id("http"))
                               .header(":status", "304")
-                              .header("etag", "one")
+                              .header("etag", "first")
                               .build()}
 
 write close
@@ -84,7 +84,7 @@ read nukleus:begin.ext ${http:beginEx()
                              .header(":authority", "localhost:8080")
                              .header("cache-control", "max-age=0")
                              .header("prefer", "wait=5")
-                             .header("if-none-match", "one")
+                             .header("if-none-match", "first")
                              .build()}
 
 connected
@@ -97,7 +97,7 @@ write nukleus:begin.ext ${http:beginEx()
                               .header("content-length", "11")
                               .header("date", response2Date)
                               .header("cache-control", "max-age=100")
-                              .header("etag", "two")
+                              .header("etag", "second")
                               .build()}
 
 write "response #2"

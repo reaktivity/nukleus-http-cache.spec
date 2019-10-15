@@ -45,7 +45,7 @@ write nukleus:begin.ext ${http:beginEx()
                               .header("content-length", "11")
                               .header("date", response1Date)
                               .header("cache-control", "max-age=100")
-                              .header("etag", "one")
+                              .header("etag", "first")
                               .header("preference-applied", "wait=5")
                               .build()}
 
@@ -63,7 +63,7 @@ read nukleus:begin.ext ${http:beginEx()
                              .header(":authority", "localhost:8080")
                              .header("cache-control", "no-cache")
                              .header("prefer", "wait=5")
-                             .header("if-none-match", "one")
+                             .header("if-none-match", "first")
                              .build()}
 
 connected
@@ -76,7 +76,7 @@ write await PREFER_WAIT_REQUEST_TWO_COMPLETED
 write nukleus:begin.ext ${http:beginEx()
                               .typeId(nukleus:id("http"))
                               .header(":status", "304")
-                              .header("etag", "one")
+                              .header("etag", "first")
                               .build()}
 
 write close
@@ -92,7 +92,7 @@ read nukleus:begin.ext ${http:beginEx()
                              .header(":authority", "localhost:8080")
                              .header("cache-control", "no-cache")
                              .header("prefer", "wait=5")
-                             .header("if-none-match", "one")
+                             .header("if-none-match", "first")
                              .build()}
 
 connected
@@ -108,7 +108,7 @@ write nukleus:begin.ext ${http:beginEx()
                               .header("content-length", "11")
                               .header("date", response2Date)
                               .header("cache-control", "max-age=100")
-                              .header("etag", "two")
+                              .header("etag", "second")
                               .header("preference-applied", "wait=5")
                               .build()}
 

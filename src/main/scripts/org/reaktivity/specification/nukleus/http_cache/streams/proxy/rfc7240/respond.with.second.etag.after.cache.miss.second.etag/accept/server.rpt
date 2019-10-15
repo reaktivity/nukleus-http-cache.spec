@@ -17,9 +17,10 @@
 property responseDate ${http_cache:date()} # sharedProperty
 
 accept await ROUTED_PROXY
-        "nukleus://streams/target#0"
+        "nukleus://streams/http-cache#0"
         option nukleus:window 8192
         option nukleus:transmission "half-duplex"
+
 accepted
 
 read nukleus:begin.ext ${http:beginEx()
@@ -30,16 +31,23 @@ read nukleus:begin.ext ${http:beginEx()
                              .header(":authority", "localhost:8080")
                              .header("prefer", "wait=20")
                              .header("cache-control", "max-age=0")
-                             .header("if-none-match", "two")
+                             .header("if-none-match", "second")
                              .build()}
 
 connected
 
 read closed
 
-write notify FIRST_REQUEST_RECEIVED
+write nukleus:begin.ext ${http:beginEx()
+                              .typeId(nukleus:id("http"))
+                              .header(":status", "304")
+                              .header("etag", "second")
+                              .header("preference-applied", "wait=20")
+                              .header("access-control-expose-headers", "preference-applied")
+                              .header("access-control-expose-headers", "etag")
+                              .build()}
 
-write aborted
+write close
 
 accepted
 
@@ -50,7 +58,6 @@ read nukleus:begin.ext ${http:beginEx()
                              .header(":path", "/data")
                              .header(":authority", "localhost:8080")
                              .header("prefer", "wait=20")
-                             .header("cache-control", "max-age=0")
                              .build()}
 
 connected
@@ -63,11 +70,14 @@ write nukleus:begin.ext ${http:beginEx()
                               .header("content-length", "11")
                               .header("date", responseDate)
                               .header("cache-control", "max-age=10")
-                              .header("etag", "two")
-                              .header("retry-after", "5")
+                              .header("etag", "second")
+                              .header("preference-applied", "wait=20")
+                              .header("access-control-expose-headers", "preference-applied")
+                              .header("access-control-expose-headers", "etag")
                               .build()}
 
 write "response #2"
 
 write close
+
 

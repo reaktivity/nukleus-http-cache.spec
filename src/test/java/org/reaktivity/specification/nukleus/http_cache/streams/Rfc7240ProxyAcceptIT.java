@@ -150,10 +150,10 @@ public class Rfc7240ProxyAcceptIT
 
     @Test
     @Specification({
-        "${streams}/long.polling.when.cache.is.empty.and.etag.is.latest/accept/client",
-        "${streams}/long.polling.when.cache.is.empty.and.etag.is.latest/accept/server",
+        "${streams}/respond.with.first.etag.after.cache.miss.second.etag/accept/client",
+        "${streams}/respond.with.first.etag.after.cache.miss.second.etag/accept/server",
     })
-    public void shouldHandleLongPollingWhenCacheIsEmptyAndEtagIsLatest() throws Exception
+    public void shouldRespondWithFirstEtagAfterCacheMissSecondEtag() throws Exception
     {
         k3po.start();
         k3po.notifyBarrier("ROUTED_PROXY");
@@ -162,10 +162,10 @@ public class Rfc7240ProxyAcceptIT
 
     @Test
     @Specification({
-        "${streams}/long.polling.when.cache.is.empty.and.etag.is.not.latest/accept/client",
-        "${streams}/long.polling.when.cache.is.empty.and.etag.is.not.latest/accept/server",
+        "${streams}/respond.with.second.etag.after.cache.miss.first.etag/accept/client",
+        "${streams}/respond.with.second.etag.after.cache.miss.first.etag/accept/server",
     })
-    public void shouldHandleLongPollingWhenCacheIsEmptyAndEtagIsNotLatest() throws Exception
+    public void shouldRespondWithSecondEtagAfterCacheMissFirstEtag() throws Exception
     {
         k3po.start();
         k3po.notifyBarrier("ROUTED_PROXY");
@@ -174,10 +174,10 @@ public class Rfc7240ProxyAcceptIT
 
     @Test
     @Specification({
-        "${streams}/long.polling.when.cache.is.empty.with.latest.etag.and.missing.etag.in.second.request/accept/client",
-        "${streams}/long.polling.when.cache.is.empty.with.latest.etag.and.missing.etag.in.second.request/accept/server",
+        "${streams}/respond.with.second.etag.after.cache.miss.second.etag/accept/client",
+        "${streams}/respond.with.second.etag.after.cache.miss.second.etag/accept/server",
     })
-    public void shouldHandleLongPollingWhenCacheIsEmptyWithLatestEtagAndMissingEtagInSecondRequest() throws Exception
+    public void shouldRespondWithSecondEtagAfterCacheMissSecondEtag() throws Exception
     {
         k3po.start();
         k3po.notifyBarrier("ROUTED_PROXY");
@@ -186,10 +186,22 @@ public class Rfc7240ProxyAcceptIT
 
     @Test
     @Specification({
-        "${streams}/long.polling.when.cache.is.empty.with.old.etag.and.missing.etag.in.second.request/accept/client",
-        "${streams}/long.polling.when.cache.is.empty.with.old.etag.and.missing.etag.in.second.request/accept/server",
+        "${streams}/respond.with.second.etag.after.cache.miss.without.etag/accept/client",
+        "${streams}/respond.with.second.etag.after.cache.miss.without.etag/accept/server",
     })
-    public void shouldHandleLongPollingWhenCacheIsEmptyWithOldEtagAndMissingEtagInSecondRequest() throws Exception
+    public void shouldRespondWithSecondEtagAfterCacheMissWithoutEtag() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_PROXY");
+        k3po.finish();
+    }
+
+    @Test
+    @Specification({
+        "${streams}/respond.with.third.etag.after.cache.miss.second.etag/accept/client",
+        "${streams}/respond.with.third.etag.after.cache.miss.second.etag/accept/server",
+    })
+    public void shouldRespondWithThirdEtagAfterCacheMissSecondEtag() throws Exception
     {
         k3po.start();
         k3po.notifyBarrier("ROUTED_PROXY");
