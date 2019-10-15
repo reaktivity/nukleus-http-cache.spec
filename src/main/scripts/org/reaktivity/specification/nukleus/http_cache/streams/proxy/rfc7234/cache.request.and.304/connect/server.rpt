@@ -42,7 +42,7 @@ write nukleus:begin.ext ${http:beginEx()
                               .header("content-length", "11")
                               .header("cache-control", "max-age=15")
                               .header("date", date)
-                              .header("etag", "one")
+                              .header("etag", "first")
                               .build()}
 
 write "hello world"
