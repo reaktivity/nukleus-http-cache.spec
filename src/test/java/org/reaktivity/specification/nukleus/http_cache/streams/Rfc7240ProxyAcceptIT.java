@@ -207,4 +207,16 @@ public class Rfc7240ProxyAcceptIT
         k3po.notifyBarrier("ROUTED_PROXY");
         k3po.finish();
     }
+
+    @Test
+    @Specification({
+        "${streams}/receive.503.on.group.request.reset/accept/client",
+        "${streams}/receive.503.on.group.request.reset/accept/server",
+    })
+    public void shouldReceive503OnGroupRequestReset() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_PROXY");
+        k3po.finish();
+    }
 }
