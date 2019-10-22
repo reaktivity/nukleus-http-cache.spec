@@ -102,6 +102,18 @@ public class Rfc7234ProxyConnectIT
 
     @Test
     @Specification({
+        "${streams}/cache.request.and.304/connect/client",
+        "${streams}/cache.request.and.304/connect/server",
+    })
+    public void shouldCacheRequestWith304() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_PROXY");
+        k3po.finish();
+    }
+
+    @Test
+    @Specification({
             "${streams}/cache.min-fresh/connect/client",
             "${streams}/cache.min-fresh/connect/server",
     })
@@ -603,6 +615,18 @@ public class Rfc7234ProxyConnectIT
         "${streams}/use.etag.from.trailer.on.200.response/connect/server",
     })
     public void shouldUseEtagFromTrailerOn200Response() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_PROXY");
+        k3po.finish();
+    }
+
+    @Test
+    @Specification({
+        "${streams}/invalidate.cache.for.unsafe.request/connect/client",
+        "${streams}/invalidate.cache.for.unsafe.request/connect/server",
+    })
+    public void shouldInvalidateCacheForUnsafeRequest() throws Exception
     {
         k3po.start();
         k3po.notifyBarrier("ROUTED_PROXY");
