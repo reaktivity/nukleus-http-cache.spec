@@ -147,4 +147,76 @@ public class Rfc7240ProxyAcceptIT
         k3po.notifyBarrier("ROUTED_PROXY");
         k3po.finish();
     }
+
+    @Test
+    @Specification({
+        "${streams}/respond.with.first.etag.after.cache.miss.second.etag/accept/client",
+        "${streams}/respond.with.first.etag.after.cache.miss.second.etag/accept/server",
+    })
+    public void shouldRespondWithFirstEtagAfterCacheMissSecondEtag() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_PROXY");
+        k3po.finish();
+    }
+
+    @Test
+    @Specification({
+        "${streams}/respond.with.second.etag.after.cache.miss.first.etag/accept/client",
+        "${streams}/respond.with.second.etag.after.cache.miss.first.etag/accept/server",
+    })
+    public void shouldRespondWithSecondEtagAfterCacheMissFirstEtag() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_PROXY");
+        k3po.finish();
+    }
+
+    @Test
+    @Specification({
+        "${streams}/respond.with.second.etag.after.cache.miss.second.etag/accept/client",
+        "${streams}/respond.with.second.etag.after.cache.miss.second.etag/accept/server",
+    })
+    public void shouldRespondWithSecondEtagAfterCacheMissSecondEtag() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_PROXY");
+        k3po.finish();
+    }
+
+    @Test
+    @Specification({
+        "${streams}/respond.with.second.etag.after.cache.miss.without.etag/accept/client",
+        "${streams}/respond.with.second.etag.after.cache.miss.without.etag/accept/server",
+    })
+    public void shouldRespondWithSecondEtagAfterCacheMissWithoutEtag() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_PROXY");
+        k3po.finish();
+    }
+
+    @Test
+    @Specification({
+        "${streams}/respond.with.third.etag.after.cache.miss.second.etag/accept/client",
+        "${streams}/respond.with.third.etag.after.cache.miss.second.etag/accept/server",
+    })
+    public void shouldRespondWithThirdEtagAfterCacheMissSecondEtag() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_PROXY");
+        k3po.finish();
+    }
+
+    @Test
+    @Specification({
+        "${streams}/receive.503.on.group.request.reset/accept/client",
+        "${streams}/receive.503.on.group.request.reset/accept/server",
+    })
+    public void shouldReceive503OnGroupRequestReset() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_PROXY");
+        k3po.finish();
+    }
 }

@@ -54,8 +54,8 @@ public class Rfc7240ProxyConnectIT
 
     @Test
     @Specification({
-        "${streams}/acknowledge.prefer.wait.header.in.response/accept/client",
-        "${streams}/acknowledge.prefer.wait.header.in.response/accept/server",
+        "${streams}/acknowledge.prefer.wait.header.in.response/connect/client",
+        "${streams}/acknowledge.prefer.wait.header.in.response/connect/server",
     })
     public void shouldAcknowledgePreferWaitHeaderInResponse() throws Exception
     {
@@ -102,8 +102,8 @@ public class Rfc7240ProxyConnectIT
 
     @Test
     @Specification({
-        "${streams}/multiple.parallel.requests.with.prefer.wait.and.updated.authorization/accept/client",
-        "${streams}/multiple.parallel.requests.with.prefer.wait.and.updated.authorization/accept/server",
+        "${streams}/multiple.parallel.requests.with.prefer.wait.and.updated.authorization/connect/client",
+        "${streams}/multiple.parallel.requests.with.prefer.wait.and.updated.authorization/connect/server",
     })
     public void shouldHandleMultipleParallelRequestWithPreferWaitAndUpdatedAuthorization() throws Exception
     {
@@ -142,6 +142,66 @@ public class Rfc7240ProxyConnectIT
         "${streams}/serve.immediately.when.if.none.match.missing.while.polling/connect/server",
     })
     public void shouldServeImmediatelyWhenIfNoneMatchMissingWhilePolling() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_PROXY");
+        k3po.finish();
+    }
+
+    @Test
+    @Specification({
+        "${streams}/respond.with.first.etag.after.cache.miss.second.etag/connect/client",
+        "${streams}/respond.with.first.etag.after.cache.miss.second.etag/connect/server",
+    })
+    public void shouldRespondWithFirstEtagAfterCacheMissSecondEtag() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_PROXY");
+        k3po.finish();
+    }
+
+    @Test
+    @Specification({
+        "${streams}/respond.with.second.etag.after.cache.miss.first.etag/connect/client",
+        "${streams}/respond.with.second.etag.after.cache.miss.first.etag/connect/server",
+    })
+    public void shouldRespondWithSecondEtagAfterCacheMissFirstEtag() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_PROXY");
+        k3po.finish();
+    }
+
+    @Test
+    @Specification({
+        "${streams}/respond.with.second.etag.after.cache.miss.second.etag/connect/client",
+        "${streams}/respond.with.second.etag.after.cache.miss.second.etag/connect/server",
+    })
+    public void shouldRespondWithSecondEtagAfterCacheMissSecondEtag() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_PROXY");
+        k3po.finish();
+    }
+
+    @Test
+    @Specification({
+        "${streams}/respond.with.second.etag.after.cache.miss.without.etag/connect/client",
+        "${streams}/respond.with.second.etag.after.cache.miss.without.etag/connect/server",
+    })
+    public void shouldRespondWithSecondEtagAfterCacheMissWithoutEtag() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_PROXY");
+        k3po.finish();
+    }
+
+    @Test
+    @Specification({
+        "${streams}/respond.with.third.etag.after.cache.miss.second.etag/connect/client",
+        "${streams}/respond.with.third.etag.after.cache.miss.second.etag/connect/server",
+    })
+    public void shouldRespondWithThirdEtagAfterCacheMissSecondEtag() throws Exception
     {
         k3po.start();
         k3po.notifyBarrier("ROUTED_PROXY");

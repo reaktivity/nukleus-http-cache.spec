@@ -17,8 +17,6 @@
 property response1Date ${http_cache:date()} # sharedProperty
 property response2Date ${http_cache:datePlus(3)} # sharedProperty
 property response3Date ${http_cache:datePlus(5)} # sharedProperty
-property etag ${http_cache:strongEtag()} #shared
-property etag2 ${http_cache:strongEtag()} #shared
 
 connect await ROUTED_PROXY
         "nukleus://streams/target#0"
@@ -40,17 +38,13 @@ connected
 
 write close
 
-read await RECEIVED_FIRST_REQUEST
-read notify PREFER_WAIT_REQUEST_ONE_COMPLETED
-
 read nukleus:begin.ext ${http:beginEx()
                              .typeId(nukleus:id("http"))
                               .header(":status", "200")
                               .header("content-length", "11")
                               .header("date", response1Date)
-                              .header("surrogate-control", "max-age=100")
                               .header("cache-control", "max-age=100")
-                              .header("etag", etag)
+                              .header("etag", "first")
                               .header("retry-after", "1")
                               .build()}
 
@@ -74,8 +68,8 @@ write nukleus:begin.ext ${http:beginEx()
                               .header(":authority", "localhost:8080")
                               .header("prefer", "wait=5")
                               .header("cache-control", "max-age=0")
-                              .header("if-none-match", etag)
                               .header("authorization", "SECOND_TOKEN")
+                              .header("if-none-match", "first")
                               .build()}
 
 connected
@@ -85,7 +79,7 @@ write close
 read nukleus:begin.ext ${http:beginEx()
                              .typeId(nukleus:id("http"))
                              .header(":status", "304")
-                             .header("etag", etag)
+                             .header("etag", "first")
                              .header("date", response2Date)
                              .header("retry-after", "1")
                              .build()}
@@ -107,8 +101,6 @@ write nukleus:begin.ext ${http:beginEx()
                               .header(":path", "/data")
                               .header(":authority", "localhost:8080")
                               .header("prefer", "wait=5")
-                              .header("cache-control", "max-age=0")
-                              .header("if-none-match", etag)
                               .header("authorization", "THIRD_TOKEN")
                               .build()}
 connected
@@ -120,12 +112,11 @@ read nukleus:begin.ext ${http:beginEx()
                               .header(":status", "200")
                               .header("content-length", "11")
                               .header("date", response3Date)
-                              .header("surrogate-control", "max-age=100")
                               .header("cache-control", "max-age=100")
-                              .header("etag", etag2)
+                              .header("etag", "second")
                               .header("retry-after", "1")
                               .build()}
 
-write "response #2"
+read "response #2"
 
 read closed
