@@ -69,7 +69,9 @@ write nukleus:begin.ext ${http:beginEx()
                               .header(":method", "GET")
                               .header(":path", "/data")
                               .header(":authority", "localhost:8080")
-                              .header("user-agent", "user-agent-1")
+                              .header("cache-control", "max-age=0")
+                              .header("prefer", "wait=100")
+                              .header("user-agent", "user-agent-2")
                               .header("if-none-match", etag)
                               .build()}
 
@@ -87,8 +89,6 @@ read nukleus:begin.ext ${http:beginEx()
                              .header("vary", "user-agent")
                              .build()}
 
-read "response #2"
 
-read closed
+read abort
 
-read notify SECOND_REQUEST_COMPLETE

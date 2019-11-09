@@ -57,7 +57,7 @@ write nukleus:data.ext ${http:dataEx()
                              .promise(":method", "GET")
                              .promise(":path", "/data")
                              .promise(":authority", "localhost:8080")
-                             .promise("cache-control", "no-cache")
+                             .promise("cache-control", "max-age=0")
                              .promise("prefer", "wait=100")
                              .promise("if-none-match", etag)
                              .build()}
@@ -76,7 +76,7 @@ read nukleus:begin.ext ${http:beginEx()
                              .header(":method", "GET")
                              .header(":path", "/data")
                              .header(":authority", "localhost:8080")
-                             .header("cache-control", "no-cache")
+                             .header("cache-control", "max-age=0")
                              .header("prefer", "wait=100")
                              .header("if-none-match", etag)
                              .build()}
@@ -126,7 +126,7 @@ write nukleus:data.ext ${http:dataEx()
                              .promise(":method", "GET")
                              .promise(":path", "/data")
                              .promise(":authority", "localhost:8080")
-                             .promise("cache-control", "no-cache")
+                             .promise("cache-control", "max-age=0")
                              .promise("prefer", "wait=100")
                              .promise("if-none-match", etag2)
                              .build()}
@@ -143,7 +143,7 @@ read nukleus:begin.ext ${http:beginEx()
                              .header(":method", "GET")
                              .header(":path", "/data")
                              .header(":authority", "localhost:8080")
-                             .header("cache-control", "no-cache")
+                             .header("cache-control", "max-age=0")
                              .header("prefer", "wait=100")
                              .header("if-none-match", etag2)
                              .build()}
@@ -154,14 +154,12 @@ read closed
 
 write nukleus:begin.ext ${http:beginEx()
                               .typeId(nukleus:id("http"))
-                              .header(":status", "200")
-                              .header("content-length", "11")
-                              .header("date", response1Date)
-                              .header("surrogate-control", "max-age=1+100")
-                              .header("etag", etag3)
-                              .header("cache-control", "private, stale-while-revalidate=100")
+                              .header(":status", "304")
+                              .header("etag", etag2)
+                              .header("preference-applied", "wait=100")
+                              .header("access-control-expose-headers", "preference-applied")
+                              .header("access-control-expose-headers", "etag")
                               .build()}
-
 write flush
 
 write nukleus:data.ext ${http:dataEx()
@@ -170,12 +168,11 @@ write nukleus:data.ext ${http:dataEx()
                              .promise(":method", "GET")
                              .promise(":path", "/data")
                              .promise(":authority", "localhost:8080")
-                             .promise("cache-control", "no-cache")
+                             .promise("cache-control", "max-age=0")
                              .promise("prefer", "wait=100")
-                             .promise("if-none-match", etag3)
+                             .promise("if-none-match", etag2)
                              .build()}
-write flush
 
-write "response #4"
+write flush
 
 write close

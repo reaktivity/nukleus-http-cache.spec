@@ -54,7 +54,7 @@ read nukleus:data.ext ${http:dataEx()
                             .promise(":method", "GET")
                             .promise(":path", "/data")
                             .promise(":authority", "localhost:8080")
-                            .promise("cache-control", "no-cache")
+                            .promise("cache-control", "max-age=0")
                             .promise("prefer", "wait=100")
                             .promise("if-none-match", etag)
                             .build()}
@@ -76,15 +76,13 @@ write nukleus:begin.ext ${http:beginEx()
                               .header(":method", "GET")
                               .header(":path", "/data")
                               .header(":authority", "localhost:8080")
-                              .header("cache-control", "no-cache")
+                              .header("cache-control", "max-age=0")
                               .header("prefer", "wait=100")
                               .header("if-none-match", etag)
                               .build()}
 connected
 
 write close
-
-write notify REQUEST_TWO_PENDING
 
 read nukleus:begin.ext ${http:beginEx()
                              .typeId(nukleus:id("http"))
@@ -93,8 +91,13 @@ read nukleus:begin.ext ${http:beginEx()
                              .header("date", response2Date)
                              .header("surrogate-control", "max-age=1+100")
                              .header("etag", etag2)
+                             .header("preference-applied", "wait=100")
+                             .header("access-control-expose-headers", "preference-applied")
+                             .header("access-control-expose-headers", "etag")
                              .header("cache-control", "private, stale-while-revalidate=100")
                              .build()}
+
+read "response #2"
 
 read nukleus:data.ext ${http:dataEx()
                             .typeId(nukleus:id("http"))
@@ -102,11 +105,11 @@ read nukleus:data.ext ${http:dataEx()
                             .promise(":method", "GET")
                             .promise(":path", "/data")
                             .promise(":authority", "localhost:8080")
-                            .promise("cache-control", "no-cache")
+                            .promise("cache-control", "max-age=0")
                             .promise("prefer", "wait=100")
                             .promise("if-none-match", etag2)
                             .build()}
 
-read "response #2"
+read nukleus:data.null
 
 read closed

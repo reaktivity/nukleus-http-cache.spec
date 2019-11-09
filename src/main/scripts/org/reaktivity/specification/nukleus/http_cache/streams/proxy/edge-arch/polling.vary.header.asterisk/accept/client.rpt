@@ -56,7 +56,7 @@ read nukleus:data.ext ${http:dataEx()
                             .promise(":method", "GET")
                             .promise(":path", "/data")
                             .promise(":authority", "localhost:8080")
-                            .promise("cache-control", "no-cache")
+                            .promise("cache-control", "max-age=0")
                             .promise("prefer", "wait=100")
                             .promise("if-none-match", etag)
                             .build()}
@@ -78,7 +78,7 @@ write nukleus:begin.ext ${http:beginEx()
                               .header(":method", "GET")
                               .header(":path", "/data")
                               .header(":authority", "localhost:8080")
-                              .header("cache-control", "no-cache")
+                              .header("cache-control", "max-age=0")
                               .header("prefer", "wait=100")
                               .header("if-none-match", etag)
                               .header("user-agent", "user-agent-1")
@@ -87,11 +87,10 @@ connected
 
 write close
 
-write notify REQUEST_TWO_PENDING
-
 read nukleus:begin.ext ${http:beginEx()
                              .typeId(nukleus:id("http"))
                              .header(":status", "503")
+                             .header("retry-after", "0")
                              .build()}
 
-read aborted
+read closed

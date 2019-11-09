@@ -24,7 +24,6 @@ connect await ROUTED_PROXY
         option nukleus:window 8192
         option nukleus:transmission "half-duplex"
 
-
 write nukleus:begin.ext ${http:beginEx()
                               .typeId(nukleus:id("http"))
                               .header(":scheme", "http")
@@ -60,7 +59,6 @@ connect await INITIAL_REQUEST_COMPLETE
         option nukleus:window 8192
         option nukleus:transmission "half-duplex"
 
-
 write nukleus:begin.ext ${http:beginEx()
                               .typeId(nukleus:id("http"))
                               .header(":scheme", "http")
@@ -68,6 +66,8 @@ write nukleus:begin.ext ${http:beginEx()
                               .header(":method", "GET")
                               .header(":path", "/data")
                               .header(":authority", "localhost:8080")
+                              .header("cache-control", "max-age=0")
+                              .header("prefer", "wait=100")
                               .header("authorization", "some-authorization-value")
                               .header("if-none-match", etag)
                               .build()}
@@ -81,8 +81,6 @@ read nukleus:begin.ext ${http:beginEx()
                              .header(":status", "403")
                              .header("content-length", "0")
                              .header("date", response2Date)
-                             .header("surrogate-control", "max-age=1+100, x-protected")
-                             .header("etag", etag2)
                              .build()}
 
 read closed
