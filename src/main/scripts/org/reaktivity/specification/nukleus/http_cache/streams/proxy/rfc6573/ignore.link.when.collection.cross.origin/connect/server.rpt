@@ -27,8 +27,8 @@ read nukleus:begin.ext ${http:beginEx()
                              .typeId(nukleus:id("http"))
                              .header(":scheme", "http")
                              .header(":method", "GET")
-                             .header(":path", "/items?query1")
-                             .header(":authority", "localhost:8080")
+                             .header(":path", "/items?query")
+                             .header(":authority", "example.com:8080")
                              .build()}
 
 connected
@@ -54,7 +54,7 @@ read nukleus:begin.ext ${http:beginEx()
                              .typeId(nukleus:id("http"))
                              .header(":scheme", "http")
                              .header(":method", "POST")
-                             .header(":path", "/items?query")
+                             .header(":path", "/items")
                              .header(":authority", "localhost:8080")
                              .header("content-length", "9")
                              .build()}
