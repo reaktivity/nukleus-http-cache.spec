@@ -82,7 +82,6 @@ write nukleus:begin.ext ${http:beginEx()
                               .header("vary", "content-encoding")
                               .build()}
 
-write flush
+write "response #2"
 
-write aborted
-
+write close

@@ -14,10 +14,8 @@
 # under the License.
 #
 
-property response1Date ${http_cache:date()} # sharedProperty
-property response2Date ${http_cache:datePlus(5)} # sharedProperty
-property etag ${http_cache:strongEtag()} # sharedProperty
-property etag2 ${http_cache:strongEtag()} # sharedProperty
+property responseDate ${http_cache:date()} # sharedProperty
+property response2Date ${http_cache:datePlus(3)} # sharedProperty
 
 accept await ROUTED_PROXY
         "nukleus://streams/target#0"
@@ -28,13 +26,12 @@ accepted
 read nukleus:begin.ext ${http:beginEx()
                              .typeId(nukleus:id("http"))
                              .header(":scheme", "http")
-                              .header("x-protocol-stack", "emulated")
                              .header(":method", "GET")
                              .header(":path", "/data")
                              .header(":authority", "localhost:8080")
+                             .header("prefer", "wait=20")
                              .header("user-agent", "user-agent-1")
                              .build()}
-
 connected
 
 read closed
@@ -43,9 +40,9 @@ write nukleus:begin.ext ${http:beginEx()
                               .typeId(nukleus:id("http"))
                               .header(":status", "200")
                               .header("content-length", "11")
-                              .header("date", response1Date)
-                              .header("surrogate-control", "max-age=1+100")
-                              .header("etag", etag)
+                              .header("date", responseDate)
+                              .header("cache-control", "max-age=10")
+                              .header("etag", "first")
                               .header("vary", "user-agent")
                               .build()}
 
@@ -58,14 +55,33 @@ accepted
 read nukleus:begin.ext ${http:beginEx()
                              .typeId(nukleus:id("http"))
                              .header(":scheme", "http")
-                             .header("x-protocol-stack", "emulated")
                              .header(":method", "GET")
                              .header(":path", "/data")
                              .header(":authority", "localhost:8080")
+                             .header("prefer", "wait=20")
                              .header("cache-control", "max-age=0")
-                             .header("prefer", "wait=100")
+                             .header("if-none-match", "first")
                              .header("user-agent", "user-agent-1")
-                             .header("if-none-match", etag)
+                             .build()}
+
+connected
+
+read closed
+
+write aborted
+
+accepted
+
+read nukleus:begin.ext ${http:beginEx()
+                             .typeId(nukleus:id("http"))
+                             .header(":scheme", "http")
+                             .header(":method", "GET")
+                             .header(":path", "/data")
+                             .header(":authority", "localhost:8080")
+                             .header("prefer", "wait=20")
+                             .header("cache-control", "max-age=0")
+                             .header("user-agent", "user-agent-2")
+                             .header("if-none-match", "first")
                              .build()}
 
 connected
@@ -76,10 +92,10 @@ write nukleus:begin.ext ${http:beginEx()
                               .typeId(nukleus:id("http"))
                               .header(":status", "200")
                               .header("content-length", "11")
-                              .header("date", response2Date)
-                              .header("surrogate-control", "max-age=1+100")
-                              .header("etag", etag2)
-                              .header("vary", "content-encoding")
+                              .header("date", responseDate)
+                              .header("cache-control", "max-age=10")
+                              .header("etag", "second")
+                              .header("vary", "user-agent")
                               .build()}
 
 write "response #2"

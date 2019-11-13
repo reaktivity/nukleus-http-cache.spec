@@ -88,11 +88,33 @@ connected
 
 write close
 
-
 read nukleus:begin.ext ${http:beginEx()
                              .typeId(nukleus:id("http"))
-                             .header(":status", "503")
-                             .header("retry-after", "0")
+                             .header(":status", "200")
+                             .header("content-length", "11")
+                             .header("date", response2Date)
+                             .header("surrogate-control", "max-age=1+100")
+                             .header("etag", etag2)
+                             .header("vary", "user-agent")
+                             .header("preference-applied", "wait=100")
+                             .header("access-control-expose-headers", "preference-applied")
+                             .header("access-control-expose-headers", "etag")
+                             .header("cache-control", "private, stale-while-revalidate=100")
                              .build()}
+
+read "response #2"
+
+read nukleus:data.ext ${http:dataEx()
+                            .typeId(nukleus:id("http"))
+                            .promise(":scheme", "http")
+                            .promise(":method", "GET")
+                            .promise(":path", "/data")
+                            .promise(":authority", "localhost:8080")
+                            .promise("cache-control", "max-age=0")
+                            .promise("prefer", "wait=100")
+                            .promise("if-none-match", etag2)
+                            .promise("user-agent", "user-agent-2")
+                            .build()}
+read nukleus:data.null
 
 read closed
