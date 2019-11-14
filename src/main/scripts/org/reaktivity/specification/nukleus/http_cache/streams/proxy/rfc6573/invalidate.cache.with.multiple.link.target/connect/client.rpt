@@ -17,92 +17,120 @@
 property response1Date ${http_cache:date()} # sharedProperty
 property response2Date ${http_cache:datePlus(5)} # sharedProperty
 
-connect await ROUTED_PROXY
-        "nukleus://streams/target#0"
-        option nukleus:window 8192
-        option nukleus:transmission "half-duplex"
+cconnect await ROUTED_PROXY
+         "nukleus://streams/target#0"
+         option nukleus:window 8192
+         option nukleus:transmission "half-duplex"
 
-write nukleus:begin.ext ${http:beginEx()
-                              .typeId(nukleus:id("http"))
-                              .header(":scheme", "http")
-                              .header(":method", "GET")
-                              .header(":path", "/items?query")
-                              .header(":authority", "localhost:8080")
-                              .build()}
+ write nukleus:begin.ext ${http:beginEx()
+                               .typeId(nukleus:id("http"))
+                               .header(":scheme", "http")
+                               .header(":method", "GET")
+                               .header(":path", "/items?query")
+                               .header(":authority", "localhost:8080")
+                               .build()}
+ connected
 
-connected
+ write close
 
-write close
-
-read nukleus:begin.ext ${http:beginEx()
+ read nukleus:begin.ext ${http:beginEx()
                               .typeId(nukleus:id("http"))
                               .header(":status", "200")
                               .header("content-length", "11")
-                              .header("date", response2Date)
+                              .header("date", response1Date)
                               .header("cache-control", "max-age=10")
                               .header("etag", "first")
                               .build()}
 
-read "response #1"
+ read "response #1"
+
+ read closed
+
+ read notify FIRST_REQUEST_COMPLETED
+
+ connect await FIRST_REQUEST_COMPLETED
+         "nukleus://streams/target#0"
+         option nukleus:window 8192
+         option nukleus:transmission "half-duplex"
+
+ write nukleus:begin.ext ${http:beginEx()
+                               .typeId(nukleus:id("http"))
+                               .header(":scheme", "http")
+                               .header(":method", "GET")
+                               .header(":path", "/items-derived?query")
+                               .header(":authority", "localhost:8080")
+                               .build()}
+ connected
+
+ write close
+
+ read nukleus:begin.ext ${http:beginEx()
+                              .typeId(nukleus:id("http"))
+                              .header(":status", "200")
+                              .header("content-length", "11")
+                              .header("date", response1Date)
+                              .header("cache-control", "max-age=10")
+                              .header("etag", "first")
+                              .build()}
+
+ read "response #1"
+
+ read closed
 
 
-read closed
+ read notify SECOND_REQUEST_COMPLETED
 
-read notify SECOND_REQUEST_COMPLETED
+ connect await SECOND_REQUEST_COMPLETED
+         "nukleus://streams/target#0"
+         option nukleus:window 8192
+         option nukleus:transmission "half-duplex"
 
-connect await SECOND_REQUEST_COMPLETED
-        "nukleus://streams/target#0"
-        option nukleus:window 8192
-        option nukleus:transmission "half-duplex"
+ write nukleus:begin.ext ${http:beginEx()
+                               .typeId(nukleus:id("http"))
+                               .header(":scheme", "http")
+                               .header(":method", "POST")
+                               .header(":path", "/items/1")
+                               .header(":authority", "localhost:8080")
+                               .header("content-length", "9")
+                               .build()}
+ connected
 
-write nukleus:begin.ext ${http:beginEx()
-                             .typeId(nukleus:id("http"))
-                             .header(":scheme", "http")
-                             .header(":method", "POST")
-                             .header(":path", "/items/1")
-                             .header(":authority", "localhost:8080")
-                             .header("content-length", "9")
-                             .build()}
-connected
+ write "post body"
 
-write "post body"
+ write close
 
-write close
-
-read nukleus:begin.ext ${http:beginEx()
+ read nukleus:begin.ext ${http:beginEx()
                               .typeId(nukleus:id("http"))
                               .header(":status", "200")
                               .header("content-length", "11")
                               .header("date", response2Date)
-                              .header("link", "</items>; rel=\"collection\", </items>; rel=\"collection\"")
+                              .header("link", "</items>; rel=\"collection\", </items-derived>; rel=\"collection\"")
                               .build()}
 
+ read "response #2"
 
-read "response #2"
+ read closed
 
-read closed
+ read notify POST_RESPONSE_RECEIVED
 
-read notify THIRD_REQUEST_COMPLETED
+ connect await POST_RESPONSE_RECEIVED
+         "nukleus://streams/target#0"
+         option nukleus:window 8192
+         option nukleus:transmission "half-duplex"
 
-connect await THIRD_REQUEST_COMPLETED
-        "nukleus://streams/target#0"
-        option nukleus:window 8192
-        option nukleus:transmission "half-duplex"
+ write nukleus:begin.ext ${http:beginEx()
+                               .typeId(nukleus:id("http"))
+                               .header(":scheme", "http")
+                               .header(":method", "GET")
+                               .header(":path", "/items?query")
+                               .header(":authority", "localhost:8080")
+                               .header("if-none-match", "first")
+                               .build()}
+ connected
 
-write nukleus:begin.ext ${http:beginEx()
-                             .typeId(nukleus:id("http"))
-                             .header(":scheme", "http")
-                             .header(":method", "GET")
-                             .header(":path", "/items?query")
-                             .header(":authority", "localhost:8080")
-                             .header("if-none-match", "first")
-                             .build()}
+ write close
 
-connected
-
-write close
-
-read nukleus:begin.ext ${http:beginEx()
+ read nukleus:begin.ext ${http:beginEx()
                               .typeId(nukleus:id("http"))
                               .header(":status", "200")
                               .header("content-length", "11")
@@ -111,6 +139,39 @@ read nukleus:begin.ext ${http:beginEx()
                               .header("etag", "second")
                               .build()}
 
-read "response #2"
+ read "response #2"
 
-read closed
+ read closed
+
+
+ read notify FORTH_REQUEST_COMPLETED
+
+ connect await FORTH_REQUEST_COMPLETED
+         "nukleus://streams/target#0"
+         option nukleus:window 8192
+         option nukleus:transmission "half-duplex"
+
+ write nukleus:begin.ext ${http:beginEx()
+                               .typeId(nukleus:id("http"))
+                               .header(":scheme", "http")
+                               .header(":method", "GET")
+                               .header(":path", "/items-derived?query")
+                               .header(":authority", "localhost:8080")
+                               .header("if-none-match", "first")
+                               .build()}
+ connected
+
+ write close
+
+ read nukleus:begin.ext ${http:beginEx()
+                              .typeId(nukleus:id("http"))
+                              .header(":status", "200")
+                              .header("content-length", "11")
+                              .header("date", response2Date)
+                              .header("cache-control", "max-age=10")
+                              .header("etag", "second")
+                              .build()}
+
+ read "response #2"
+
+ read closed
