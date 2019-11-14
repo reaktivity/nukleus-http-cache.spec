@@ -219,4 +219,16 @@ public class Rfc7240ProxyAcceptIT
         k3po.notifyBarrier("ROUTED_PROXY");
         k3po.finish();
     }
+
+    @Test
+    @Specification({
+        "${streams}/poll.immediately.if.cache.entry.invalidated/accept/client",
+        "${streams}/poll.immediately.if.cache.entry.invalidated/accept/server",
+    })
+    public void shouldPollImmediatelyIfCacheEntryInvalidated() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_PROXY");
+        k3po.finish();
+    }
 }

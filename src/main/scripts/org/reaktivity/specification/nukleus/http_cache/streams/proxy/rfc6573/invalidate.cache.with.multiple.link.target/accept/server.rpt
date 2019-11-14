@@ -18,9 +18,10 @@ property response1Date ${http_cache:date()} # sharedProperty
 property response2Date ${http_cache:datePlus(5)} # sharedProperty
 
 accept await ROUTED_PROXY
-        "nukleus://streams/target#0"
+        "nukleus://streams/http-cache#0"
         option nukleus:window 8192
         option nukleus:transmission "half-duplex"
+
 accepted
 
 read nukleus:begin.ext ${http:beginEx()
@@ -39,7 +40,7 @@ write nukleus:begin.ext ${http:beginEx()
                               .typeId(nukleus:id("http"))
                               .header(":status", "200")
                               .header("content-length", "11")
-                              .header("date", response2Date)
+                              .header("date", response1Date)
                               .header("cache-control", "max-age=10")
                               .header("etag", "first")
                               .build()}
@@ -47,6 +48,34 @@ write nukleus:begin.ext ${http:beginEx()
 write "response #1"
 
 write close
+
+accepted
+
+read nukleus:begin.ext ${http:beginEx()
+                             .typeId(nukleus:id("http"))
+                             .header(":scheme", "http")
+                             .header(":method", "GET")
+                             .header(":path", "/items-derived?query")
+                             .header(":authority", "localhost:8080")
+                             .build()}
+
+connected
+
+read closed
+
+write nukleus:begin.ext ${http:beginEx()
+                              .typeId(nukleus:id("http"))
+                              .header(":status", "200")
+                              .header("content-length", "11")
+                              .header("date", response1Date)
+                              .header("cache-control", "max-age=10")
+                              .header("etag", "first")
+                              .build()}
+
+write "response #1"
+
+write close
+
 
 accepted
 
@@ -69,9 +98,8 @@ write nukleus:begin.ext ${http:beginEx()
                               .header(":status", "200")
                               .header("content-length", "11")
                               .header("date", response2Date)
-                              .header("link", "<http://localhost:8080/items>; rel=\"collection\"")
+                              .header("link", "</items>; rel=\"collection\", </items-derived>; rel=\"collection\"")
                               .build()}
-
 
 write "response #2"
 
@@ -84,6 +112,34 @@ read nukleus:begin.ext ${http:beginEx()
                              .header(":scheme", "http")
                              .header(":method", "GET")
                              .header(":path", "/items?query")
+                             .header(":authority", "localhost:8080")
+                             .header("if-none-match", "first")
+                             .build()}
+
+connected
+
+read closed
+
+write nukleus:begin.ext ${http:beginEx()
+                              .typeId(nukleus:id("http"))
+                              .header(":status", "200")
+                              .header("content-length", "11")
+                              .header("date", response2Date)
+                              .header("cache-control", "max-age=10")
+                              .header("etag", "second")
+                              .build()}
+
+write "response #2"
+
+write close
+
+accepted
+
+read nukleus:begin.ext ${http:beginEx()
+                             .typeId(nukleus:id("http"))
+                             .header(":scheme", "http")
+                             .header(":method", "GET")
+                             .header(":path", "/items-derived?query")
                              .header(":authority", "localhost:8080")
                              .header("if-none-match", "first")
                              .build()}

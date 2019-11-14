@@ -29,6 +29,7 @@ read nukleus:begin.ext ${http:beginEx()
                              .header(":method", "GET")
                              .header(":path", "/items?query")
                              .header(":authority", "localhost:8080")
+                             .header("prefer", "wait=500")
                              .build()}
 
 connected
@@ -39,9 +40,10 @@ write nukleus:begin.ext ${http:beginEx()
                               .typeId(nukleus:id("http"))
                               .header(":status", "200")
                               .header("content-length", "11")
-                              .header("date", response2Date)
+                              .header("date", response1Date)
                               .header("cache-control", "max-age=10")
                               .header("etag", "first")
+                              .header("retry-after", "500")
                               .build()}
 
 write "response #1"
@@ -53,38 +55,11 @@ accepted
 read nukleus:begin.ext ${http:beginEx()
                              .typeId(nukleus:id("http"))
                              .header(":scheme", "http")
-                             .header(":method", "POST")
-                             .header(":path", "/items/1")
-                             .header(":authority", "localhost:8080")
-                             .header("content-length", "9")
-                             .build()}
-connected
-
-read "post body"
-
-read closed
-
-write nukleus:begin.ext ${http:beginEx()
-                              .typeId(nukleus:id("http"))
-                              .header(":status", "200")
-                              .header("content-length", "11")
-                              .header("date", response2Date)
-                              .header("link", "<http://localhost:8080/items>; rel=\"collection\"")
-                              .build()}
-
-
-write "response #2"
-
-write close
-
-accepted
-
-read nukleus:begin.ext ${http:beginEx()
-                             .typeId(nukleus:id("http"))
-                             .header(":scheme", "http")
                              .header(":method", "GET")
                              .header(":path", "/items?query")
                              .header(":authority", "localhost:8080")
+                             .header("prefer", "wait=500")
+                             .header("cache-control", "max-age=0")
                              .header("if-none-match", "first")
                              .build()}
 
@@ -98,7 +73,72 @@ write nukleus:begin.ext ${http:beginEx()
                               .header("content-length", "11")
                               .header("date", response2Date)
                               .header("cache-control", "max-age=10")
+                              .header("etag", "first")
+                              .header("retry-after", "500")
+                              .build()}
+
+write "response #1"
+
+write close
+
+write notify SECOND_RESPONSE_SENT
+
+accepted
+
+read nukleus:begin.ext ${http:beginEx()
+                             .typeId(nukleus:id("http"))
+                             .header(":scheme", "http")
+                             .header(":method", "POST")
+                             .header(":path", "/items/1")
+                             .header(":authority", "localhost:8080")
+                             .build()}
+connected
+
+read "post body"
+
+read closed
+
+write nukleus:begin.ext ${http:beginEx()
+                              .typeId(nukleus:id("http"))
+                              .header(":status", "200")
+                              .header("content-length", "11")
+                              .header("date", response2Date)
+                              .header("link", "</items>; rel=\"collection\"")
+                              .build()}
+
+write notify POST_RESPONSE_HEADER_SENT
+
+write "response #2"
+
+write close
+
+accepted
+
+read nukleus:begin.ext ${http:beginEx()
+                             .typeId(nukleus:id("http"))
+                             .header(":scheme", "http")
+                             .header(":method", "GET")
+                             .header(":path", "/items?query")
+                             .header(":authority", "localhost:8080")
+                             .header("prefer", "wait=500")
+                             .header("cache-control", "max-age=0")
+                             .header("if-none-match", "first")
+                             .build()}
+
+connected
+
+read closed
+
+write notify NEW_RESPONSE_SENT
+
+write nukleus:begin.ext ${http:beginEx()
+                              .typeId(nukleus:id("http"))
+                              .header(":status", "200")
+                              .header("content-length", "11")
+                              .header("date", response2Date)
+                              .header("cache-control", "max-age=10")
                               .header("etag", "second")
+                              .header("retry-after", "500")
                               .build()}
 
 write "response #2"
