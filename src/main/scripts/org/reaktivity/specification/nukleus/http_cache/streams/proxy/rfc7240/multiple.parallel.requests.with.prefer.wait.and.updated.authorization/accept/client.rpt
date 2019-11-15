@@ -22,6 +22,7 @@ connect await ROUTED_PROXY
         "nukleus://streams/http-cache#0"
         option nukleus:window 8192
         option nukleus:transmission "half-duplex"
+        option nukleus:authorization 0x0001_000000_000000L
 
 write nukleus:begin.ext ${http:beginEx()
                               .typeId(nukleus:id("http"))
@@ -58,6 +59,7 @@ connect await FIRST_REQUEST_COMPLETED
         "nukleus://streams/http-cache#0"
         option nukleus:window 8192
         option nukleus:transmission "half-duplex"
+        option nukleus:authorization 0x0001_000000_000000L
 
 write nukleus:begin.ext ${http:beginEx()
                               .typeId(nukleus:id("http"))
@@ -95,6 +97,7 @@ connect await SECOND_RESPONSE_SENT
         "nukleus://streams/http-cache#0"
         option nukleus:window 8192
         option nukleus:transmission "half-duplex"
+        option nukleus:authorization 0x0001_000000_000000L
 
 write nukleus:begin.ext ${http:beginEx()
                               .typeId(nukleus:id("http"))

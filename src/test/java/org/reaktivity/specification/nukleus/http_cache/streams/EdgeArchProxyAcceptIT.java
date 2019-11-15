@@ -139,94 +139,10 @@ public class EdgeArchProxyAcceptIT
 
     @Test
     @Specification({
-        "${streams}/cache.and.poll.on.surrogate.max-age.when.fresh.ext/accept/client",
-        "${streams}/cache.and.poll.on.surrogate.max-age.when.fresh.ext/accept/server",
-    })
-    public void shouldCacheAndPollOnSurrogateMaxAgeWhenFreshExt() throws Exception
-    {
-        k3po.start();
-        k3po.notifyBarrier("ROUTED_PROXY");
-        k3po.finish();
-    }
-
-    @Test
-    @Specification({
-        "${streams}/polling.updates.cache/accept/client",
-        "${streams}/polling.updates.cache/accept/server",
-    })
-    public void shouldUpdateCacheOnPoll() throws Exception
-    {
-        k3po.start();
-        k3po.notifyBarrier("ROUTED_PROXY");
-        k3po.finish();
-    }
-
-    @Test
-    @Specification({
-        "${streams}/polling.updates.after.cache.full/accept/client",
-        "${streams}/polling.updates.after.cache.full/accept/server",
-    })
-    public void pollingUpdateShouldRemoveCacheEntry() throws Exception
-    {
-        k3po.start();
-        k3po.notifyBarrier("ROUTED_PROXY");
-        k3po.finish();
-    }
-
-    @Test
-    @Specification({
-        "${streams}/polling.updates.cache.after.503.retry-after/accept/client",
-        "${streams}/polling.updates.cache.after.503.retry-after/accept/server",
-    })
-    public void shouldUpdateCacheOnPollAfter503RetryAfter() throws Exception
-    {
-        k3po.start();
-        k3po.notifyBarrier("ROUTED_PROXY");
-        k3po.finish();
-    }
-
-    @Test
-    @Specification({
-        "${streams}/polling.waits.on.surrogate-age/accept/client",
-        "${streams}/polling.waits.on.surrogate-age/accept/server",
-    })
-    public void pollingWaitsOnSurrogateAge() throws Exception
-    {
-        k3po.start();
-        k3po.notifyBarrier("ROUTED_PROXY");
-        k3po.finish();
-    }
-
-    @Test
-    @Specification({
         "${streams}/polling.updates.pending.on-update.requests/accept/client",
         "${streams}/polling.updates.pending.on-update.requests/accept/server",
     })
     public void shouldUpdateOnUpdateRequestsWhenPollCompletes() throws Exception
-    {
-        k3po.start();
-        k3po.notifyBarrier("ROUTED_PROXY");
-        k3po.finish();
-    }
-
-    @Test
-    @Specification({
-        "${streams}/polling.update.attachs.to.next.cache.if.push.promise.arrives.before.response.completes/accept/client",
-        "${streams}/polling.update.attachs.to.next.cache.if.push.promise.arrives.before.response.completes/accept/server",
-    })
-    public void shouldAttachToNextCacheEntryIfPushPromiseArrivesBeforeResponseCompletes() throws Exception
-    {
-        k3po.start();
-        k3po.notifyBarrier("ROUTED_PROXY");
-        k3po.finish();
-    }
-
-    @Test
-    @Specification({
-        "${streams}/polling.updates.pending.on-update.requests.only.when.modified/accept/client",
-        "${streams}/polling.updates.pending.on-update.requests.only.when.modified/accept/server",
-    })
-    public void shouldUpdateOnUpdateRequestsOnlyWhenModified() throws Exception
     {
         k3po.start();
         k3po.notifyBarrier("ROUTED_PROXY");
@@ -275,42 +191,6 @@ public class EdgeArchProxyAcceptIT
         "${streams}/polling.304.response.does.not.cancel.pending.on-update.requests/accept/server",
     })
     public void shouldNotCancelPushPromiseOn304() throws Exception
-    {
-        k3po.start();
-        k3po.notifyBarrier("ROUTED_PROXY");
-        k3po.finish();
-    }
-
-    @Test
-    @Specification({
-        "${streams}/polling.stops.if.no.subscribers/accept/client",
-        "${streams}/polling.stops.if.no.subscribers/accept/server",
-    })
-    public void shouldStopPollingIfNoSubscribers() throws Exception
-    {
-        k3po.start();
-        k3po.notifyBarrier("ROUTED_PROXY");
-        k3po.finish();
-    }
-
-    @Test
-    @Specification({
-        "${streams}/polling.stops.if.no.subscribers.and.not.updated/accept/client",
-        "${streams}/polling.stops.if.no.subscribers.and.not.updated/accept/server",
-    })
-    public void shouldStopPollingIfNoSubscribersAndNotUpdated() throws Exception
-    {
-        k3po.start();
-        k3po.notifyBarrier("ROUTED_PROXY");
-        k3po.finish();
-    }
-
-    @Test
-    @Specification({
-        "${streams}/maintain.polling.per.multiple.auth.scopes/accept/client",
-        "${streams}/maintain.polling.per.multiple.auth.scopes/accept/server",
-    })
-    public void shouldMaintainPollingForMultipleAuthScopes() throws Exception
     {
         k3po.start();
         k3po.notifyBarrier("ROUTED_PROXY");
@@ -379,71 +259,10 @@ public class EdgeArchProxyAcceptIT
 
     @Test
     @Specification({
-        "${streams}/push.promise.after.cache.full/accept/client",
-        "${streams}/push.promise.after.cache.full/accept/server",
-    })
-    public void pushPromiseAfterCacheFull() throws Exception
-    {
-        k3po.start();
-        k3po.notifyBarrier("ROUTED_PROXY");
-        k3po.finish();
-    }
-
-    @Test
-    @Specification({
         "${streams}/cache.sends.503.retry-after/accept/client",
         "${streams}/cache.sends.503.retry-after/accept/server",
     })
     public void sends503RetryAfter() throws Exception
-    {
-        k3po.start();
-        k3po.notifyBarrier("ROUTED_PROXY");
-        k3po.finish();
-    }
-
-    @Test
-    @Specification({
-        "${streams}/update.cache.when.304.response.has.matching.etag/accept/client",
-        "${streams}/update.cache.when.304.response.has.matching.etag/accept/server",
-    })
-    public void shouldUpdateCacheHeadersOn304ForMatchingEtag() throws Exception
-    {
-        k3po.start();
-        k3po.notifyBarrier("ROUTED_PROXY");
-        k3po.finish();
-    }
-
-    @Test
-    @Specification({
-        "${streams}/update.cache.when.200.response.has.different.etag/accept/client",
-        "${streams}/update.cache.when.200.response.has.different.etag/accept/server",
-    })
-    public void shouldUpdateCacheWhen200ResponseHasDifferentEtag() throws Exception
-    {
-        k3po.start();
-        k3po.notifyBarrier("ROUTED_PROXY");
-        k3po.finish();
-    }
-
-
-    @Test
-    @Specification({
-        "${streams}/does.not.serve.from.cache.if.no.subscribers/accept/client",
-        "${streams}/does.not.serve.from.cache.if.no.subscribers/accept/server",
-    })
-    public void shouldBypassCacheIfEntryIsStaleAndNotRefreshing() throws Exception
-    {
-        k3po.start();
-        k3po.notifyBarrier("ROUTED_PROXY");
-        k3po.finish();
-    }
-
-    @Test
-    @Specification({
-        "${streams}/use.etag.from.trailer.on.200.response.after.cache.full/accept/client",
-        "${streams}/use.etag.from.trailer.on.200.response.after.cache.full/accept/server",
-    })
-    public void shouldUseEtagFromTrailerOn200ResponseAfterCacheFull() throws Exception
     {
         k3po.start();
         k3po.notifyBarrier("ROUTED_PROXY");

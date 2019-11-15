@@ -88,6 +88,7 @@ read closed
 write nukleus:begin.ext ${http:beginEx()
                               .typeId(nukleus:id("http"))
                               .header(":status", "503")
+                              .header("date", response2Date)
                               .build()}
 write abort
 

@@ -53,7 +53,6 @@ read "response #1"
 read closed
 
 read notify INITIAL_REQUEST_COMPLETE
-read notify REQUEST_TWO_PENDING #assumed
 
 connect await INITIAL_REQUEST_COMPLETE
         "nukleus://streams/target#0"
@@ -77,6 +76,8 @@ write nukleus:begin.ext ${http:beginEx()
 connected
 
 write close
+
+read notify REQUEST_TWO_PENDING #assumed
 
 read nukleus:begin.ext ${http:beginEx()
                              .typeId(nukleus:id("http"))
