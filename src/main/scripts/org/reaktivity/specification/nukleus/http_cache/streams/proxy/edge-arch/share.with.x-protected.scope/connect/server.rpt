@@ -27,7 +27,7 @@ accepted
 read nukleus:begin.ext ${http:beginEx()
                              .typeId(nukleus:id("http"))
                              .header(":scheme", "http")
-                              .header("x-protocol-stack", "emulated")
+                             .header("x-protocol-stack", "emulated")
                              .header(":method", "GET")
                              .header(":path", "/path")
                              .header(":authority", "localhost:8080")
@@ -43,8 +43,9 @@ write nukleus:begin.ext ${http:beginEx()
                               .header(":status", "200")
                               .header("content-length", "11")
                               .header("date", date)
-                              .header("surrogate-control", "max-age=1+10, x-protected")
+                              .header("surrogate-control", "max-age=10+10, x-protected")
                               .header("etag", etag)
+                              .header("retry-after", "1")
                               .build()}
 write "response #1"
 

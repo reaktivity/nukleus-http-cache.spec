@@ -14,29 +14,23 @@
 # under the License.
 #
 
-property response1Date ${http_cache:date()} # sharedProperty
-property response2Date ${http_cache:datePlus(5)} # sharedProperty
-property response3Date ${http_cache:datePlus(7)} # sharedProperty
-
-property etag ${http_cache:fixedStrongEtag("99999a0")} #shared
-property etag2 ${http_cache:fixedStrongEtag("99999a1")}
-property etag3 ${http_cache:fixedStrongEtag("99999a2")}
+property responseDate ${http_cache:date()} # sharedProperty
+property response2Date ${http_cache:datePlus(3)} # sharedProperty
 
 connect await ROUTED_PROXY
-        "nukleus://streams/target#0"
+        "nukleus://streams/http-cache#0"
         option nukleus:window 8192
         option nukleus:transmission "half-duplex"
-
 
 write nukleus:begin.ext ${http:beginEx()
                               .typeId(nukleus:id("http"))
                               .header(":scheme", "http")
-                              .header("x-protocol-stack", "emulated")
                               .header(":method", "GET")
                               .header(":path", "/data")
                               .header(":authority", "localhost:8080")
+                              .header("prefer", "wait=20")
+                              .header("user-agent", "user-agent-1")
                               .build()}
-
 connected
 
 write close
@@ -45,33 +39,67 @@ read nukleus:begin.ext ${http:beginEx()
                              .typeId(nukleus:id("http"))
                              .header(":status", "200")
                              .header("content-length", "11")
-                             .header("date", response1Date)
-                             .header("surrogate-control", "max-age=1+100")
-                             .header("etag", etag)
+                             .header("date", responseDate)
+                             .header("cache-control", "max-age=10")
+                             .header("etag", "first")
+                             .header("vary", "user-agent")
+                             .header("preference-applied", "wait=20")
+                             .header("access-control-expose-headers", "preference-applied")
+                             .header("access-control-expose-headers", "etag")
                              .build()}
 
 read "response #1"
 
 read closed
 
-read notify INITIAL_REQUEST_COMPLETE
+read notify FIRST_REQUEST_COMPLETED
 
-connect await INITIAL_REQUEST_COMPLETE
-        "nukleus://streams/target#0"
+connect await FIRST_REQUEST_COMPLETED
+        "nukleus://streams/http-cache#0"
         option nukleus:window 8192
         option nukleus:transmission "half-duplex"
-
 
 write nukleus:begin.ext ${http:beginEx()
                               .typeId(nukleus:id("http"))
                               .header(":scheme", "http")
-                              .header("x-protocol-stack", "emulated")
                               .header(":method", "GET")
                               .header(":path", "/data")
                               .header(":authority", "localhost:8080")
-                              .header("if-none-match", etag)
+                              .header("prefer", "wait=20")
+                              .header("cache-control", "max-age=0")
+                              .header("if-none-match", "first")
+                              .header("user-agent", "user-agent-1")
                               .build()}
+connected
 
+write close
+
+read notify SECOND_REQUEST_SENT
+
+read nukleus:begin.ext ${http:beginEx()
+                             .typeId(nukleus:id("http"))
+                             .header(":status", "503")
+                             .header("retry-after", "0")
+                             .build()}
+
+read closed
+
+connect await SECOND_REQUEST_SENT
+        "nukleus://streams/http-cache#0"
+        option nukleus:window 8192
+        option nukleus:transmission "half-duplex"
+
+write nukleus:begin.ext ${http:beginEx()
+                              .typeId(nukleus:id("http"))
+                              .header(":scheme", "http")
+                              .header(":method", "GET")
+                              .header(":path", "/data")
+                              .header(":authority", "localhost:8080")
+                              .header("prefer", "wait=20")
+                              .header("cache-control", "max-age=0")
+                              .header("if-none-match", "first")
+                              .header("user-agent", "user-agent-2")
+                              .build()}
 connected
 
 write close
@@ -81,47 +109,14 @@ read nukleus:begin.ext ${http:beginEx()
                              .header(":status", "200")
                              .header("content-length", "11")
                              .header("date", response2Date)
-                             .header("surrogate-control", "max-age=1+100")
-                             .header("etag", etag2)
+                             .header("cache-control", "max-age=10")
+                             .header("etag", "second")
+                             .header("vary", "user-agent")
+                             .header("preference-applied", "wait=20")
+                             .header("access-control-expose-headers", "preference-applied")
+                             .header("access-control-expose-headers", "etag")
                              .build()}
 
 read "response #2"
 
 read closed
-
-read notify SECOND_REQUEST_COMPLETE
-
-connect await SECOND_REQUEST_COMPLETE
-        "nukleus://streams/target#0"
-        option nukleus:window 8192
-        option nukleus:transmission "half-duplex"
-
-
-write nukleus:begin.ext ${http:beginEx()
-                              .typeId(nukleus:id("http"))
-                              .header(":scheme", "http")
-                              .header("x-protocol-stack", "emulated")
-                              .header(":method", "GET")
-                              .header(":path", "/data")
-                              .header(":authority", "localhost:8080")
-                              .build()}
-
-connected
-
-write close
-
-read nukleus:begin.ext ${http:beginEx()
-                             .typeId(nukleus:id("http"))
-                             .header(":status", "200")
-                             .header("content-length", "11")
-                             .header("date", response3Date)
-                             .header("surrogate-control", "max-age=100+100")
-                             .header("etag", etag3)
-                             .build()}
-
-read "response #3"
-
-read closed
-
-
-

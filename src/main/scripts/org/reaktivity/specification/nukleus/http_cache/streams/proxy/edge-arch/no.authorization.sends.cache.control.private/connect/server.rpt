@@ -61,6 +61,8 @@ read nukleus:begin.ext ${http:beginEx()
                              .header(":method", "GET")
                              .header(":path", "/data")
                              .header(":authority", "localhost:8080")
+                             .header("cache-control", "max-age=0")
+                             .header("prefer", "wait=100")
                              .header("authorization", "some-authorization-value")
                              .header("if-none-match", etag)
                              .build()}
@@ -83,20 +85,3 @@ write nukleus:begin.ext ${http:beginEx()
 write "response #2"
 
 write close
-
-accepted
-
-read nukleus:begin.ext ${http:beginEx()
-                             .typeId(nukleus:id("http"))
-                             .header(":scheme", "http")
-                              .header("x-protocol-stack", "emulated")
-                             .header(":method", "GET")
-                             .header(":path", "/data")
-                             .header(":authority", "localhost:8080")
-                             .header("authorization", "some-authorization-value")
-                             .header("if-none-match", etag2)
-                             .build()}
-
-connected
-
-read notify CACHE_UPDATED

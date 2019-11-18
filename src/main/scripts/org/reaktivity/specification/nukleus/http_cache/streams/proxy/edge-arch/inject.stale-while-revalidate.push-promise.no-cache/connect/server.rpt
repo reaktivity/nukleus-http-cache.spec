@@ -42,6 +42,7 @@ write nukleus:begin.ext ${http:beginEx()
                               .header("cache-control", "max-age=5")
                               .header("surrogate-control", "max-age=5+100")
                               .header("etag", etag)
+                              .header("retry-after", "100")
                               .build()}
 
 write "hello world"

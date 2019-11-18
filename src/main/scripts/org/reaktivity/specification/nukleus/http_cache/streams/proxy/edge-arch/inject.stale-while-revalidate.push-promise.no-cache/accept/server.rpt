@@ -54,7 +54,7 @@ write nukleus:data.ext ${http:dataEx()
                              .promise(":method", "GET")
                              .promise(":path", "/data")
                              .promise(":authority", "localhost:8080")
-                             .promise("cache-control", "no-cache")
+                             .promise("cache-control", "max-age=0")
                              .promise("prefer", "wait=100")
                              .promise("if-none-match", etag)
                              .build()}

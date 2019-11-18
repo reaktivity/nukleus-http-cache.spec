@@ -58,10 +58,12 @@ accepted
 read nukleus:begin.ext ${http:beginEx()
                              .typeId(nukleus:id("http"))
                              .header(":scheme", "http")
-                              .header("x-protocol-stack", "emulated")
+                             .header("x-protocol-stack", "emulated")
                              .header(":method", "GET")
                              .header(":path", "/data")
                              .header(":authority", "localhost:8080")
+                             .header("cache-control", "max-age=0")
+                             .header("prefer", "wait=100")
                              .header("user-agent", "user-agent-1")
                              .header("if-none-match", etag)
                              .build()}
@@ -69,8 +71,6 @@ read nukleus:begin.ext ${http:beginEx()
 connected
 
 read closed
-
-write await REQUEST_TWO_PENDING
 
 write nukleus:begin.ext ${http:beginEx()
                               .typeId(nukleus:id("http"))
@@ -85,20 +85,3 @@ write nukleus:begin.ext ${http:beginEx()
 write "response #2"
 
 write close
-
-accepted
-
-read nukleus:begin.ext ${http:beginEx()
-                             .typeId(nukleus:id("http"))
-                             .header(":scheme", "http")
-                              .header("x-protocol-stack", "emulated")
-                             .header(":method", "GET")
-                             .header(":path", "/data")
-                             .header(":authority", "localhost:8080")
-                             .header("user-agent", "user-agent-1")
-                             .header("if-none-match", etag2)
-                             .build()}
-
-connected
-
-read notify CACHE_UPDATED
