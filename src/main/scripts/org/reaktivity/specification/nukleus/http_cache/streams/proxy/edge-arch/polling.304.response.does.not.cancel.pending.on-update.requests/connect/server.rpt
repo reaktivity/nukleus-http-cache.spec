@@ -28,7 +28,7 @@ accepted
 read nukleus:begin.ext ${http:beginEx()
                              .typeId(nukleus:id("http"))
                              .header(":scheme", "http")
-                              .header("x-protocol-stack", "emulated")
+                             .header("x-protocol-stack", "emulated")
                              .header(":method", "GET")
                              .header(":path", "/data")
                              .header(":authority", "localhost:8080")
@@ -45,6 +45,7 @@ write nukleus:begin.ext ${http:beginEx()
                               .header("date", response1Date)
                               .header("surrogate-control", "max-age=1+100, x-protected")
                               .header("etag", etag)
+                              .header("retry-after", "1")
                               .build()}
 
 write "response #1"
@@ -56,10 +57,12 @@ accepted
 read nukleus:begin.ext ${http:beginEx()
                              .typeId(nukleus:id("http"))
                              .header(":scheme", "http")
-                              .header("x-protocol-stack", "emulated")
+                             .header("x-protocol-stack", "emulated")
                              .header(":method", "GET")
                              .header(":path", "/data")
                              .header(":authority", "localhost:8080")
+                             .header("cache-control", "max-age=0")
+                             .header("prefer", "wait=100")
                              .header("if-none-match", etag)
                              .build()}
 
@@ -72,10 +75,10 @@ write await REQUEST_TWO_PENDING
 write nukleus:begin.ext ${http:beginEx()
                               .typeId(nukleus:id("http"))
                               .header(":status", "304")
-                              .header("content-length", "11")
+                              .header("etag", etag)
                               .header("date", response1Date)
                               .header("surrogate-control", "max-age=1+100, x-protected")
-                              .header("etag", etag)
+                              .header("retry-after", "1")
                               .build()}
 
 write close
@@ -85,10 +88,12 @@ accepted
 read nukleus:begin.ext ${http:beginEx()
                              .typeId(nukleus:id("http"))
                              .header(":scheme", "http")
-                              .header("x-protocol-stack", "emulated")
+                             .header("x-protocol-stack", "emulated")
                              .header(":method", "GET")
                              .header(":path", "/data")
                              .header(":authority", "localhost:8080")
+                             .header("cache-control", "max-age=0")
+                             .header("prefer", "wait=100")
                              .header("if-none-match", etag)
                              .build()}
 
@@ -103,6 +108,7 @@ write nukleus:begin.ext ${http:beginEx()
                               .header("date", response2Date)
                               .header("surrogate-control", "max-age=1+100, x-protected")
                               .header("etag", etag2)
+                              .header("retry-after", "1")
                               .build()}
 
 write "response #2"
