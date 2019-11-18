@@ -41,7 +41,7 @@ write nukleus:begin.ext ${http:beginEx()
                               .header(":status", "200")
                               .header("content-length", "11")
                               .header("date", response1Date)
-                              .header("surrogate-control", "max-age=1+100")
+                              .header("surrogate-control", "max-age=10+100")
                               .header("etag", etag)
                               .build()}
 
