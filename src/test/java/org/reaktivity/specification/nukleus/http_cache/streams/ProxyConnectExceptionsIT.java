@@ -99,4 +99,16 @@ public class ProxyConnectExceptionsIT
         k3po.notifyBarrier("ROUTED_PROXY");
         k3po.finish();
     }
+
+    @Test
+    @Specification({
+        "${streams}/reset.connect.reply.if.accept.reply.reset/connect/client",
+        "${streams}/reset.connect.reply.if.accept.reply.reset/connect/server",
+    })
+    public void shouldResetConnectReplyIfAcceptReplyReset() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_PROXY");
+        k3po.finish();
+    }
 }
