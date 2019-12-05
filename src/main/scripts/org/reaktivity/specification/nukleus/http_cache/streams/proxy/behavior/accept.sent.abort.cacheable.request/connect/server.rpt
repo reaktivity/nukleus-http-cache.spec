@@ -30,7 +30,8 @@ read nukleus:begin.ext ${http:beginEx()
 
 connected
 
-# reading closed instead of abort
 read closed
+
+write notify REQUEST_RECEIVED
 
 write aborted
