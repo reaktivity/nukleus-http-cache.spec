@@ -681,4 +681,16 @@ public class Rfc7234ProxyAcceptIT
         k3po.notifyBarrier("ROUTED_PROXY");
         k3po.finish();
     }
+
+    @Test
+    @Specification({
+        "${streams}/change.request.leader.if.initial.response.not.cacheable/accept/client",
+        "${streams}/change.request.leader.if.initial.response.not.cacheable/accept/server",
+    })
+    public void shouldChangeRequestLeaderIfInitialResponseNotCacheable() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_PROXY");
+        k3po.finish();
+    }
 }
