@@ -114,8 +114,8 @@ public class Rfc7240ProxyAcceptIT
 
     @Test
     @Specification({
-        "${streams}/server.next.request.if.current.request.expired/accept/client",
-        "${streams}/server.next.request.if.current.request.expired/accept/server",
+        "${streams}/serve.next.request.if.current.request.expired/accept/client",
+        "${streams}/serve.next.request.if.current.request.expired/accept/server",
     })
     public void shouldServeNextRequestIfCurrentRequestExpired() throws Exception
     {
