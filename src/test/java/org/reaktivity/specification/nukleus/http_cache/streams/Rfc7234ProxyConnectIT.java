@@ -644,4 +644,16 @@ public class Rfc7234ProxyConnectIT
         k3po.notifyBarrier("ROUTED_PROXY");
         k3po.finish();
     }
+
+    @Test
+    @Specification({
+        "${streams}/update.freshness.of.expired.entry/connect/client",
+        "${streams}/update.freshness.of.expired.entry/connect/server",
+    })
+    public void shouldUpdateFreshnessOfExpiredEntry() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_PROXY");
+        k3po.finish();
+    }
 }

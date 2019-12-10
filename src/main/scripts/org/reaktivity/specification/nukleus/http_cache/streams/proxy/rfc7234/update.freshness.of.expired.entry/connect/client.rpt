@@ -15,12 +15,11 @@
 #
 
 property date ${http_cache:date()} # shared property
-property payloadSize 1048576 # shared property
-property largePayload ${http_cache:largePayload(payloadSize)} # shared property
+property date2 ${http_cache:datePlus(2)} # shared property
 
 connect await ROUTED_PROXY
-        "nukleus://streams/http-cache#0"
-        option nukleus:window 50000
+        "nukleus://streams/target#0"
+        option nukleus:window 8192
         option nukleus:transmission "half-duplex"
 
 write nukleus:begin.ext ${http:beginEx()
@@ -35,25 +34,22 @@ write nukleus:begin.ext ${http:beginEx()
 connected
 
 write close
+
 read nukleus:begin.ext ${http:beginEx()
                              .typeId(nukleus:id("http"))
                              .header(":status", "200")
-                             .header("content-length", payloadSize)
-                             .header("cache-control", "max-age=150")
+                             .header("content-length", "11")
+                             .header("cache-control", "max-age=1")
                              .header("date", date)
                              .header("last-modified", date)
                              .build()}
-
-read ${largePayload}
+read "hello world"
 
 read closed
-read notify REQUEST_CACHED
 
-
-# INPUT STREAM 2
-connect await REQUEST_CACHED
-        "nukleus://streams/http-cache#0"
-        option nukleus:window 50000
+connect await ROUTED_PROXY
+        "nukleus://streams/target#0"
+        option nukleus:window 8192
         option nukleus:transmission "half-duplex"
 
 write nukleus:begin.ext ${http:beginEx()
@@ -64,6 +60,7 @@ write nukleus:begin.ext ${http:beginEx()
                               .header(":authority", "localhost:8080")
                               .build()}
 
+
 connected
 
 write close
@@ -71,12 +68,11 @@ write close
 read nukleus:begin.ext ${http:beginEx()
                              .typeId(nukleus:id("http"))
                              .header(":status", "200")
-                             .header("content-length", payloadSize)
-                             .header("cache-control", "max-age=150")
-                             .header("date", date)
-                             .header("last-modified", date)
+                             .header("content-length", "11")
+                             .header("cache-control", "max-age=3")
+                             .header("date", date2)
+                             .header("last-modified", date2)
                              .build()}
-
-read ${largePayload}
+read "hello alien"
 
 read closed
