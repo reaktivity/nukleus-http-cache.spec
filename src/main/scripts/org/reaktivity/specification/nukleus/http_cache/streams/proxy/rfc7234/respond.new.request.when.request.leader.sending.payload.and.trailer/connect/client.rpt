@@ -54,40 +54,4 @@ read nukleus:end.ext ${http:endEx()
 
 read closed
 
-read notify FIRST_REQUEST_COMPLETED
-
-connect await FIRST_REQUEST_COMPLETED
-        "nukleus://streams/target#0"
-        option nukleus:window 8192
-        option nukleus:transmission "half-duplex"
-
-write nukleus:begin.ext ${http:beginEx()
-                              .typeId(nukleus:id("http"))
-                              .header(":scheme", "http")
-                              .header(":method", "GET")
-                              .header(":path", "/path")
-                              .header(":authority", "localhost:8080")
-                              .build()}
-
-connected
-
-write close
-
-read nukleus:begin.ext ${http:beginEx()
-                             .typeId(nukleus:id("http"))
-                             .header(":status", "200")
-                             .header("content-length", "11")
-                             .header("cache-control", "max-age=2")
-                             .header("date", date2)
-                             .header("last-modified", date2)
-                             .build()}
-
-read "hello alien"
-
-read nukleus:end.ext ${http:endEx()
-                           .typeId(nukleus:id("http"))
-                           .trailer("etag", "two")
-                           .build()}
-
-read closed
 

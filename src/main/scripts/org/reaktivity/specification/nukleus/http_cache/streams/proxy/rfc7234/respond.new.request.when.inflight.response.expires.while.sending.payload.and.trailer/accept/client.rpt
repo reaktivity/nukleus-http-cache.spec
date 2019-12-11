@@ -104,12 +104,12 @@ read nukleus:begin.ext ${http:beginEx()
                              .typeId(nukleus:id("http"))
                              .header(":status", "200")
                              .header("content-length", "11")
-                             .header("cache-control", "max-age=1")
-                             .header("date", date)
-                             .header("last-modified", date)
-                             .header("etag", "one")
+                             .header("cache-control", "max-age=2")
+                             .header("date", date2)
+                             .header("last-modified", date2)
+                             .header("etag", "two")
                              .build()}
 
-read "hello world"
+read "hello alien"
 
 read closed

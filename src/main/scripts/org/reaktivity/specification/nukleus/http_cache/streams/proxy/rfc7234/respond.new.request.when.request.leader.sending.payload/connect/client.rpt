@@ -42,15 +42,11 @@ read nukleus:begin.ext ${http:beginEx()
                              .header("cache-control", "max-age=1")
                              .header("date", date)
                              .header("last-modified", date)
+                             .header("etag", "one")
                              .build()}
 read "hello world"
 
 read notify CACHE_EXPIRED
-
-read nukleus:end.ext ${http:endEx()
-                           .typeId(nukleus:id("http"))
-                           .trailer("etag", "one")
-                           .build()}
 
 read closed
 
@@ -69,6 +65,7 @@ write nukleus:begin.ext ${http:beginEx()
                               .header(":authority", "localhost:8080")
                               .build()}
 
+
 connected
 
 write close
@@ -80,14 +77,10 @@ read nukleus:begin.ext ${http:beginEx()
                              .header("cache-control", "max-age=2")
                              .header("date", date2)
                              .header("last-modified", date2)
+                             .header("etag", "two")
                              .build()}
-
 read "hello alien"
 
-read nukleus:end.ext ${http:endEx()
-                           .typeId(nukleus:id("http"))
-                           .trailer("etag", "two")
-                           .build()}
-
 read closed
+
 

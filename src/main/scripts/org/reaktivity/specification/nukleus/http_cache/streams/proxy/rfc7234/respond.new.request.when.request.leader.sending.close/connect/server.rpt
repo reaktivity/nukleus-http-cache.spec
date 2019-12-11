@@ -39,55 +39,15 @@ write nukleus:begin.ext ${http:beginEx()
                               .typeId(nukleus:id("http"))
                               .header(":status", "200")
                               .header("content-length", "11")
-                              .header("cache-control", "max-age=1")
+                              .header("cache-control", "max-age=2")
                               .header("date", date)
                               .header("last-modified", date)
+                              .header("etag", "one")
                               .build()}
 
 write "hello world"
 
-write notify REQUEST_CACHED
-write await CACHE_EXPIRED
-
-write nukleus:end.ext ${http:endEx()
-                            .typeId(nukleus:id("http"))
-                            .trailer("etag", "one")
-                            .build()}
-
 write close
 
 write notify INFLIGHT_REQUEST_EXPIRED
-
-
-accepted
-
-read nukleus:begin.ext ${http:beginEx()
-                             .typeId(nukleus:id("http"))
-                             .header(":scheme", "http")
-                             .header(":method", "GET")
-                             .header(":path", "/path")
-                             .header(":authority", "localhost:8080")
-                             .build()}
-
-connected
-
-read closed
-
-write nukleus:begin.ext ${http:beginEx()
-                              .typeId(nukleus:id("http"))
-                              .header(":status", "200")
-                              .header("content-length", "11")
-                              .header("cache-control", "max-age=2")
-                              .header("date", date2)
-                              .header("last-modified", date2)
-                              .build()}
-
-write "hello alien"
-
-write nukleus:end.ext ${http:endEx()
-                            .typeId(nukleus:id("http"))
-                            .trailer("etag", "two")
-                            .build()}
-
-write close
 
