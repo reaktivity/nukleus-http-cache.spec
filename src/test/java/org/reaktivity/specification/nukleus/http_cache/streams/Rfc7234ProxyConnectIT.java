@@ -656,4 +656,52 @@ public class Rfc7234ProxyConnectIT
         k3po.notifyBarrier("ROUTED_PROXY");
         k3po.finish();
     }
+
+    @Test
+    @Specification({
+        "${streams}/respond.new.request.when.inflight.response.expires.while.sending.payload/connect/client",
+        "${streams}/respond.new.request.when.inflight.response.expires.while.sending.payload/connect/server",
+    })
+    public void shouldRespondNewRequestWhenInflightResponseExpiresWhileSendingPayload() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_PROXY");
+        k3po.finish();
+    }
+
+    @Test
+    @Specification({
+        "${streams}/respond.new.request.when.inflight.response.expires.while.sending.close/connect/client",
+        "${streams}/respond.new.request.when.inflight.response.expires.while.sending.close/connect/server",
+    })
+    public void shouldRespondNewRequestWhenInflightResponseExpiresWhileSendingClose() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_PROXY");
+        k3po.finish();
+    }
+
+    @Test
+    @Specification({
+        "${streams}/respond.new.request.when.inflight.response.expires.while.sending.payload.and.trailer/connect/client",
+        "${streams}/respond.new.request.when.inflight.response.expires.while.sending.payload.and.trailer/connect/server",
+    })
+    public void shouldRespondNewRequestWhenInflightResponseExpiresWhileSendingPayloadAndTrailer() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_PROXY");
+        k3po.finish();
+    }
+
+    @Test
+    @Specification({
+        "${streams}/respond.new.request.when.inflight.response.expires.while.sending.trailer/connect/client",
+        "${streams}/respond.new.request.when.inflight.response.expires.while.sending.trailer/connect/server",
+    })
+    public void shouldRespondNewRequestWhenInflightResponseExpiresWhileSendingTrailer() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_PROXY");
+        k3po.finish();
+    }
 }
