@@ -705,4 +705,52 @@ public class Rfc7234ProxyAcceptIT
         k3po.notifyBarrier("ROUTED_PROXY");
         k3po.finish();
     }
+
+    @Test
+    @Specification({
+        "${streams}/respond.new.request.when.inflight.response.expires.while.sending.payload/accept/client",
+        "${streams}/respond.new.request.when.inflight.response.expires.while.sending.payload/accept/server",
+    })
+    public void shouldRespondNewRequestWhenInflightResponseExpiresWhileSendingPayload() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_PROXY");
+        k3po.finish();
+    }
+
+    @Test
+    @Specification({
+        "${streams}/respond.new.request.when.inflight.response.expires.while.sending.close/accept/client",
+        "${streams}/respond.new.request.when.inflight.response.expires.while.sending.close/accept/server",
+    })
+    public void shouldRespondNewRequestWhenInflightResponseExpiresWhileSendingClose() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_PROXY");
+        k3po.finish();
+    }
+
+    @Test
+    @Specification({
+        "${streams}/respond.new.request.when.inflight.response.expires.while.sending.payload.and.trailer/accept/client",
+        "${streams}/respond.new.request.when.inflight.response.expires.while.sending.payload.and.trailer/accept/server",
+    })
+    public void shouldRespondNewRequestWhenInflightResponseExpiresWhileSendingPayloadAndTrailer() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_PROXY");
+        k3po.finish();
+    }
+
+    @Test
+    @Specification({
+        "${streams}/respond.new.request.when.inflight.response.expires.while.sending.trailer/accept/client",
+        "${streams}/respond.new.request.when.inflight.response.expires.while.sending.trailer/accept/server",
+    })
+    public void shouldRespondNewRequestWhenInflightResponseExpiresWhileSendingTrailer() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_PROXY");
+        k3po.finish();
+    }
 }
