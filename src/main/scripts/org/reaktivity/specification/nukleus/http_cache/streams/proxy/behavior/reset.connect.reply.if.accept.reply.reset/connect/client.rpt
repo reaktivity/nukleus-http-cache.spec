@@ -35,11 +35,5 @@ write close
 
 read notify REQUEST_RESET
 
-read nukleus:begin.ext ${http:beginEx()
-                             .typeId(nukleus:id("http"))
-                             .header(":status", "200")
-                             .header("content-length", "11")
-                             .build()}
-
 read abort
 
