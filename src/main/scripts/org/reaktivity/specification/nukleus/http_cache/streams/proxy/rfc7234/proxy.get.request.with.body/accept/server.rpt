@@ -14,6 +14,8 @@
 # under the License.
 #
 
+property date ${http_cache:date()} # shared property
+
 property largePayload ${http_cache:largePayload(10485)} # shared property
 property payloadSize 10485 # shared property
 
@@ -41,6 +43,7 @@ read closed
 write nukleus:begin.ext ${http:beginEx()
                               .typeId(nukleus:id("http"))
                               .header(":status", "200")
+                              .header("date", date)
                               .header("content-length", "11")
                               .build()}
 
