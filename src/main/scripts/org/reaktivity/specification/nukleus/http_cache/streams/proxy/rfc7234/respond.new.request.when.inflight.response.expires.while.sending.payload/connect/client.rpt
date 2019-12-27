@@ -49,4 +49,33 @@ read notify CACHE_EXPIRED
 
 read closed
 
+connect await ROUTED_PROXY
+        "nukleus://streams/target#0"
+        option nukleus:window 8192
+        option nukleus:transmission "half-duplex"
 
+write nukleus:begin.ext ${http:beginEx()
+                              .typeId(nukleus:id("http"))
+                              .header(":scheme", "http")
+                              .header(":method", "GET")
+                              .header(":path", "/path")
+                              .header(":authority", "localhost:8080")
+                              .build()}
+
+
+connected
+
+write close
+
+read nukleus:begin.ext ${http:beginEx()
+                             .typeId(nukleus:id("http"))
+                             .header(":status", "200")
+                             .header("content-length", "11")
+                             .header("cache-control", "max-age=1")
+                             .header("date", date)
+                             .header("last-modified", date)
+                             .header("etag", "two")
+                             .build()}
+read "hello again"
+
+read closed
