@@ -16,9 +16,6 @@
 
 property response1Date ${http_cache:date()} # sharedProperty
 property response2Date ${http_cache:datePlus(5)} # sharedProperty
-property etag ${http_cache:strongEtag()} # sharedProperty
-property etag2 ${http_cache:strongEtag()} # sharedProperty
-property etag3 ${http_cache:strongEtag()} # sharedProperty
 
 accept await ROUTED_PROXY
         "nukleus://streams/target#0"
@@ -44,8 +41,8 @@ write nukleus:begin.ext ${http:beginEx()
                               .header(":status", "200")
                               .header("content-length", "11")
                               .header("date", response1Date)
-                              .header("surrogate-control", "max-age=1+100")
-                              .header("etag", etag)
+                              .header("surrogate-control", "max-age=2+100")
+                              .header("etag", "one")
                               .build()}
 
 write "response #1"
@@ -63,7 +60,7 @@ read nukleus:begin.ext ${http:beginEx()
                              .header(":authority", "localhost:8080")
                              .header("cache-control", "max-age=0")
                              .header("prefer", "wait=100")
-                             .header("if-none-match", etag)
+                             .header("if-none-match", "one")
                              .build()}
 
 connected
@@ -85,10 +82,13 @@ accepted
 read nukleus:begin.ext ${http:beginEx()
                              .typeId(nukleus:id("http"))
                              .header(":scheme", "http")
-                              .header("x-protocol-stack", "emulated")
+                             .header("x-protocol-stack", "emulated")
                              .header(":method", "GET")
                              .header(":path", "/data")
                              .header(":authority", "localhost:8080")
+                             .header("cache-control", "max-age=0")
+                             .header("prefer", "wait=100")
+                             .header("if-none-match", "one")
                              .build()}
 
 connected
@@ -101,12 +101,8 @@ write nukleus:begin.ext ${http:beginEx()
                               .header("content-length", "11")
                               .header("date", response1Date)
                               .header("surrogate-control", "max-age=1+100")
-                              .header("etag", etag2)
+                              .header("etag", "two")
                               .build()}
-
-write flush
-
-write await POLLING_REQUEST
 
 write "response #3"
 

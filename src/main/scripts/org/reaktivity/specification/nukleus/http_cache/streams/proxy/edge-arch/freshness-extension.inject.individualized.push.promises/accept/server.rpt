@@ -86,6 +86,13 @@ connected
 
 read closed
 
+write nukleus:begin.ext ${http:beginEx()
+                              .typeId(nukleus:id("http"))
+                              .header(":status", "500")
+                              .build()}
+
+write abort
+
 read notify REVALIDATING # assumed
 
 accepted
