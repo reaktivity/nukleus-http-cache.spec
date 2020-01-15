@@ -44,8 +44,7 @@ write nukleus:begin.ext ${http:beginEx()
                              .header("cache-control", "max-age=10")
                              .header("etag", "first")
                              .header("preference-applied", "wait=500")
-                             .header("access-control-expose-headers", "preference-applied")
-                             .header("access-control-expose-headers", "etag")
+                             .header("access-control-expose-headers", "preference-applied, etag")
                              .build()}
 
 write "response #1"
@@ -79,8 +78,7 @@ write nukleus:begin.ext ${http:beginEx()
                               .header("cache-control", "max-age=10")
                               .header("etag", "second")
                               .header("preference-applied", "wait=500")
-                              .header("access-control-expose-headers", "preference-applied")
-                              .header("access-control-expose-headers", "etag")
+                              .header("access-control-expose-headers", "preference-applied, etag")
                               .build()}
 
 write "response #2"
@@ -143,8 +141,7 @@ write nukleus:begin.ext ${http:beginEx()
                               .header("cache-control", "max-age=10")
                               .header("etag", "second")
                               .header("preference-applied", "wait=500")
-                              .header("access-control-expose-headers", "preference-applied")
-                              .header("access-control-expose-headers", "etag")
+                              .header("access-control-expose-headers", "preference-applied, etag")
                               .build()}
 
 write "response #2"
