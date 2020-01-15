@@ -71,7 +71,7 @@ read notify REQUEST1_COMPLETE
 connect await REQUEST1_COMPLETE
         "nukleus://streams/http-cache#0"
         option nukleus:window 8192
-        option nukleus:transmission "simplex"
+        option nukleus:transmission "half-duplex"
 
 write nukleus:begin.ext ${http:beginEx()
                               .typeId(nukleus:id("http"))
@@ -89,6 +89,13 @@ write nukleus:begin.ext ${http:beginEx()
 connected
 
 write close
+
+read nukleus:begin.ext ${http:beginEx()
+                             .typeId(nukleus:id("http"))
+                             .header(":status", "500")
+                             .build()}
+
+read aborted
 
 ## Served stale cache
 

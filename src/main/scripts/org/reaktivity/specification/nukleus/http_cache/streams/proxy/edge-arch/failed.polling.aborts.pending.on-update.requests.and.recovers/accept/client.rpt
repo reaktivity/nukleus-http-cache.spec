@@ -16,9 +16,6 @@
 
 property response1Date ${http_cache:date()} # sharedProperty
 property response2Date ${http_cache:datePlus(5)} # sharedProperty
-property etag ${http_cache:strongEtag()} # sharedProperty
-property etag2 ${http_cache:strongEtag()} # sharedProperty
-property etag3 ${http_cache:strongEtag()} # sharedProperty
 
 connect await ROUTED_PROXY
         "nukleus://streams/http-cache#0"
@@ -42,8 +39,8 @@ read nukleus:begin.ext ${http:beginEx()
                              .header(":status", "200")
                              .header("content-length", "11")
                              .header("date", response1Date)
-                             .header("surrogate-control", "max-age=1+100")
-                             .header("etag", etag)
+                             .header("surrogate-control", "max-age=2+100")
+                             .header("etag", "one")
                              .header("cache-control", "stale-while-revalidate=100")
                              .build()}
 
@@ -57,7 +54,7 @@ read nukleus:data.ext ${http:dataEx()
                             .promise(":authority", "localhost:8080")
                             .promise("cache-control", "max-age=0")
                             .promise("prefer", "wait=100")
-                            .promise("if-none-match", etag)
+                            .promise("if-none-match", "one")
                             .build()}
 read nukleus:data.null
 
@@ -79,7 +76,7 @@ write nukleus:begin.ext ${http:beginEx()
                               .header(":authority", "localhost:8080")
                               .header("cache-control", "max-age=0")
                               .header("prefer", "wait=100")
-                              .header("if-none-match", etag)
+                              .header("if-none-match", "one")
                               .build()}
 connected
 
@@ -118,15 +115,14 @@ read nukleus:begin.ext ${http:beginEx()
                              .header(":status", "200")
                              .header("content-length", "11")
                              .header("date", response1Date)
-                             .header("surrogate-control", "max-age=1+100")
-                             .header("etag", etag2)
+                             .header("surrogate-control", "max-age=2+100")
+                             .header("etag", "one")
                              .header("cache-control", "stale-while-revalidate=100")
                              .build()}
 
-
 read notify PUSH_PROMISE_RECEIVED
 
-read "response #3"
+read "response #1"
 
 read nukleus:data.ext ${http:dataEx()
                             .typeId(nukleus:id("http"))
@@ -136,7 +132,7 @@ read nukleus:data.ext ${http:dataEx()
                             .promise(":authority", "localhost:8080")
                             .promise("cache-control", "max-age=0")
                             .promise("prefer", "wait=100")
-                            .promise("if-none-match", etag2)
+                            .promise("if-none-match", "one")
                             .build()}
 read nukleus:data.null
 
@@ -156,7 +152,7 @@ write nukleus:begin.ext ${http:beginEx()
                               .header(":authority", "localhost:8080")
                               .header("cache-control", "max-age=0")
                               .header("prefer", "wait=100")
-                              .header("if-none-match", etag2)
+                              .header("if-none-match", "one")
                               .build()}
 connected
 
@@ -165,12 +161,18 @@ write close
 write notify POLLING_REQUEST
 read nukleus:begin.ext ${http:beginEx()
                              .typeId(nukleus:id("http"))
-                             .header(":status", "304")
-                             .header("etag", etag2)
+                             .header(":status", "200")
+                             .header("content-length", "11")
+                             .header("date", response1Date)
+                             .header("surrogate-control", "max-age=1+100")
+                             .header("etag", "two")
                              .header("preference-applied", "wait=100")
                              .header("access-control-expose-headers", "preference-applied")
                              .header("access-control-expose-headers", "etag")
+                             .header("cache-control", "private, stale-while-revalidate=100")
                              .build()}
+
+read "response #3"
 
 read nukleus:data.ext ${http:dataEx()
                             .typeId(nukleus:id("http"))
@@ -180,7 +182,7 @@ read nukleus:data.ext ${http:dataEx()
                             .promise(":authority", "localhost:8080")
                             .promise("cache-control", "max-age=0")
                             .promise("prefer", "wait=100")
-                            .promise("if-none-match", etag2)
+                            .promise("if-none-match", "two")
                             .build()}
 read nukleus:data.null
 

@@ -45,7 +45,7 @@ read nukleus:begin.ext ${http:beginEx()
                              .header("content-length", "11")
                              .header("date", response1Date)
                              .header("surrogate-control", "max-age=1+100")
-                             .header("etag", etag)
+                             .header("etag", "one")
                              .build()}
 
 read "response #1"
@@ -70,7 +70,7 @@ write nukleus:begin.ext ${http:beginEx()
                               .header(":authority", "localhost:8080")
                               .header("cache-control", "max-age=0")
                               .header("prefer", "wait=100")
-                              .header("if-none-match", etag)
+                              .header("if-none-match", "one")
                               .build()}
 
 connected
@@ -92,7 +92,6 @@ connect await REQUEST_2_COMPLETE
         option nukleus:window 8192
         option nukleus:transmission "half-duplex"
 
-
 write nukleus:begin.ext ${http:beginEx()
                               .typeId(nukleus:id("http"))
                               .header(":scheme", "http")
@@ -100,6 +99,9 @@ write nukleus:begin.ext ${http:beginEx()
                               .header(":method", "GET")
                               .header(":path", "/data")
                               .header(":authority", "localhost:8080")
+                              .header("cache-control", "max-age=0")
+                              .header("prefer", "wait=100")
+                              .header("if-none-match", "one")
                               .build()}
 
 connected
@@ -114,7 +116,7 @@ read nukleus:begin.ext ${http:beginEx()
                              .header("content-length", "11")
                              .header("date", response1Date)
                              .header("surrogate-control", "max-age=1+100")
-                             .header("etag", etag2)
+                             .header("etag", "two")
                              .build()}
 
 read "response #3"

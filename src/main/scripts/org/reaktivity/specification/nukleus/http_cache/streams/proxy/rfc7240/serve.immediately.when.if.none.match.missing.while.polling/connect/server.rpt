@@ -58,7 +58,7 @@ read nukleus:begin.ext ${http:beginEx()
                              .header(":method", "GET")
                              .header(":path", "/data")
                              .header(":authority", "localhost:8080")
-                             .header("prefer", "wait=50")
+                             .header("prefer", "wait=3")
                              .header("cache-control", "max-age=0")
                              .header("if-none-match", "first")
                              .build()}
@@ -83,32 +83,3 @@ write close
 
 write notify SECOND_RESPONSE_SENT
 
-accepted
-
-read nukleus:begin.ext ${http:beginEx()
-                             .typeId(nukleus:id("http"))
-                             .header(":scheme", "http")
-                             .header(":method", "GET")
-                             .header(":path", "/data")
-                             .header(":authority", "localhost:8080")
-                             .header("prefer", "wait=50")
-                             .header("cache-control", "max-age=0")
-                             .build()}
-
-connected
-
-read closed
-
-write nukleus:begin.ext ${http:beginEx()
-                              .typeId(nukleus:id("http"))
-                              .header(":status", "200")
-                              .header("content-length", "11")
-                              .header("date", response2Date)
-                              .header("cache-control", "max-age=10")
-                              .header("etag", "first")
-                              .header("retry-after", "50")
-                              .build()}
-
-write "response #1"
-
-write close
