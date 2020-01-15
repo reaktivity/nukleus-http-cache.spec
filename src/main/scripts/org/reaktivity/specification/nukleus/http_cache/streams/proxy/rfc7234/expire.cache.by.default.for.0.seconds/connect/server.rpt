@@ -14,7 +14,8 @@
 # under the License.
 #
 
-property statusCode ${http_cache:randomCacheableByDefaultStatusCode()} # shared property
+property date ${http_cache:date()} # shared property
+
 property etag ${http_cache:strongEtag()} #shared
 property etag2 ${http_cache:strongEtag()} #shared
 
@@ -38,7 +39,8 @@ read closed
 
 write nukleus:begin.ext ${http:beginEx()
                               .typeId(nukleus:id("http"))
-                              .header(":status", statusCode)
+                              .header(":status", "200")
+                              .header("date", date)
                               .header("content-length", "11")
                               .header("etag", etag)
                               .build()}
@@ -63,7 +65,8 @@ read closed
 
 write nukleus:begin.ext ${http:beginEx()
                               .typeId(nukleus:id("http"))
-                              .header(":status", statusCode)
+                              .header(":status", "200")
+                              .header("date", date)
                               .header("content-length", "11")
                               .header("etag", etag2)
                               .build()}

@@ -14,6 +14,8 @@
 # under the License.
 #
 
+property date ${http_cache:date()} # shared property
+
 accept await ROUTED_PROXY
         "nukleus://streams/http-cache#0"
         option nukleus:window 8192
@@ -35,6 +37,7 @@ read closed
 write nukleus:begin.ext ${http:beginEx()
                               .typeId(nukleus:id("http"))
                               .header(":status", "200")
+                              .header("date", date)
                               .header("content-length", "11")
                               .build()}
 
