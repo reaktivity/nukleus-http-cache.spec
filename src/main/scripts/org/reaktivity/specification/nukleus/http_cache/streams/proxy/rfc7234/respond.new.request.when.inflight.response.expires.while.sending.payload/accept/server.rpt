@@ -102,9 +102,9 @@ write nukleus:begin.ext ${http:beginEx()
                               .header("cache-control", "max-age=1")
                               .header("date", date)
                               .header("last-modified", date)
-                              .header("etag", "one")
+                              .header("etag", "two")
                               .build()}
 
-write "hello world"
+write "hello again"
 
 write close

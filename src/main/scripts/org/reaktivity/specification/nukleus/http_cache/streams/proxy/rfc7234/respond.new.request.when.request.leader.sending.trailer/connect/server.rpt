@@ -47,6 +47,7 @@ write nukleus:begin.ext ${http:beginEx()
 write "hello world"
 write notify INFLIGHT_REQUEST_EXPIRED
 
+write await CACHE_EXPIRED
 write nukleus:end.ext ${http:endEx()
                             .typeId(nukleus:id("http"))
                             .trailer("etag", "one")

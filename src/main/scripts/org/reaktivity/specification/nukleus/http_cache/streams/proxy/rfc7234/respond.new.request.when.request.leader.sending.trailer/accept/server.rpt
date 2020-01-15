@@ -49,8 +49,6 @@ write "hello world"
 
 write close
 
-write notify CACHE_EXPIRED # assumed
-
 accepted
 
 read nukleus:begin.ext ${http:beginEx()

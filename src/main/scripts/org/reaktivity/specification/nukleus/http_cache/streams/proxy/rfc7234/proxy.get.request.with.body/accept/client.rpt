@@ -40,6 +40,7 @@ write close
 read nukleus:begin.ext ${http:beginEx()
                              .typeId(nukleus:id("http"))
                              .header(":status", "200")
+                             .header("date", date)
                              .header("content-length", "11")
                              .build()}
 
