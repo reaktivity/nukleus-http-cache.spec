@@ -98,8 +98,7 @@ read nukleus:begin.ext ${http:beginEx()
                              .header("surrogate-control", "max-age=1+100")
                              .header("etag", etag2)
                              .header("preference-applied", "wait=100")
-                             .header("access-control-expose-headers", "preference-applied")
-                             .header("access-control-expose-headers", "etag")
+                             .header("access-control-expose-headers", "preference-applied, etag")
                              .header("cache-control", "private, stale-while-revalidate=100")
                              .build()}
 
