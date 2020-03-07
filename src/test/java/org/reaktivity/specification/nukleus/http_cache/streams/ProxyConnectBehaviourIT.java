@@ -27,7 +27,7 @@ import org.kaazing.k3po.junit.annotation.Specification;
 import org.kaazing.k3po.junit.rules.K3poRule;
 import org.reaktivity.specification.nukleus.NukleusRule;
 
-public class ProxyAcceptExceptionsIT
+public class ProxyConnectBehaviourIT
 {
     private final K3poRule k3po = new K3poRule()
             .addScriptRoot("streams", "org/reaktivity/specification/nukleus/http_cache/streams/proxy/behavior");
@@ -42,8 +42,8 @@ public class ProxyAcceptExceptionsIT
 
     @Test
     @Specification({
-        "${streams}/accept.sent.abort/accept/client",
-        "${streams}/accept.sent.abort/accept/server",
+        "${streams}/accept.sent.abort/connect/client",
+        "${streams}/accept.sent.abort/connect/server",
     })
     public void shouldAcceptSentAbort() throws Exception
     {
@@ -54,20 +54,8 @@ public class ProxyAcceptExceptionsIT
 
     @Test
     @Specification({
-        "${streams}/accept.sent.abort.cacheable.request/accept/client",
-        "${streams}/accept.sent.abort.cacheable.request/accept/server",
-    })
-    public void shouldHandleAbortSentOnCacheableRequest() throws Exception
-    {
-        k3po.start();
-        k3po.notifyBarrier("ROUTED_PROXY");
-        k3po.finish();
-    }
-
-    @Test
-    @Specification({
-        "${streams}/connect.reply.sent.abort/accept/client",
-        "${streams}/connect.reply.sent.abort/accept/server",
+        "${streams}/connect.reply.sent.abort/connect/client",
+        "${streams}/connect.reply.sent.abort/connect/server",
     })
     public void shouldConnectReplySentAbort() throws Exception
     {
@@ -78,8 +66,20 @@ public class ProxyAcceptExceptionsIT
 
     @Test
     @Specification({
-        "${streams}/connect.sent.reset/accept/client",
-        "${streams}/connect.sent.reset/accept/server",
+        "${streams}/accept.sent.abort.cacheable.request/connect/client",
+        "${streams}/accept.sent.abort.cacheable.request/connect/server",
+    })
+    public void shouldHandleAbortSentOnCacheableRequest() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_PROXY");
+        k3po.finish();
+    }
+
+    @Test
+    @Specification({
+        "${streams}/connect.sent.reset/connect/client",
+        "${streams}/connect.sent.reset/connect/server",
     })
     public void shouldConnectSentReset() throws Exception
     {
@@ -90,8 +90,8 @@ public class ProxyAcceptExceptionsIT
 
     @Test
     @Specification({
-        "${streams}/accept.reply.sent.reset/accept/client",
-        "${streams}/accept.reply.sent.reset/accept/server",
+        "${streams}/accept.reply.sent.reset/connect/client",
+        "${streams}/accept.reply.sent.reset/connect/server",
     })
     public void shouldAcceptReplySentReset() throws Exception
     {
@@ -102,33 +102,22 @@ public class ProxyAcceptExceptionsIT
 
     @Test
     @Specification({
-        "${streams}/nukleus.overloaded/accept/client",
-        "${streams}/nukleus.overloaded/accept/server"})
-    public void shouldResetIfOOM() throws Exception
-    {
-        k3po.start();
-        k3po.notifyBarrier("ROUTED_PROXY");
-        k3po.finish();
-    }
-
-    @Test
-    @Specification({
-        "${streams}/client.sent.abort.on.scheduled.poll/accept/client",
-        "${streams}/client.sent.abort.on.scheduled.poll/accept/server"
-    })
-    public void shouldClientSentAbortOnScheduledPoll() throws Exception
-    {
-        k3po.start();
-        k3po.notifyBarrier("ROUTED_PROXY");
-        k3po.finish();
-    }
-
-    @Test
-    @Specification({
-        "${streams}/reset.connect.reply.if.accept.reply.reset/accept/client",
-        "${streams}/reset.connect.reply.if.accept.reply.reset/accept/server",
+        "${streams}/reset.connect.reply.if.accept.reply.reset/connect/client",
+        "${streams}/reset.connect.reply.if.accept.reply.reset/connect/server",
     })
     public void shouldResetConnectReplyIfAcceptReplyReset() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_PROXY");
+        k3po.finish();
+    }
+
+    @Test
+    @Specification({
+        "${streams}/reset.stream.if.group.request.already.dequeued/connect/client",
+        "${streams}/reset.stream.if.group.request.already.dequeued/connect/server",
+    })
+    public void shouldResetStreamIfGroupRequestAlreadyDequeued() throws Exception
     {
         k3po.start();
         k3po.notifyBarrier("ROUTED_PROXY");
