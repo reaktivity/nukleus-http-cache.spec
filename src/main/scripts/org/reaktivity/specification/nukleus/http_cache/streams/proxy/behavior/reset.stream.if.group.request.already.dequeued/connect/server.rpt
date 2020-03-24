@@ -47,3 +47,16 @@ write nukleus:begin.ext ${http:beginEx()
 write flush
 
 write aborted
+
+accepted
+
+read nukleus:begin.ext ${http:beginEx()
+                             .typeId(nukleus:id("http"))
+                             .header(":scheme", "http")
+                             .header(":method", "GET")
+                             .header(":path", "/data")
+                             .header(":authority", "localhost:8080")
+                             .header("cache-control", "max-age=0")
+                             .header("prefer", "wait=3600")
+                             .header("if-none-match", "first")
+                             .build()}
